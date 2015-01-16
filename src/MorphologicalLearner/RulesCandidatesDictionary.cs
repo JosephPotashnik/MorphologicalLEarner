@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MorphologicalLearner
 {
@@ -32,7 +29,10 @@ namespace MorphologicalLearner
         //write functions that return rules passing a certain threshold.
 
         //1. absolute threshold: rules that appear more than N times.
-        //List<string> RulesAboveNTimesThreshold(int threshold)
+        public List<string> RulesAboveNTimesThreshold(int threshold)
+        {
+            return m_dic.Where(c => c.Value > threshold).Select(c => c.Key).ToList();
+        }
 
         //2. relative frequency threshold: rules that appear more than N/Total times.
         //3. other distributional threshold: the rules that take the most of the distribution function. 

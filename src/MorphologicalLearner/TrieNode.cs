@@ -1,5 +1,6 @@
 ﻿// This code is distributed under MIT license. Copyright (c) 2013 George Mamaladze
 // See license.txt or http://opensource.org/licenses/mit-license.php
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,21 +84,12 @@ namespace MorphologicalLearner
 
         public IEnumerable<StringAlignmentData> SearchSons(StringAlignmentData data)
         {
-            IEnumerable<StringAlignmentData> list = Enumerable.Empty<StringAlignmentData>();
-
-            foreach (KeyValuePair<char, TrieNode> kvp in m_Children)
-                list = list.Concat(kvp.Value.AmISuffix(data, kvp.Key));
-
-            return list;
+            return m_Children.SelectMany(kvp => kvp.Value.AmISuffix(data, kvp.Key));
         }
 
         public IEnumerable<StringAlignmentData> ExpandSuffixes()
         {
-            StringAlignmentData d = new StringAlignmentData();
-            d.Difference = "";
-            d.Father = this;
-            d.Son = null;
-
+            var d = new StringAlignmentData(this);
             return SearchSons(d);
         }
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MorphologicalLearner
 {
@@ -59,6 +56,8 @@ namespace MorphologicalLearner
                 }
 
             }
+
+            List<string> l = m_dic.RulesAboveNTimesThreshold(1);
         }
 
         public Learner()   {}

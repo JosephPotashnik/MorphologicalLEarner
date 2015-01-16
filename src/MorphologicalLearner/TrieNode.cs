@@ -86,12 +86,15 @@ namespace MorphologicalLearner
         {
             return m_Children.SelectMany(kvp => kvp.Value.AmISuffix(data, kvp.Key));
         }
-
+        
+        //the function returns a list of all shortest words whose "this" node is their prefix (e.g. "intern", "interim", but not "interns" will be returned for "inter")
         public IEnumerable<StringAlignmentData> ExpandSuffixes()
         {
             var d = new StringAlignmentData(this);
             return SearchSons(d);
         }
+
+
 
         /* UNUSED CODE - in working order.
         

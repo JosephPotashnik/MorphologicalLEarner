@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace MorphologicalLearner
 {
@@ -11,17 +15,16 @@ namespace MorphologicalLearner
 
         public void BuildTrie()
         {
+
             Trie tree = new Trie();
+            string filestring = File.ReadAllText(@"d:\tom sawyer.txt");
+            char[] delimiters = new char[] {'\r', '\n', '(', ')', '?', ',', '*', ' ', '.', ';', '!', '\\', '/', ':', '-'};
 
-            tree.Add("אכלנו");
-            tree.Add("אכלנונונו");
-            tree.Add("אכלנותה");
-
-            tree.Add("אכלתם");
-            tree.Add("אמ");
-            tree.Add("רכל");
-            tree.Add("רכלנונו");
-            tree.Add("אמנונו");
+            string[] words = filestring.Split(delimiters,
+				     StringSplitOptions.RemoveEmptyEntries);
+          
+            foreach (var w in words)
+                tree.Add(w);
 
             m_trie = tree;
         }
@@ -34,6 +37,7 @@ namespace MorphologicalLearner
             queue.Enqueue(m_trie);
 
             List<KeyValuePair<string, string>> candidates = new List<KeyValuePair<string,string>>();
+            Stopwatch watch1 = new Stopwatch();
 
             //searching the trie with BFS.
             while (queue.Any())
@@ -57,9 +61,24 @@ namespace MorphologicalLearner
 
             }
 
-            List<string> l = m_dic.RulesAboveNTimesThreshold(1);
+            List<KeyValuePair<string, int>> l = m_dic.RulesAboveNTimesThreshold(10);
+            Statistics(l);
         }
 
-        public Learner()   {}
+        private void Statistics(List<KeyValuePair<string, int>> l)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Suffix \t #Appearances");
+            sb.AppendLine();
+            sb.AppendLine();
+
+            foreach (var valuepair in l)
+            {
+                sb.AppendFormat("{0} \t {1}", valuepair.Key, valuepair.Value);
+                sb.AppendLine();
+            }
+
+            File.WriteAllText(@"d:\suffixesMorethan10InTomSawyer.txt", sb.ToString());
+        }
     }
 }

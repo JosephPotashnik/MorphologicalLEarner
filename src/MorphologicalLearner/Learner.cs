@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,8 +7,12 @@ using System.Text;
 namespace MorphologicalLearner
 {
 
+
     class Learner
     {
+        private const string BeginOfSentence = "# ";
+        private const string EndOfSentence = " #";
+
         private Trie m_trie;
         private RulesCandidatesDictionary m_dic;
 
@@ -18,15 +21,42 @@ namespace MorphologicalLearner
 
             Trie tree = new Trie();
             string filestring = File.ReadAllText(@"d:\tom sawyer.txt");
-            char[] delimiters = new char[] {'\r', '\n', '(', ')', '?', ',', '*', ' ', '.', ';', '!', '\\', '/', ':', '-'};
+            char[] worddelimiters = new char[] {'\r', '\n', '(', ')', '?', ',', '*', ' ', '.', ';', '!', '\\', '/', ':', '-', '"',};
 
-            string[] words = filestring.Split(delimiters,
+            string[] words = filestring.Split(worddelimiters,
 				     StringSplitOptions.RemoveEmptyEntries);
           
             foreach (var w in words)
                 tree.Add(w);
 
             m_trie = tree;
+        }
+
+        public void BuildBigrams()
+        {
+            string filestring = File.ReadAllText(@"d:\tom sawyer.txt");
+
+            //read sentences.
+            char[] sentenceDelimiters = new char[] { '\r', '\n', '(', ')', '?', ',', '*', '.', ';', '!', '\\', '/', ':', '-', '"', };
+
+            string[] sentences = filestring.Split(sentenceDelimiters,
+                     StringSplitOptions.RemoveEmptyEntries);
+
+            IEnumerable<string> WithBeginAndEndSymbols =
+                sentences.Select(sentence => BeginOfSentence + sentence + EndOfSentence);
+
+            //pad with special begin and end symbols.
+
+            var manager = new BigramManager();
+
+            foreach (string sentence in WithBeginAndEndSymbols)
+            {
+                string[] sentenceWords = sentence.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                for (int k = 0; k < sentenceWords.Count() - 1; ++k)
+                    manager.Add(sentenceWords[k], sentenceWords[k + 1]);
+            }
+
+            var l = manager.AllWordsAboveNOccurences(50);
         }
 
         public void BuildCandidates()
@@ -37,7 +67,6 @@ namespace MorphologicalLearner
             queue.Enqueue(m_trie);
 
             List<KeyValuePair<string, string>> candidates = new List<KeyValuePair<string,string>>();
-            Stopwatch watch1 = new Stopwatch();
 
             //searching the trie with BFS.
             while (queue.Any())

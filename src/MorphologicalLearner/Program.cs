@@ -10,6 +10,7 @@
             Learner learn = new Learner();
 
             learn.BuildTrie();
+            learn.BuildBigrams();
             learn.BuildCandidates();
 
         }

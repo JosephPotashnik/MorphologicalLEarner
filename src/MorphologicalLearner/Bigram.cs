@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MorphologicalLearner
 {
@@ -83,7 +84,40 @@ namespace MorphologicalLearner
             return list;
         }
 
+        private IEnumerable<string> GetAllWordsBeforeWord(string secondword)
+        {
+            return ( secondWordDictionary.ContainsKey(secondword) ?
+                 secondWordDictionary[secondword].Keys :
+                 Enumerable.Empty<string>());
+        }
 
+        private IEnumerable<string> GetAllWordsAfterWord(string firstword)
+        {
+            return (firstWordDictionary.ContainsKey(firstword) ?
+                 firstWordDictionary[firstword].Keys :
+                 Enumerable.Empty<string>());
+        }
+
+        public IEnumerable<string> IntersectTwoFirstWords(string firstWord1, string firstWord2)
+        {
+            return GetAllWordsAfterWord(firstWord1).Intersect(GetAllWordsAfterWord(firstWord2));
+        }
+
+        public IEnumerable<string> ListAfterGivenWords(IEnumerable<string> given)
+        {
+            IEnumerable<string> l = GetAllWordsAfterWord(given.First());
+            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsAfterWord(str)));
+        }
+
+        public IEnumerable<string> IntersectTwoSecondWords(string secondWord1, string secondWord2)
+        {
+            return GetAllWordsBeforeWord(secondWord1).Intersect(GetAllWordsBeforeWord(secondWord2));
+        }
+
+        public IEnumerable<string> ListBeforeGivenWords(IEnumerable<string> given)
+        {
+            IEnumerable<string> l = GetAllWordsBeforeWord(given.First());
+            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsBeforeWord(str)));
+        }
     }
-
 }

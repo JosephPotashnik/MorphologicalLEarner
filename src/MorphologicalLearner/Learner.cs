@@ -41,11 +41,10 @@ namespace MorphologicalLearner
 
             string[] sentences = filestring.Split(sentenceDelimiters,
                      StringSplitOptions.RemoveEmptyEntries);
-
+            
+            //pad with special begin and end symbols.
             IEnumerable<string> WithBeginAndEndSymbols =
                 sentences.Select(sentence => BeginOfSentence + sentence + EndOfSentence);
-
-            //pad with special begin and end symbols.
 
             var manager = new BigramManager();
 
@@ -55,8 +54,13 @@ namespace MorphologicalLearner
                 for (int k = 0; k < sentenceWords.Count() - 1; ++k)
                     manager.Add(sentenceWords[k], sentenceWords[k + 1]);
             }
+            var r = manager.IntersectTwoFirstWords("the", "I");
+            var z = manager.ListAfterGivenWords(new[] {"the", "I"});
+            var z2 = manager.ListAfterGivenWords(new[] { "the", "I", "zaza"});
 
-            var l = manager.AllWordsAboveNOccurences(50);
+            var r1 = manager.IntersectTwoSecondWords("the", "I");
+            var z1 = manager.ListBeforeGivenWords(new[] { "the", "I" });
+            var z21 = manager.ListBeforeGivenWords(new[] { "the", "I", "Tom" });
         }
 
         public void BuildCandidates()

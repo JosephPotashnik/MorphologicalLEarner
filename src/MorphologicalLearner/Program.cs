@@ -7,7 +7,7 @@
         static void Main(string[] args)
         {
 
-            Learner learn = new Learner();
+            var learn = new Learner();
 
             learn.BuildTrie();
             learn.BuildBigrams();

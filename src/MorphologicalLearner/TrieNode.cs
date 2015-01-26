@@ -27,7 +27,7 @@ namespace MorphologicalLearner
                 return;
             }
 
-            TrieNode child = GetOrCreateChild(key[position]);
+            var child = GetOrCreateChild(key[position]);
             child.Add(key, position + 1, value);
         }
 
@@ -47,7 +47,7 @@ namespace MorphologicalLearner
             return result;
         }
 
-        private TrieNode GetChildOrNull(string query, int position)
+        public TrieNode GetChildOrNull(string query, int position)
         {
             if (query == null) throw new ArgumentNullException("query");
             TrieNode childNode;

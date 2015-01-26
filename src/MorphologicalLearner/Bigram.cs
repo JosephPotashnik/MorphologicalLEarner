@@ -6,8 +6,12 @@ namespace MorphologicalLearner
 
     public class BigramManager
     {
-        private Dictionary<string, Dictionary<string, int>> firstWordDictionary;
-        private Dictionary<string, Dictionary<string, int>> secondWordDictionary;
+        //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
+        private readonly Dictionary<string, Dictionary<string, int>> firstWordDictionary;
+                          //<word1,           <word2, count>>
+        //the second dictionary lists the second word as a key, with all bigrams for which it is the second word
+        private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
+                        //<word2,           <word1, count>>
 
         public BigramManager()
         {
@@ -18,26 +22,24 @@ namespace MorphologicalLearner
         public void Add(string word1, string word2)
         {
 
-            //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
             if (firstWordDictionary.ContainsKey(word1))
             {
-                Dictionary<string, int> val = firstWordDictionary[word1];
+                var val = firstWordDictionary[word1];
                 if (val.ContainsKey(word2))
-                    val[word2]++;
+                    val[word2]++;   
                 else
                     val[word2] = 1;
             }
             else
             {
-                Dictionary<string, int> newDic = new Dictionary<string, int>();
+                var newDic = new Dictionary<string, int>();
                 firstWordDictionary[word1] = newDic;
                 newDic[word2] = 1;
             }
 
-            //the second dictionary lists the second word as a key, with all bigrams for which it is the second word
             if (secondWordDictionary.ContainsKey(word2))
             {
-                Dictionary<string, int> val = secondWordDictionary[word2];
+                var val = secondWordDictionary[word2];
                 if (val.ContainsKey(word1))
                     val[word1]++;
                 else
@@ -45,7 +47,7 @@ namespace MorphologicalLearner
             }
             else
             {
-                Dictionary<string, int> newDic = new Dictionary<string, int>();
+                var newDic = new Dictionary<string, int>();
                 secondWordDictionary[word2] = newDic;
                 newDic[word1] = 1;
             }
@@ -64,18 +66,17 @@ namespace MorphologicalLearner
             0);
         }
 
-        public List<KeyValuePair<KeyValuePair<string, string>, int>> AllWordsAboveNOccurences(int n)
+        public List<KeyValuePair<KeyValuePair<string, string>, int>> BigramsAboveCountThresholdN(int n)
         {
-            List<KeyValuePair<KeyValuePair<string, string>, int>> list =
-                new List<KeyValuePair<KeyValuePair<string, string>, int>>();
+            var list = new List<KeyValuePair<KeyValuePair<string, string>, int>>();
 
-            foreach (string word1 in firstWordDictionary.Keys)
+            foreach (var word1 in firstWordDictionary.Keys)
             {
                 var innerDic = firstWordDictionary[word1];
-                foreach (string word2 in innerDic.Keys)
+                foreach (var word2 in innerDic.Keys)
                 {
-                    int count = innerDic[word2];
-                    if (count > n)
+                    var count = innerDic[word2];
+                    if (count >= n)
                     {
                         list.Add(new KeyValuePair<KeyValuePair<string, string>, int>(new KeyValuePair<string, string>(word1, word2), count));
                     }
@@ -103,20 +104,20 @@ namespace MorphologicalLearner
             return GetAllWordsAfterWord(firstWord1).Intersect(GetAllWordsAfterWord(firstWord2));
         }
 
-        public IEnumerable<string> ListAfterGivenWords(IEnumerable<string> given)
-        {
-            IEnumerable<string> l = GetAllWordsAfterWord(given.First());
-            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsAfterWord(str)));
-        }
-
         public IEnumerable<string> IntersectTwoSecondWords(string secondWord1, string secondWord2)
         {
             return GetAllWordsBeforeWord(secondWord1).Intersect(GetAllWordsBeforeWord(secondWord2));
         }
 
-        public IEnumerable<string> ListBeforeGivenWords(IEnumerable<string> given)
+        public IEnumerable<string> GetIntersectOfBigramsWithFirstWords(IEnumerable<string> given)
         {
-            IEnumerable<string> l = GetAllWordsBeforeWord(given.First());
+            var l = GetAllWordsAfterWord(given.First());
+            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsAfterWord(str)));
+        }
+
+        public IEnumerable<string> GetIntersectOfBigramsWithSecondWords(IEnumerable<string> given)
+        {
+            var l = GetAllWordsBeforeWord(given.First());
             return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsBeforeWord(str)));
         }
     }

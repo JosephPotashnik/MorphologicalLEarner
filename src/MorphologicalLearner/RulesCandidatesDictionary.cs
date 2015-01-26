@@ -35,9 +35,9 @@ namespace MorphologicalLearner
         }
 
         //2. relative frequency threshold: rules that appear more than N/Total times.
-        public List<string> RulesAboveFrequencyThreshold(double frequency)
+        public List<KeyValuePair<string, int>> RulesAboveFrequencyThreshold(double frequency)
         {
-            return m_dic.Where(c => (double)c.Value/Total >= frequency).Select(c => c.Key).ToList();
+            return m_dic.Where(c => (double)c.Value / Total >= frequency).Select(c => new KeyValuePair<string, int>(c.Key, c.Value)).ToList();
         }
 
         //3. other distributional threshold: the rules that take the most of the distribution function. 

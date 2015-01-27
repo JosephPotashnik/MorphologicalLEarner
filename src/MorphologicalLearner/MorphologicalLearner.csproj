@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bigram.cs" />
+    <Compile Include="InflectedForms.cs" />
     <Compile Include="Learner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RulesCandidatesDictionary.cs" />
+    <Compile Include="StemVector.cs" />
+    <Compile Include="SuffixVector.cs" />
     <Compile Include="StringAlignmentData.cs" />
     <Compile Include="Trie.cs" />
     <Compile Include="TrieNode.cs" />

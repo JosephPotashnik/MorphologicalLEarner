@@ -13,14 +13,18 @@ namespace MorphologicalLearner
         private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
 
         private readonly Trie m_trie;
-        private readonly RulesCandidatesDictionary m_dic;
+        private SuffixVector m_SuffixVector;
+        private StemVector m_StemVector;
+        private InflectedForms m_InflectedForms;
         private readonly BigramManager m_BigramManager;
 
         public Learner()
         {
             m_trie = new Trie();
             m_BigramManager = new BigramManager();
-            m_dic = new RulesCandidatesDictionary();
+            m_SuffixVector = new SuffixVector();
+            m_StemVector = new StemVector();
+            m_InflectedForms = new InflectedForms();
         }
 
         private string[] ReadFile(string filename, char[] delimiters)
@@ -59,10 +63,10 @@ namespace MorphologicalLearner
 
         public void BuildCandidates()
         {
+            string fatherName, sonName;
+
             var queue = new Queue<TrieNode>();
             queue.Enqueue(m_trie);
-
-            var candidates = new List<KeyValuePair<string,string>>();
 
             //searching the trie with BFS.
             while (queue.Any())
@@ -72,40 +76,33 @@ namespace MorphologicalLearner
 
                 foreach(var data in list)
                 {
+                    fatherName = data.Father.ToString();
+                    sonName = data.Son.ToString();
                     //push all found nodes to the queue.
                     queue.Enqueue(data.Son);
-                    var pair = new KeyValuePair<string, string>(data.Father.ToString(), data.Son.ToString());
+                    var pair = new KeyValuePair<string, string>(fatherName, sonName);
 
                     if (data.Father != m_trie)  //if the father data is the root, don't add. (every string will be a suffix of the empty root string, we're not interested).
                     {
-                        m_dic.Add(data.Difference);
-                        candidates.Add(pair);
+                        //to suffix vector, add the suffix and the stem
+                        m_SuffixVector.Add(data.Difference, fatherName);
+
+                        //to stem vector, add the stem and the suffix.
+                        m_StemVector.Add(fatherName, data.Difference);
+
+                        //to the inflected form, add the stem and the suffix.
+                        m_InflectedForms.Add(sonName, fatherName, data.Difference);
                     }
                 }
             }
 
-            //as a working postulate, consider all rules that contribute more than 0.5% to the suffix counts.
+            //as a working postulate, consider as rules as suffixes that contribute more than 0.5% to the suffix counts.
             //naturally this parameter value should be plotted more rigorously in a later stage of research.
             //(i.e. http://www.wikiwand.com/en/Receiver_operating_characteristic)
-            var l = m_dic.RulesAboveFrequencyThreshold(0.005);
-            
-            Statistics(l);
-        }
+           // var l = m_SuffixVector.RulesAboveFrequencyThreshold(0.005).OrderByDescending(c => c.Value.Count).ToList();
+            m_SuffixVector.LeaveOnlySuffixesAboveFrequencyThreshold(0.005);
+            m_SuffixVector.Statistics();
 
-        private void Statistics(List<KeyValuePair<string, int>> l)
-        {
-            var sb = new StringBuilder();
-            sb.Append("Suffix \t #Appearances");
-            sb.AppendLine();
-            sb.AppendLine();
-
-            foreach (var valuepair in l)
-            {
-                sb.AppendFormat("{0} \t {1}", valuepair.Key, valuepair.Value);
-                sb.AppendLine();
-            }
-
-            File.WriteAllText(@"d:\David CopperfieldSuffixes.txt", sb.ToString());
         }
     }
 }

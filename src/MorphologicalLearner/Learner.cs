@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -105,7 +106,7 @@ namespace MorphologicalLearner
             m_SuffixVector.LeaveOnlySuffixesAboveFrequencyThreshold(0.005);
             MorphologicalMatrix mat = new MorphologicalMatrix(m_StemVector, m_SuffixVector);
 
-            mat.PrintNColumnsOfMatrix(500);
+            mat.PrintNColumnsOfMatrix(100);
             m_SuffixVector.Statistics();
 
         }

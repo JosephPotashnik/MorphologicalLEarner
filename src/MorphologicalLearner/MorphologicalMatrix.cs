@@ -49,6 +49,7 @@ namespace MorphologicalLearner
                 suffixDic[s] = i++;
 
             matrix = Matrix<float>.Build.Dense(suffixArray.Count(), stemArray.Count());
+
             //Dictionary<string, List<string>>
             var ListOfStemsAndInflectedForms = stems.StemDic();
             foreach (var kvp in ListOfStemsAndInflectedForms)
@@ -61,22 +62,36 @@ namespace MorphologicalLearner
             }
         }
 
-        public int[] ComputerMorphologicalLabels(Matrix<float> mat)
+        public KeyValuePair<int, string>[] ComputerMorphologicalLabels(Matrix<float> mat)
         {
             Vector<float>[] Columns = mat.EnumerateColumns().ToArray();
             var ColumnBasis = Columns.Distinct().ToArray();
 
-            int[] MorphologicalLabels = new int[Columns.Count()];
+            //int is the index of the column basis , string is the suffixes corresponding to that column
+            KeyValuePair<int, string>[] MorphologicalLabels = new KeyValuePair<int, string>[Columns.Count()];
+            String[] suffixParticipatinginColumn = new string[ColumnBasis.Count()];
 
+            //compute the set of suffixes that this column represents
+            //put it into suffixParticipatinginColumn[j].
+            for (int j = 0; j < ColumnBasis.Count(); ++j)
+            {
+                for (int k=0;k<ColumnBasis[j].Count();++k)
+                {
+                    if (ColumnBasis[j][k] > 0)
+                    {
+                        suffixParticipatinginColumn[j] = suffixParticipatinginColumn[j] + suffixArray[k] + " ";
+                    }
+                }
+            }
+
+            //go over all stems in the matrix, and for each of them find which column basis 
+            //represents it. for all k columns, choose one of the j column base.
             for (int k = 0; k < Columns.Count(); ++k)
             {
-                //init with unlabeled.
-                MorphologicalLabels[k] = -1;
-
                 for (int j = 0; j < ColumnBasis.Count(); ++j)
                 {
                     if (!Columns[k].Equals(ColumnBasis[j])) continue;
-                    MorphologicalLabels[k] = j;
+                    MorphologicalLabels[k] = new KeyValuePair<int, string>(j, suffixParticipatinginColumn[j]);
                     break;
                 }
             }
@@ -91,17 +106,14 @@ namespace MorphologicalLearner
             var submat = matrix.SubMatrix(0, matrix.RowCount, 0, NumberOfColumns);
             //DelimitedWriter.Write(BeginningOfMatrix, submat, ",", ShortStemList);
 
-            int[] MorphologicalLabels = ComputerMorphologicalLabels(submat);
+            KeyValuePair<int, string>[] MorphologicalLabels = ComputerMorphologicalLabels(submat);
 
-            var StemLabel = ShortStemList.Zip(MorphologicalLabels, (a, b) => new KeyValuePair<string, int>(a, b));
-            var groups = StemLabel.GroupBy(c => c.Value);
+            var StemLabel = ShortStemList.Zip(MorphologicalLabels, (a, b) => new KeyValuePair<string, KeyValuePair<int, string>>(a, b));
+            var groups = StemLabel.GroupBy(c => c.Value.Value);
 
             foreach (var g in groups)
             {
-               // List<KeyValuePair<string, int>> l = g.ToList();
-                //var Stems = l.Select(c => c.Key);
-                //Console.WriteLine("Category = {0}, {1}", g.Key, String.Join(",", Stems));
-                Console.WriteLine("Category = {0}, {1}", g.Key, String.Join(",", g.Select(c => c.Key)));
+                Console.WriteLine("Words ending with [{0}] are: {1}", g.Key, String.Join(",", g.Select(c => c.Key)));
             }
 
         }

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MorphologicalLearner
 {
     public class InflectedForms
     {
         //the inflected form, and               the stem, the suffix it corresponds to 
-        private Dictionary<string, KeyValuePair<string, string>> m_dic;
+        private readonly Dictionary<string, KeyValuePair<string, string>> m_dic;
 
         public InflectedForms()
 	    {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,6 +46,11 @@ namespace MorphologicalLearner
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             m_dic = newdict;
+        }
+
+        public string[] GetAllSuffixes()
+        {
+            return m_dic.Select(k => k.Key).ToArray();
         }
         //3. other distributional threshold: the rules that take the most of the distribution function. 
 

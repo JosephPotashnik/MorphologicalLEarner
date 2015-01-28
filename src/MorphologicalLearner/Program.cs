@@ -9,9 +9,8 @@
 
             var learn = new Learner();
 
-            learn.BuildTrie();
-            learn.BuildBigrams();
-            learn.BuildCandidates();
+            learn.BuildBigramsandTrie();
+            learn.BuildMorphologicalMatrix();
 
         }
     }

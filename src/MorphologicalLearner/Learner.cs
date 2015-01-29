@@ -106,8 +106,8 @@ namespace MorphologicalLearner
             m_SuffixVector.LeaveOnlySuffixesAboveFrequencyThreshold(0.005);
             MorphologicalMatrix mat = new MorphologicalMatrix(m_StemVector, m_SuffixVector);
 
-            mat.PrintNColumnsOfMatrix(100);
-            m_SuffixVector.Statistics();
+            mat.PrintNColumnsOfMatrix(mat.Matrix.ColumnCount, (float)0.005);
+            //m_SuffixVector.Statistics();
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using MathNet.Numerics.Data.Text;
@@ -10,7 +11,7 @@ namespace MorphologicalLearner
     public class MorphologicalMatrix
     {
         private const string BeginningOfMatrix = @"..\..\..\..\SampleMatrix.csv";
-
+        private const string SuffixDistributions = @"..\..\..\..\David Copperfield Suffix Distributions.txt";
         
         private readonly string[] stemArray;
         private readonly string[] suffixArray;
@@ -71,19 +72,18 @@ namespace MorphologicalLearner
             KeyValuePair<int, string>[] MorphologicalLabels = new KeyValuePair<int, string>[Columns.Count()];
             String[] suffixParticipatinginColumn = new string[ColumnBasis.Count()];
 
+
             //compute the set of suffixes that this column represents
             //put it into suffixParticipatinginColumn[j].
-            for (int j = 0; j < ColumnBasis.Count(); ++j)
-            {
-                for (int k=0;k<ColumnBasis[j].Count();++k)
-                {
-                    if (ColumnBasis[j][k] > 0)
-                    {
-                        suffixParticipatinginColumn[j] = suffixParticipatinginColumn[j] + suffixArray[k] + " ";
-                    }
-                }
-            }
+            int i = 0;
 
+            foreach (var col in ColumnBasis)
+            {
+               var SuffixNamesForColumn = col.Zip(suffixArray, 
+                   (f, s) => new {Number = f, SuffixName = s} );
+               suffixParticipatinginColumn[i++] = String.Join(",", SuffixNamesForColumn.Where(c => c.Number > 0).Select(c => c.SuffixName));
+            }
+           
             //go over all stems in the matrix, and for each of them find which column basis 
             //represents it. for all k columns, choose one of the j column base.
             for (int k = 0; k < Columns.Count(); ++k)
@@ -98,7 +98,7 @@ namespace MorphologicalLearner
             return MorphologicalLabels;
         }
 
-        public void PrintNColumnsOfMatrix(int NumberOfColumns)
+        public void PrintNColumnsOfMatrix(int NumberOfColumns, float relativeFrequency)
         {
             var ShortStemList = new string[NumberOfColumns];
             Array.Copy(stemArray, ShortStemList, NumberOfColumns);
@@ -107,16 +107,27 @@ namespace MorphologicalLearner
             //DelimitedWriter.Write(BeginningOfMatrix, submat, ",", ShortStemList);
 
             KeyValuePair<int, string>[] MorphologicalLabels = ComputerMorphologicalLabels(submat);
+            var StemLabel = ShortStemList.Zip(MorphologicalLabels, (a, b) => new
+            {
+                StemName = a,
+                Labels = b //which are: KeyValuePair<int, string>>
+            });
+            var groups = StemLabel.GroupBy(c => c.Labels.Value);
 
-            var StemLabel = ShortStemList.Zip(MorphologicalLabels, (a, b) => new KeyValuePair<string, KeyValuePair<int, string>>(a, b));
-            var groups = StemLabel.GroupBy(c => c.Value.Value);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(String.Format("The groups for {0} word types (distinct words) of David copperfiled are", NumberOfColumns));
+            sb.AppendLine();
+            sb.Append(String.Format("Only suffixes with frequency above {0}% were chosen ", relativeFrequency*100));
+            sb.AppendLine();
+            sb.AppendLine();
+
 
             foreach (var g in groups)
             {
-                Console.WriteLine("Words ending with [{0}] are: {1}", g.Key, String.Join(",", g.Select(c => c.Key)));
+                sb.AppendFormat("Ending with {{{0}}} are:{1} {2} {3}", g.Key, Environment.NewLine, String.Join(",", g.Select(c => c.StemName)), Environment.NewLine);
+                sb.AppendLine();
             }
-
+            File.WriteAllText(SuffixDistributions, sb.ToString());
         }
-
     }
 }

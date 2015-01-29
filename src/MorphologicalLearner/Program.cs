@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace MorphologicalLearner
+﻿namespace MorphologicalLearner
 {
     class Program
     {

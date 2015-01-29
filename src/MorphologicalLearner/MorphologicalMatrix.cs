@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MathNet.Numerics.Data.Text;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace MorphologicalLearner
@@ -115,7 +114,7 @@ namespace MorphologicalLearner
             var groups = StemLabel.GroupBy(c => c.Labels.Value);
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(String.Format("The groups for {0} word types (distinct words) of David copperfiled are", NumberOfColumns));
+            sb.Append(String.Format("The groups for {0} word types (distinct words) of David Copperfield are", NumberOfColumns));
             sb.AppendLine();
             sb.Append(String.Format("Only suffixes with frequency above {0}% were chosen ", relativeFrequency*100));
             sb.AppendLine();

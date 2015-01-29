@@ -1,639 +1,387 @@
-The groups for 4206 word types (distinct words) of David copperfiled are
+The groups for 4019 word types (distinct words) of David Copperfield are
 Only suffixes with frequency above 0.5% were chosen 
 
-Ending with {'} are:
- Practice,Peggotty,darling,family,for,flies,gal,said,smiths,system,of,him,was,more,by,business,people,pigs,liabilities,least,up,Nelson,Hopkins,does,indeed,elephants,there,tapping,gowans,giants,girls,stairs,shillings,all,always,again,azackly,Britannia,half,really,wits,country,correspondence,coals,creatures,creeps,Mind,moments,beach,boys,birds,parties,payment,Syne,Delegates,Dirge,Copperfield,Ladies,What,'David,'Dick,'yes,'umble,Tafflin,debtors,nearer,strangers,sailors,here,ladies,Strong,Churchyard,Orfling,'Yes,'Dora,'Copperfield,'Agnes,everything,thoughtless,attorneys,Beein,measurement,Doctors,Copperfield's,visitors,yourself,offenders,What's-your-name 
-
-Ending with {er} are:
- Prison,default,fast,few,sell,should,hung,mast,moth,broth,both,prison,less,quaint,jail,freshen,tough,awe,with,cant,prop,Suffolk,Speak,heath,'art 
-
-Ending with {'s} are:
- Prince,devil,niece,enemy,else,that,gen'l'm'n,story,scoundrel,snail,occupant,river,wife,who,what,women,wot,wureld,company,cousin,clergyman,criminal,carrier,child,charity,chemist,magpie,bachelor,baby,baker,peacock,pretty,pony,papa,life,let,umbrella,Nature,Let,Littimer,Random,Francis,jorkins,Uriah,King,That,Traddles,Tipp,Tidd,Tiffey,Tungay,Em'ly,Emily,Emma,Eight,nobody,nephew,fishermen,fisherman,fortnight,tomorrow,tailor,tinker,gentlemen,great-grandfather,grandfather,surgeon,sentry,serving-man,son,shepherd,harm,how,winter,coachman,children,child-wife,Minnie,Mine,Mithers,Mills,Money,Mowcher,memory,mercy,merchant,barrister,boatmen,boatman,party,She,Sharp,Surrogate,Sarah,Saviour,Seven,Agnes,Young,uncle,David,Davy,Dartle,Darling,Devil,Dick,Dragon,Cook,Chillip,Charley,Charles,Crupp,Creakle,Crewler,Louisa,Lavinia,Omer,Ham,Where,Wickfield,Waterbrook,Fairy,'what,'where,'who,'it,'How,'She,'Sarah,'Em'ly,Grayper,Grainger,Grinby,Gummidge,Gulpidge,Quinion,Jack,James,Joram,Jorkins,Jip,There,Theer,Trotwood,nothing,father-in-law,theer,somebody,singer,another,Betsey,Beauty,half-an-hour,housekeeper,Martha,Maldon,Mell,Mealy,lady,landlord,Steerforth,Sophy,Shepherd,Annie,Anne,Nothing,Dolphin,Dolloby,Larkins,Here,Hamlet,yesterday,'that,'all,'That,'Where,'What,'Who,'It,'Barkis,'Affection,'she,God,everybody,anybody,anyone,Barkis,Mayor,Somebody,'there,'theer,'here,'Now,'Nobody,'There,'Theer,'Here,'Annie,'Something,'Nothing 
-
 Ending with {s} are:
- Petrel,division,disposition,distance,discomfort,dinner,diamond,desk,declaration,decanter,deck,depth,deviation,device,deed,degree,debt,debate,danger,drop,draught,drum,native,nature,nine,finger,five,fist,fiction,fact,fault,fashion,fragment,fountain,folk,folio,fowl,feat,feint,female,flame,imagination,image,imitation,idea,idol,emotion,emolument,emigrant,engine,evidence,element,elbow,effort,excursion,exclamation,expense,experiment,explosive,explanation,example,estate,egg,errand,error,throat,three,threat,thumb,task,tassel,tale,tail,tap,temper,temple,terror,tip,trunk,trial,trick,tray,trap,tree,tune,get,geranium,glimpse,grammar,grape,ground,grove,grief,gridiron,giant,guinea,guest,gun,gust,gate,game,sun,suspicion,supposition,supper,subject,survivor,sum,sugar,sensation,sense,separation,seven,service,serpent,set,strike,striving,street,stair,stage,stake,stool,stop,step,student,salutation,sample,sake,saving,shawl,shop,shoe,shilling,shine,shirt,shut,shrub,simile,sit,size,sip,speck,speculation,spectacle,spectre,spot,spasm,slope,sleeve,slate,slave,skirt,skin,skeleton,scholar,scheme,scene,science,snake,snap,our,observation,obligation,opera,opposite,opinion,occur,occupation,oath,oar,oyster,hill,hip,hundred,hug,refer,receipt,regulation,region,registrar,remembrance,remonstrance,response,resolution,resource,relative,repast,reverse,review,reign,rib,rook,road,rope,rose,rod,run,rub,ruffian,rheumatic,wig,while,whiff,whim,whip,whine,word,wood,wrist,way,walnut,waggon,wured,companion,comparison,come,commit,communication,counsel,course,corduroy,cottage,collision,coffer,coat,coal,coward,cobweb,clock,cloak,clap,claw,client,crocodile,crust,crab,cravat,case,cask,calculation,carriage,cart,card,carving,cat,cake,chip,chimney,chair,character,chariot,challenge,chamber,choose,chorister,chord,cheek,cheese,chest,cell,cushion,cut,cup,cuff,circle,cigar,ciphering-book,mine,misfortune,misgiving,mile,marriage,marble,magistrate,matter,material,make,male,map,maze,monument,monster,motive,mound,brain,bracelet,brick,breast,breeze,balustrade,basket,bag,banister,boot,bottom,bonnet,bone,bird,bid,bill,biscuit,bib,bushel,bulwark,bud,bump,blossom,blast,blade,pleasure,plot,pew,peg,privation,principle,prefer,pretence,precipice,precept,precaution,preparation,pursuit,put,pulpit,pulse,pudding,poring,pot,pole,poet,parent,parlour,parcel,page,pair,pauper,pat,pawning,palace,palm,pang,pie,pipe,pill,pilgrim,phrase,phase,liking,lid,lip,lie,liar,licence,leave,leaving,leg,lemon,lump,knot,knee,key,kite,urn,Night,Number,Road,Roman,queen,quarrel,yard,jacket,jug,junior,job,-I,4,Peggotty',Pantomime,Term,Time,Turk,Edward,Idol,door,document,dog,doing,dot,dorg,disappointment,difference,dealing,dealer,department,denunciation,debtor,darling',daughter',dropping,drawer,drawback,dragon,dust-heap,duet,dwelling,nose,nod,noise,nook,nohow,nest,neck,net,field,fish-slice,failure,failing,family',favourite,fastening,frock,fortune,fortification,fork,forfeit,foundation,footstool,footstep,feature,fly-driver,function,interval,interjection,indication,individual,infant,inhabitant,inclination,incident,instinct,institution,instance,instruction,instrument,inside,inscription,investigation,inveigler,initial,inmate,imprecation,easy-chair,embarrassment,engagement,elbow-chair,exception,extravagance,expression,expectation,exertion,exhibition,eyebrow,edifice,town,tomb,top,toy,tone,torrent,token,their,theatre,thousand,twisting,tablet,table-cloth,telling,teacup,tea-spoon,ticket-porter,transaction,trader,tumbler,going,god,gown,greeting,great-coat,girl',guardian,gateway,suffering,suggestion,sentiment,sort,solitude,stranger,statement,statue,stable,stocking,shaver,sheet,shell,shirt-collar,sixpence,situation,signature,sister',sweetheart,schoolboy,schoolfellow,away,accusation,alms-house,as,arrow,arrear,argument,ark,aggravation,ague,avocation,advantage,advocate,admit,admonition,abet,affliction,affair,appetite,apple,apprehension,apron,aisle,axe,Book,Bow,Bloater,oration,orange,orchard,organ,owner,overcome,overflowing,objection,observer,operation,occurrence,oyster-shell,hat,habit,heaving,heel,height,hedge,hound,holiday,hollow,hoof,hospital,host,hide,humour,humbug,reflection,refreshment,recollection,reading,restorative,representative,revelation,rate,rail,rapture,ride,roaring,wine,whisker,writing,watering-pot,wardrobe,wax-candle,waistcoat,complaint,commendation,concert,conception,conclusion,consequence,constable,conscience,connexion,convenience,conversation,condition,contortion,congratulation,corner,coal-hole,copy-book,creditor,creetur',candle,caning,causeway,castle,calling,captive,caprice,caper,cares,cathedral,chink,church-bell,characteristic,chapter,cellar,curtain,currant,current,cutting,Mr,Mortimer,mind',manner,manuscript,mantelpiece,man',more',mountain,moulding,model,member,message,merit,meditation,bell,beside,bespeak,beg,become,being,bridesmaid,backward,ballad,barge,barrel,borrowing,boy',bow-window,by-way,bird-cage,bite,building,blessing,blanket,blundering,plank,perspective,persuasion,period,people',pearl,pew-opener,prediction,provision,province,prospect,profit,prayer,public-house,porter,portrait,particle,partic'ler,parting,partner,parchment,passage,passion,pattern,patron,packet,picking,pickpocket,pitfall,pilgrimage,lodging,lobster,loan,lark,lane,language,lantern,lamp,lesson,leader,letter,Sunday,knocking,keeper,kidney,Act,Your,unnerstand,upward,Debate,Common,College,Court,Ocean,Ogre,Other,Hopkins',vegetable,valuable,valley,vision,visage,victim,vice,virtue,voice,volume,voyage,justice,'Mr,'Say,doorway,doll',dozen,direction,demonstration,now',nosegay,nightmare,needle,farewell,father',friendship,foreboding,forefinger,forest,fellow',flower-pot,interruption,intention,improvement,topic,there',theme,godmother,season,sometime,solicitor,song,anchor,acquaintance,accomplishment,action,acknowledgement,amusement,amend,attention,attitude,atom,aspersion,aspect,aspiration,asunder,arrangement,advertisement,afternoon,affection,appearance,apartment,Bee,Blackboy',offence,outsider,half-crown,half-guinea,handkerchief,handkercher,hammock,hatred,head-boy,heaven,heer',household,house',horror,restraint,rank,window,walking-stick,wandering,confidence,consideration,contradiction,Micawber',Master,Memorial,morning',meat,meeting,begin,bedroom,banking-house,bookstall,personage,performance,proposal,proportion,protestation,protection,proceeding,possession,pitcher,lover,loser,locker,lodger,landmark,lawyer,Speaker,Copperfield',Outcast,Heep',What',Wednesday,Walker,verse,vestige,visitor,village,'David','Time,Goroo,Indian,needles,newspaper,anywhere,attachment,attendant,attraction,association,assurance,offering,offender,hereabout,here',meaning,beginning,bedstead,Strong',Donkey,'Thank 
+ prefer,pretence,precipice,precept,precaution,preparation,privation,principle,pleasure,plan,plot,pen,peg,pew,pursuit,put,pulpit,pulse,pudding,poring,porpoise,pot,power,pole,poet,pie,pipe,pill,pilgrim,phase,phrase,i,native,nine,finger,five,fist,fiction,fact,fault,fashion,fragment,fountain,folk,folio,fowl,feat,feint,female,flame,hill,hip,hundred,hug,refer,receipt,regret,regulation,region,registrar,remembrance,remonstrance,response,resolution,resource,relative,repast,reverse,review,reign,rise,rib,rook,road,rope,roman,rod,rose,run,rub,ruffian,rheumatic,liking,line,lid,lip,lie,liar,licence,leave,leaving,leather,leg,lemon,lump,knot,knee,kettle,key,kite,ye,yard,urn,',-i,4,prediction,provision,province,prospect,probate,profit,prayer,plank,perspective,persuasion,period,people',pearl,pew-opener,petrel,public-house,porter,portrait,parent,parlour,parcel,park,page,pair,pauper,pat,pawning,palace,palm,pang,picking,pickpocket,pitfall,pilgrimage,throat,three,threat,thowt,thumb,temper,temple,terror,tip,trunk,trial,trick,travel,tray,trap,tree,turk,tune,emotion,emolument,emigrant,engine,evidence,element,elbow,experiment,expense,explosive,explanation,excursion,exclamation,example,effort,estate,egg,errand,error,imagination,image,immaculate,imitation,idea,idol,division,disposition,distance,discomfort,dinner,diamond,desk,declaration,decanter,deck,depth,deviation,device,deed,degree,debt,debate,drop,draught,drum,nose,nod,noise,nook,nohow,nest,neck,net,field,fish-slice,failure,failing,family',favourite,fastening,frock,fortune,fortification,forget,fork,forfeit,foundation,footstool,footstep,feature,fly-driver,function,get,geranium,glimpse,green,grave,grammar,grape,ground,grove,grief,gridiron,giant,guinea,guest,gun,gust,gate,game,sun,suspicion,supposition,supper,subject,survivor,sum,sugar,sensation,sense,separation,sea,service,serpent,set,salutation,sample,sake,saving,shake,shawl,shop,shoe,shilling,shine,shirt,shut,shrub,simile,sin,sit,size,sip,speck,speculation,spectacle,spectre,spot,spasm,scholar,scheme,scene,science,slope,sleeve,slate,slave,skirt,skin,skeleton,snake,snap,away,accusation,alms-house,alien,as,arise,arrow,arrear,argument,ark,aggravation,ague,avocation,advantage,advocate,admit,admonition,abet,affliction,affair,appetite,apple,apprehension,apron,aisle,axe,bottom,bonnet,bone,brain,bracelet,brick,brow,breast,breeze,balustrade,bar,basket,bag,banister,bulwark,bud,bump,bird,bid,bill,biscuit,bib,blossom,bloater,blade,occur,occupation,ocean,our,observation,obligation,opera,opposite,opinion,odd,oath,oar,oyster,ogre,hat,habit,haberdasher,heaving,heel,height,hedge,hound,holiday,hollow,hoof,hospital,host,hide,humour,humbug,reflection,refreshment,recollection,reading,restorative,representative,revelation,rail,rapture,ride,roaring,wig,while,whiff,whim,whip,whine,word,wood,wrist,way,walnut,wake,waggon,wured,companion,comparison,come,commit,communication,counsel,course,corduroy,cottage,college,collision,coffer,coat,coal,coward,cobweb,clock,cloak,clap,claw,client,crocodile,crust,crab,cravat,case,cask,calculation,carriage,cart,card,carving,cat,cake,character,chariot,chair,challenge,chamber,chip,chimney,choose,chorister,chord,cheek,cheese,chest,cell,cushion,cut,cup,cuff,circle,cigar,ciphering-book,misfortune,misgiving,mile,monument,monster,motive,mound,mr,lose,lodging,lobster,loan,lark,lane,lantern,lamp,law,lesson,leader,letter,knocking,keeper,kidney,your,youth,unnerstand,upward,volume,voice,voyage,vegetable,valuable,valley,vision,visage,victim,vice,virtue,queen,quarrel,jug,junior,joy,job,'mr,'live,'ye,'i,proposal,proportion,protestation,protection,proceeding,personage,performance,peggotty',possession,particle,partic'ler,parting,partner,parchment,passage,passion,pattern,patron,packet,pantomime,pitcher,town,top,toy,tone,torrent,token,their,theatre,thousand,twisting,task,tassel,take,tale,tail,table,tap,telling,teacup,tea-spoon,ticket-porter,transaction,trader,tumbler,edifice,easy-chair,embarrassment,engagement,elbow-chair,expectation,expression,exception,extravagance,exertion,exhibition,eyebrow,interval,interjection,indication,individual,instinct,institution,instance,instruction,instrument,inside,inscription,infant,inhabitant,inclination,incident,incapable,investigation,inveigler,initial,inmate,imprecation,door,doe,document,dog,doing,doze,dot,dorg,disappointment,difference,dealing,dealer,department,denunciation,debtor,danger,darling',daughter',dropping,drawer,drawback,dust-heap,duet,dwelling,now',nosegay,nightmare,needle,farewell,father',friendship,foreboding,forefinger,forest,fellow',flower-pot,going,gown,goroo,greeting,great-coat,girl',give,guardian,gateway,suffering,sunday,suggestion,sentiment,sorrow,sort,strike,striving,street,stool,stop,stair,stage,stake,step,student,shaver,sheet,shell,shirt-collar,sixpence,sinecurist,situation,signature,sister',schoolboy,schoolfellow,sweetheart,anchor,acquaintance,accomplishment,action,acknowledgement,amusement,amend,attention,attitude,atom,aspersion,aspect,aspiration,asunder,arrangement,advertisement,adventure,afternoon,appearance,apartment,borrowing,boy',bow-window,beside,bespeak,bell,beg,bee,become,being,bridesmaid,backward,ballad,barge,barrel,bushel,building,bullock,by-way,bird-cage,bite,blundering,blessing,blanket,blackboy',blast,oration,orange,orchard,organ,orse,occurrence,outcast,owner,overcome,overflowing,objection,observer,operation,oyster-shell,half-crown,half-guinea,handkerchief,handkercher,hammock,hatred,head-boy,heep',heer',household,house',horror,restraint,rank,rate,wine,whisker,what',wednesday,writing,write,watering-pot,wardrobe,wax-candle,walker,waistcoat,complaint,commendation,concert,conception,conclusion,consequence,constable,conscience,connexion,convenience,conversation,condition,contortion,congratulation,copperfield',copy-book,corner,coal-hole,creditor,creetur',candle,caning,causeway,castle,calling,captive,caprice,caper,cares,cathedral,characteristic,chapter,chink,church-bell,cellar,curtain,currant,current,cutting,mind',mistake,micawber',marriage,marble,magistrate,matter,material,make,male,map,maze,more',mortimer,mountain,moulding,model,member,memorial,message,merit,meditation,lover,loser,locker,lodger,landmark,language,lawyer,verse,vestige,visitor,village,jacket,justice,'time,'david','say,tomb,topic,there',theme,thought,tablet,table-cloth,event,interruption,intention,indian,improvement,doorway,doll',dozen,direction,demonstration,needles,newspaper,godmother,season,sometime,solitude,song,strong',stranger,stocking,statement,statue,stable,anywhere,anyway,attachment,attendant,attraction,association,assurance,bookstall,begin,bedroom,bearer,banking-house,offence,office,outsider,hereabout,here',hopkins',window,walking-stick,wandering,confidence,consideration,contradiction,manner,manuscript,mantelpiece,man',morning',meat,meeting,'thank,solicitor,beginning,bedstead,offering,offender,meaning 
 
-Ending with {} are:
- Port,Put,T,1,diving,divorce,disadvantage,did,dire,dining,dig,dip,dice,devotion,der,defer,defence,defend,dem,dancing,drag,drudge,drunk,dumb,nation,nuts,fifteen,fie,fiddle,far,fan,familiar,fat,fro,frantic,fraud,four,fool,fog,fell,ferry,flag,flood,flit,is,immortal,easy,east,emphatic,empty,enthusiastic,elastic,eight,extra,esse,ed,ecstatic,eccentric,ere,ebb,than,through,thou,two,twelve,twenty,twit,tan,tavern,tempest,test,timber,trip,trim,trait,travel,trot,trod,turret,tut,tucker,tumult,gent',gee,glee,grass,gin,gipsy,guitar,gait,super,submit,subtle,surge,surf,such,suet,sent,self,serving,sex,strength,straight,straw,stipend,stir,sting,statu,stab,stony,stomach,steel,sat,sang,sauce,shall,shaving,shabby,shore,shun,simple,sir,spin,spell,span,spur,slip,slap,skim,sky,sword,swim,scandal,or,ought,o',over,oak,omit,his,hind,hit,husky,hunt,hum,repel,repay,retrospect,revel,rebel,rip,rob,romantic,rot,rum,rug,widder,wire,which,white,whist,when,where,would,worse,worship,wrap,wax,waist,compass,compel,comic,comment,con,could,courage,coffee,coin,cows,club,crop,credit,crib,caul,cash,came,cabin,chin,chaise,chap,chat,chalk,champion,choice,cherry,cent,cur,custom,my,mischief,military,middle,martyr,marvel,magic,maid,mail,may,malign,major,majestic,machine,mort,monitor,mode,moon,music,mutton,much,mud,brandy,brass,bride,brim,broad,brutal,ball,battle,bail,born,bob,birth,big,but,buff,blank,plum,plod,per,pear,pepper,pet,price,pro,punch,pupil,posse,parch,pad,pall,piano,philosophic,little,list,liquid,left,length,led,level,lever,lustre,knitting,kitchen,kid,YOU,un,Nan,NO,Never,Nettingall,New,V,D,C,Lo,Like,Life,LONG,Robin,HIS,How,Hor,Hope,HE,His,High,HOUSE,W,For,Fox,Fur,Far,FOR,quest,quit,quo,yon,jet,G,3,J,Un,Up,5,6,Kent,zeal,Parliament,Paris,TO,THE,To,Though,Thank,Three,Trot,Ta,18,English,Egypt,Is,IN,dome,divers,dishonour,dimly,dirty,deeply,dens,demon,dressing,drawing,draughts,not,nor,novel,ninety,nursery,never,fishing,fairy,fatal,friends,freed,forth,forty,fore,forbid,forgot,for',fourpence,fears,its,intellect,into,intrude,infer,infirm,incur,insert,eating,eighteen,too,them,they,twinkling,testament,tires,trying,travelling,trades,troubles,turning,getting,goose,gold,gossamer,gloomy,grown,ginger,sunk,suns,superior,summer,seventy,seas,seam,seafaring,some,sold,sofa,stronger,stained,steady,saddle,sandy,saucepan,shorter,sheep,shed,shelf,shivering,sixty,since,sinner,sitting,signal,sisters,smelling,smoothly,sleepy,scholars,systematic,acquit,access,accident,across,am,along,alien,ale,at,are,ago,advent,adamant,aboard,absurd,abiding,after,afore,autumn,apart,apologetic,ah,ay,Boar,Bull,Black,Baby,Bar,Bacchanal,BE,ordinary,orphan,outstrip,ours,older,have,hap,had,hall,has,ham,hay,ha',hackney,heavily,heavy,hence,hem,hor,highly,hiding,human,ready,resting,respectable,relations,ran,race,raw,riding,rooks,roads,ruler,wicket,whims,whom,whole,what's,working,works,workman,wooden,weather,weal,were,well,wet,wedding,wedge,waters,walking,companions,compassion,comes,confer,concur,constitution,control,contempt,congenial,counter,counting,courts,corks,cocked,cook's,cookery,copying,cannon,cancel,caps,camel,churchyard,chops,centre,My,MY,MAKE,More,ME,MICAWBER,market,marking,met,merry,bet,best,beset,beef,before,beau,broken,brown,breaking,breathing,backgammon,banking,books,boat-builder,boarding,burning,blacking,blindly,permit,penny,pencil,pens,problem,prog,process,prow,portmanteau,pouring,potent,pastry,local,lounging,lot,log,lieu,lap,lame,lave,St,So,Salem,Sea,Since,SO,STEERFORTH,keeps,AN,As,After,All,At,Am,Again,Arabian,Admiral,AUNT,YOUNG,uncertain,under,undo,unto,unheard,upside,upper,Not,Nor,Non,Vicar,VISIT,Dan,DICK,Dutch,Duty,DO,Covent,Could,Christmas,Church,Can,Castle,Lark,Law,Of,OF,Over,ON,Or,Out,Head,Heat,Her,Have,Half,HEEP,When,White,Who,With,We,Was,Want,Would,WILL,vest,vent,van,vapour,vie,villa,vine,quarrels,yes,'mean,'Let,'Look,'t,'how,'Miss,'Me,'Mad,'May,'My,'YOU,'N,'Dan,'Did,'T,'W,'we,'with,'C,'is,'in,'Hum,'Ba,'Be,'For,'Far,'Fine,'So,'Shake,'Six,'Sweet,'for,'far,'J,'Up,'un,'up,'or,'s,'K,Giant,GREAT,23,John,Tom,They,Every,downs,doors,doubled,domestic,north,news,newly,fires,fathers,frightened,fellows,inner,every,towns,tooth,tombs,tops,toils,goings,guardians,single,scarcely,any,amiable,amid,allus,ass,asthma,artist,arter,addition,authors,Bark,BEG,orderly,one's,happily,hands,haste,harder,hatch,hears,hers,housekeeping,horizon,rang,winds,wealth,washing,warmin,warning,candles,curling,May,Macbeth,Men,metal,beds,prophet,proprietor,potential,partners,pathetic,looking,livery,landing,lavender,Some,South,Soft,SOME,And,Any,undergo,Don,DOE,Whatever,West,verb,villain,yearn,yours,you're,'than,'to,'two,'her,'as,'at,'again,'Never,'Oh,'Of,'Than,'To,'Trot,'Two,'When,'We,'Was,'Will,'With,'Would,'In,'Is,'I'm,'Could,'Can,'Child,'Have,'Hallo,'Half,'Her,'Hear,'Hey,'Beg,'Am,'Ah,'All,'Ay,'As,'Some,'your,'Every,'so,'not,Good,forgiven,agency,BEGIN,hearth,horses,windows,meant,Sold,What's,'too,'Not,'Any,'some 
-
-Ending with {y} are:
- Pa,difficult,dirt,dew,naught,flesh,fur,fust,tin,gloom,greed,guilt,streak,storm,stead,sill,silk,speed,B,oil,worth,craft,might,miser,marsh,bull,leaf,luck,La,Fair,jeweller,jealous,Q,Ever,finer,frost,ironmonger,ever,tips,gravel,soot,stealth,hoar,liver,lad,Villain,ver,'Ever,'Read,German,Man,beggar 
-
-Ending with {es} are:
- Punch,dish,excess,gross,six,speech,coach,class,church,mass,motto,branch,bunch,peach,inch,eyelash,snuff-box,work-box,Miss,potato,loss,likeness,kindness,'Do,'do,hackney-coach,hero,wine-glass,weakness,bells,tenderness 
-
-Ending with {ly} are:
- E,distant,disconsolate,discouraging,discreet,dim,diligent,desponding,desperate,decisive,decent,delicate,delicious,deliberate,dejected,dutiful,natural,nat'ral,final,figurative,false,frequent,ferocious,fervent,immense,immediate,immoderate,imp,irresolute,eminent,encouraging,entire,evident,elder,elaborate,eloquent,exceeding,expeditious,explicit,exquisite,exulting,especial,equal,eternal,third,thorough,timid,timorous,tranquil,general,generous,glad,glorious,gradual,grievous,grim,gaunt,sufficient,supreme,submissive,sure,surprising,sensitive,several,severe,sedate,strict,stout,stupid,studious,sage,simultaneous,similar,silent,smiling,skilful,on,obvious,hurried,recent,regular,real,resolute,reluctant,reverential,rigid,rude,wistful,complacent,cruel,casual,chief,cheap,certain,ceremonious,cunning,civil,miraculous,main,morbid,moral,monotonous,most,mutual,brave,brisk,brilliant,bad,bland,peevish,peculiar,precise,premature,previous,prudent,punctual,positive,popular,physical,phrenological,literal,lucid,ludicrous,Near,querulous,just,jovial,Immense,doleful,distressful,distracted,disdainful,disrespectful,different,designed,deserved,decided,delightful,devoted,deferential,dangerous,dreadful,nervous,first,fierce,faithful,fretful,fruitless,fortunate,fearful,furtive,intent,intense,indefinite,indignant,indifferent,infinite,ineffectual,incoherent,incredulous,incessant,instant,insane,inquiring,inquisitive,injurious,inviting,inapt,inward,imploring,implicit,impatient,imperfect,imperious,impetuous,enjoying,entreating,excessive,expressive,total,triumphant,grateful,graceful,gallant,successful,sore,shrinking,swimming,scarce,awful,accurate,acute,alternate,ardent,admiring,absolute,audacious,appropriate,approving,apparent,original,occasional,hesitating,hot,humorous,remorseful,respective,respectful,resigned,reproachful,repeated,rational,rare,rapid,rapturous,rugged,composed,consequent,constant,conscientious,convenient,convulsive,continual,coaxing,careful,childish,charming,curious,mysterious,manful,maiden,massive,mournful,moderate,mere,mechanical,musical,benignant,boastful,blameless,blushing,persevering,permanent,perverse,perpetual,provoking,pointed,partial,patient,piteous,philosophical,lone,listless,latter,laborious,legal,legitimate,unlike,uncommon,unconscious,unusual,ungrateful,unexpected,unsuccessful,universal,unintentional,unreserved,usual,Deep,On,vehement,vain,vacant,vague,violent,vivid,vigorous,joyful,'Most,'Sure,'on,Great,General,zealous,doubtful,dogged,noiseless,formal,former,incidental,instinctive,innocent,impressive,tearful,sorrowful,solemn,sheepish,singular,sincere,anxious,ancient,according,accidental,active,actual,attentive,argumentative,advantageous,absorbing,affecting,appealing,helpless,hoarse,wonderful,wondering,compassionate,confident,confused,constrained,condescending,contemptuous,contented,Mere,mental,beautiful,personal,pensive,proper,prosperous,professed,passionate,laughing,undoubted,'On,'According,good-natured,good-humoured,astonishing,affectionate,handsome,hopeful,confidential,professional,assured 
-
-Ending with {s,t,n} are:
- I,A,'I 
-
-Ending with {',es,t,ing} are:
- do 
+Ending with {s,ing,ly,ed} are:
+ present,utter,blind,open,sound,order 
 
 Ending with {d} are:
- divide,divine,dive,disparage,displease,discompose,discourage,disclose,discipline,discharge,disfigure,dissolve,dissuade,disengage,disease,dine,dictate,desire,despise,describe,declare,decline,decide,decease,determine,delude,depreciate,deprecate,deprive,devote,define,degenerate,nurture,nudge,file,fence,fun,imagine,imitate,ice,ease,encourage,engage,enable,enforce,evade,expire,examine,execute,estimate,escape,thrive,trudge,traverse,grope,grin,grieve,guide,gaze,subdue,substitute,subside,serve,seize,struggle,stipulate,silence,speculate,smoke,squeeze,owe,obscure,oblige,obtrude,hire,refine,recognize,reciprocate,reassure,remonstrate,remove,resume,resolve,reserve,release,relieve,repose,replace,repute,repulse,retire,retrace,revive,rejoice,renounce,rouse,win,wipe,compose,compare,communicate,commence,couple,create,cage,chuckle,balance,blame,plunge,pride,preserve,presume,preside,prepare,practise,purchase,pounce,poise,parade,lease,urge,2,designate,derive,denounce,negotiate,fare,interfere,indicate,indulge,influence,inexperience,incline,increase,insinuate,inspire,injure,invite,issue,impose,implore,improve,ill-use,edge,twinkle,tangle,tease,tinge,tingle,gorge,stare,starve,scrape,achieve,acquire,accuse,accede,acknowledge,advertise,adore,abase,approve,apologize,originate,hesitate,humble,restore,reduce,rattle,raise,whistle,welcome,writhe,confide,confuse,conceive,concentrate,conclude,consume,console,contrive,congratulate,capture,curve,meditate,breathe,plume,persuade,perfume,perceive,pervade,produce,prove,provide,provoke,promote,pine,lattice,know',kindle,unsettle,unite,up',vacate,value,quote,you','Lor,'Go,dote,notice,nestle,good-nature,announce,anticipate,actuate,allude,alienate,attribute,attire,aspire,articulate,handle,hate,propose,lapse,Sol,venture 
-
-Ending with {es,ing,ed} are:
- dismiss,distinguish,fix,flash,flourish,echo,stretch,rush,wish,miss,march,mop,brush,box,blush,pass,kiss,impress,touch,accomplish,approach,profess,possess,address,caress 
-
-Ending with {ed} are:
- dismount,dismay,dispatch,discern,disregard,disquiet,desist,detest,detract,detain,delay,depress,depart,deposit,deem,dawn,damp,draft,dwarf,frill,found,flush,flock,embarrass,expend,exalt,exert,esteem,escort,thrill,tilt,transact,grant,grip,guess,suspend,subsist,strain,station,stain,stew,stuff,saunter,sack,skill,skewer,switch,scar,scald,scream,snuff,obey,oppress,hush,recommend,reclaim,regain,rear,relinquish,repress,repent,retort,reveal,reject,roof,roast,wick,worst,worrit,worm,collar,cock,clatter,crush,caution,chain,miscall,money,bread,bath,band,bait,pluck,predict,prey,powder,past,litter,limp,leap,lull,quench,quail,divest,diminish,fathom,intercept,interdict,inflict,infect,inherit,insist,impair,erect,superadd,strengthen,shelter,shipwreck,acquaint,accustom,array,arrest,avail,administer,adopt,abandon,affront,afford,augur,augment,applaud,outlast,overshadow,hail,heed,restrict,confess,conceit,convict,condemn,contradict,conquer,closet,muster,befriend,bequeath,breakfast,bull-neck,perform,perch,protract,proclaim,partition,load,lead-colour,Air,usher,veil,vex,vow,'light,good-humour,annoy,attest,hamper,weaken,betray,lament,vanish,'form,Gorm,tender-heart,assent 
-
-Ending with {s,d} are:
- dispose,dispute,discourse,dislike,deserve,deceive,dance,dare,date,figure,face,fade,frame,embrace,entrance,excuse,exchange,experience,expose,tie,tire,trifle,trace,tremble,treasure,trouble,glance,glove,glide,gable,suppose,surprise,stroke,stone,sacrifice,save,shade,share,shape,smile,slice,score,refuse,require,reconcile,relate,relapse,cause,charge,change,chance,cease,circumstance,bore,bottle,bin,bundle,pledge,place,privilege,prejudice,praise,pursue,pore,pause,pace,pane,picture,pile,Ha,judge,double,nerve,fatigue,force,interpose,introduce,induce,include,inconvenience,inquire,involve,endure,educate,sentence,arrange,arrive,argue,advance,admire,abuse,appreciate,outrage,confine,contemplate,continue,cane,believe,penetrate,promise,piece,'Ha,note,article,measure,associate,assume,assure 
+ preserve,presume,preside,prepare,pride,practise,plunge,purchase,pounce,poise,no,nurture,nudge,file,fence,fun,hire,refine,receive,recognize,reciprocate,reassure,remonstrate,remove,resume,resolve,reserve,release,relieve,repose,replace,repute,repulse,retire,retrace,revive,rejoice,renounce,rouse,lease,urge,2,produce,prove,provide,provoke,promote,plume,persuade,perfume,perceive,pervade,parade,pine,thrive,ten,trudge,traverse,tumble,ease,encourage,engage,enable,enforce,evade,expire,examine,execute,estimate,escape,imagine,imitate,ice,divide,divine,dive,disparage,displease,discompose,discourage,discipline,disclose,discharge,disfigure,disgrace,dissolve,dissuade,disengage,disease,dictate,dine,desire,despise,describe,declare,decide,decease,determine,delude,depreciate,deprecate,deprive,devote,define,degenerate,negotiate,fare,grope,grin,grieve,guide,gaze,suffice,subdue,substitute,subside,serve,seize,shave,silence,speculate,spoke,smoke,squeeze,achieve,acquire,accuse,accede,acknowledge,advertise,advise,adore,abase,approve,apologize,boar,balance,blame,owe,obscure,oblige,obtrude,hesitate,humble,restore,reduce,raise,win,wipe,compose,compare,communicate,commence,couple,corroborate,crow,create,cage,chuckle,choke,lattice,know',kindle,you',unsettle,unite,up',vacate,value,'lor,propose,twinkle,tease,tinge,tingle,edge,interfere,indicate,indulge,insinuate,inspire,influence,inexperience,incline,increase,injure,invite,issue,impose,implore,improve,ill-use,designate,derive,denounce,notice,nestle,gorge,sol,struggle,stipulate,scrape,announce,anticipate,actuate,allude,alienate,attribute,attire,aspire,articulate,breathe,originate,handle,hate,rattle,whistle,welcome,writhe,confide,confuse,conceive,concentrate,conclude,consume,console,contrive,congratulate,capture,curve,mature,meditate,lapse,venture,quote,tangle,dote,good-nature,soothe,stare,starve 
 
 Ending with {ing,ed} are:
- display,disappoint,disturb,distract,discuss,descend,decay,depend,develop,defeat,dash,drown,droop,drift,finish,fill,fail,fold,fetch,feign,float,fleet,flinch,enjoy,encounter,enter,engross,except,exclaim,explain,expound,exist,establish,thunder,telegraph,tempt,trespass,grasp,gain,suffer,suspect,sustain,support,suppress,survey,surround,succeed,select,stroll,stray,stitch,stagger,stammer,stoop,shout,shiver,sketch,swallow,swarm,screw,sneak,squint,reflect,refresh,request,record,recall,reach,respond,resort,resign,resist,relax,relent,represent,repeat,retreat,renew,roam,compound,comprehend,command,cough,correct,corrupt,collect,coax,clasp,clench,climb,cross,cherish,check,mix,murmur,brood,baulk,borrow,bolt,bless,bloom,block,blunt,blight,plead,press,prevail,punish,push,pour,polish,poison,pack,pant,pick,linger,kill,yield,divert,deepen,neglect,furnish,interrupt,insult,impart,entertain,toss,torment,solicit,await,accept,avow,avoid,adapt,adjust,adorn,add,absorb,affect,apprehend,appoint,overlook,harass,heal,hover,redden,rack,whimper,wash,warn,waver,confirm,confront,confound,conceal,consider,consign,consent,convey,condescend,contend,crowd,curtsey,mistrust,maintain,melt,brighten,butter,perish,protest,protect,patch,pinch,lighten,listen,launch,land,lengthen,leer,unlock,undress,soften,awaken,allow,attach,attract,astonish,ascertain,ascend,hammer,ripen,wither,mend,bestow 
+ press,prevail,plead,punish,push,pour,polish,poison,ponder,pick,finish,fill,fail,fold,fetch,feign,float,fleet,flinch,reflect,refresh,request,record,recall,reach,respond,resort,resign,resist,relax,relent,represent,repeat,retreat,renew,roam,linger,learn,lean,kill,yield,protest,protect,perish,pack,pant,pinch,thunder,telegraph,tempt,trespass,enjoy,encounter,enter,engross,explain,expound,except,exclaim,exist,establish,dispatch,display,disappoint,disturb,distract,discuss,descend,decay,depend,develop,defeat,dash,drown,droop,drift,neglect,grasp,gain,suffer,suspect,sustain,support,suppress,survey,surround,succeed,select,shout,shiver,sigh,screw,sketch,swallow,swarm,sneak,squint,await,accept,avow,avoid,avail,adapt,adjust,adorn,add,absorb,affect,apprehend,appoint,borrow,bolt,brood,baulk,blunt,bless,bloom,block,blight,harass,heal,help,hover,restrain,redden,rack,compound,complain,comprehend,command,cough,correct,corrupt,collect,coax,clasp,clench,climb,cross,cherish,check,mix,mourn,murmur,lighten,listen,launch,land,lengthen,leer,unlock,undress,join,patch,toss,torment,earn,entertain,interrupt,insult,impart,divert,deepen,stroll,stray,stoop,stitch,stagger,stammer,awaken,allow,attach,attract,ascertain,ascend,brighten,butter,overlook,hammer,ripen,whimper,weigh,wash,warn,waver,confirm,confront,confound,conceal,consider,consign,consent,constrain,convey,condescend,contend,crowd,curtsey,mistrust,melt,solicit,soften,bestow,wither,maintain,mend 
 
-Ending with {s,ed} are:
- disappear,dint,nail,number,fidget,feast,fever,flaw,triumph,transport,track,gleam,group,groan,gift,suit,stamp,steep,shriek,spirit,sport,scent,obtain,reappear,result,rein,root,row,ruin,wreck,wall,compliment,comb,cork,claim,crack,carpet,book,bound,post,paper,link,limit,forward,fund,talent,tenant,shoulder,sight,account,abstract,aim,ornament,haunt,hazard,heat,rumour,wing,widen,warrant,button,plant,pint,Call,attain,corkscrew,view 
+Ending with {ed} are:
+ predict,prey,pluck,powder,frill,found,flush,flock,hush,recommend,reclaim,regain,rear,resent,relinquish,repress,repent,retort,reveal,reject,roof,roast,litter,limp,leap,lull,protract,proclaim,perform,perch,past,pitt,thrill,tilt,transact,embarrass,expend,exalt,exert,esteem,escort,dismount,dismay,discern,disregard,disquiet,desist,detest,detract,detain,delay,depress,depart,deposit,deem,dawn,damp,draft,dwarf,fathom,grant,grip,guess,suspend,subsist,saunter,sack,scar,scald,scream,skill,skewer,switch,snuff,acquaint,accustom,augur,augment,array,arrest,administer,adopt,abandon,affront,afford,applaud,bread,bath,band,bait,obey,oppress,hail,heed,restrict,wick,worst,worrit,worm,we,collar,cock,clatter,crush,caution,miscall,load,lead-colour,usher,vow,veil,vex,quench,quail,'light,partition,erect,intercept,interdict,insist,inflict,infect,inherit,impair,doom,divest,diminish,gorm,superadd,strand,strain,station,stain,stew,stuff,shelter,shipwreck,annoy,attest,befriend,bequeath,breakfast,bull-neck,outlast,overshadow,hamper,confess,conceit,convict,condemn,contradict,conquer,closet,muster,lament,vanish,'form,good-humour,strengthen,assent,betray,weaken,tender-heart 
 
-Ending with {es,ed,ful} are:
- distress,reproach 
-
-Ending with {ing,ful} are:
- distrust 
-
-Ending with {ly,ness} are:
- distinct,frank,eager,exclusive,sudden,sullen,sad,shy,sick,sly,snug,remote,rough,mad,bashful,polite,neat,fixed,trustful,selfish,steadfast,abrupt,harsh,restless,wretched,watchful,conscious,careless,cheerful,playful,peaceful,painful,unkind,earnest,thankful,useful,thoughtful,hopeless 
-
-Ending with {y,ing,ed} are:
- discover,dust,entreat,recover,rain 
-
-Ending with {ness} are:
- disinterested,idle,ill,thin,gruff,stubborn,red,wilful,compact,morose,bald,Firm,fitful,feeble,awkward,rotten,wakeful,unpleasant,forgetful,artless,artful,houseless,wasteful,Mad,youthful,'Good 
-
-Ending with {ing} are:
- disgust,differ,despair,defy,drink,dwell,fir,fight,fry,foot,foam,fly,teem,try,glow,glimmer,glitter,gratify,giv,send,steam,study,shift,spend,spread,smack,smell,school,screen,scratch,scowl,sneer,sniff,hid,hurry,hurt,relish,reply,re-open,rid,worry,wail,correspond,copy,cry,cast,carry,minister,milk,marry,magnify,morn,breath,breed,busy,burden,build,buccaneer,peel,peck,purport,lend,us,Lead,jest,Turn,Even,digress,deny,fancy,front,fortify,forbear,forgiv,feed,ink,endanger,extract,twitch,grind,superintend,search,soar,sink,accord,accompany,apply,aid,Be,Bank,harrow,wallow,contrast,career,catch,chatter,beseech,behold,bargain,petition,prosper,lessen,See,unbend,Consider,Look,Hear,Will,yell,'Speak,'be,forego,howl,withhold,weary,progress,lower,Stand,'Keep,assert,meander 
-
-Ending with {d,ful} are:
- disgrace 
-
-Ending with {ly,ing,ed} are:
- disorder,clean,direct,last 
-
-Ending with {ful} are:
- disdain,disrespect,deceit,faith,fright,fret,fruit,truth,grate,success,scorn,remorse,woe,wrath,basin,boast,bliss,peace,Cheer 
-
-Ending with {s,t,d} are:
- die,fee 
+Ending with {'s} are:
+ pretty,prince,peacock,pony,niece,francis,river,littimer,life,let,uriah,umbrella,papa,that,tidd,tiffey,traddles,tungay,em'ly,emily,emma,enemy,else,eight,dick,devil,david,davy,nobody,nephew,fishermen,fisherman,fairy,fortnight,gen'l'm'n,grayper,gummidge,surrogate,sarah,saviour,scoundrel,snail,agnes,bachelor,baby,baker,occupant,omer,ham,harm,how,wife,who,where,women,wot,wureld,company,cousin,clergyman,creakle,crewler,crupp,criminal,carrier,charles,charley,charity,child,chemist,minnie,mills,mithers,mowcher,louisa,lavinia,uncle,quinion,jack,james,julia,joram,jorkins,'how,party,tinker,tipp,trotwood,dartle,nothing,father-in-law,gentlemen,great-grandfather,grandfather,grainger,grinby,gulpidge,sentry,serving-man,son,sophy,story,shepherd,another,annie,anne,boatmen,boatman,barrister,half-an-hour,hamlet,housekeeper,random,winter,wickfield,waterbrook,coachman,children,child-wife,chillip,martha,magpie,maldon,mas'r,memory,mercy,merchant,mell,lady,larkins,landlord,yesterday,janet,'that,'affection,'all,'where,'wheer,'what,'who,'it,'barkis,'she,'sarah,'em'ly,tomorrow,theer,tailor,dolloby,somebody,steerforth,singer,anybody,anyone,betsey,beauty,barkis,mayor,'there,'theer,'here,'annie,'now,'nobody,everybody,mealy,'nothing,'something 
 
 Ending with {s,ing,ed} are:
- design,desert,detail,dart,falter,favour,follow,flavour,flutter,floor,end,effect,extend,expect,exhibit,twist,twin,talk,train,turn,greet,gather,gasp,suggest,stay,sail,shock,sign,slumber,swell,scold,object,occasion,hint,recollect,recoil,remark,remain,rest,report,repair,return,reward,roar,roll,rock,whisper,wheel,wound,work,commend,colour,cluster,crawl,call,charm,mark,motion,mount,moan,peep,pretend,prevent,pull,pound,pocket,point,lift,quarter,jerk,demand,darken,frown,frighten,interest,intend,inform,endeavour,toil,growl,seem,seat,seal,start,sharpen,shower,act,alarm,appear,appeal,overpower,hang,head,heap,honour,render,wink,want,concern,consult,connect,convert,conduct,content,crown,belong,beam,bark,project,proceed,look,loom,laugh,kneel,visit,answer,amount,attack,attend,attempt,ask,offer,happen,mention,prowl,assist 
+ pretend,prevent,play,peep,pull,pound,pocket,point,falter,favour,follow,fear,flavour,flutter,floor,hint,recollect,recoil,regard,reason,remark,remain,rest,respect,report,repair,return,reward,roar,roll,rock,lift,project,proceed,twist,twin,train,turn,end,expect,extend,exhibit,effect,design,desert,detail,dart,dread,frown,frighten,greet,gather,gasp,suggest,sail,shock,sign,spoil,scold,slumber,swell,act,alarm,appear,appeal,burn,occasion,object,hang,head,heap,honour,render,whisper,wheel,wound,work,commend,colour,cover,cluster,crawl,call,charm,motion,mount,moan,look,loom,laugh,kneel,visit,quarter,jerk,prowl,toil,thank,talk,endeavour,interest,intend,inform,doubt,demand,darken,growl,seem,seal,stay,sharpen,shower,answer,amount,attack,attend,attempt,ask,belong,beam,bark,overpower,happen,wink,wonder,want,concern,consult,connect,convert,conduct,content,crown,mark,start,assist,offer,mention 
 
-Ending with {er,ing,ed} are:
- destroy,own,retain,back,boil,pray,tend 
+Ending with {ly} are:
+ precise,premature,previous,prudent,placid,peevish,peculiar,punctual,positive,popular,physical,phrenological,natural,nat'ral,final,figurative,false,frequent,ferocious,fervent,hurried,recent,regular,real,resolute,reluctant,reverential,rigid,rude,literal,lucid,ludicrous,keen,provoking,profound,persevering,permanent,perverse,perpetual,pointed,piteous,philosophical,third,thorough,timid,timorous,tranquil,eminent,encouraging,entire,evident,elder,elaborate,eloquent,expeditious,explicit,exceeding,exquisite,exulting,especial,equal,eternal,immense,immediate,immoderate,irresolute,distant,disconsolate,discouraging,discreet,dim,diligent,desponding,desperate,decisive,decent,delicate,delicious,deliberate,dejected,dutiful,nervous,fierce,faithful,fretful,fruitless,fortunate,fearful,furtive,genteel,general,generous,glad,glorious,gradual,grievous,grim,gaunt,sufficient,supreme,submissive,sure,surprising,sensitive,several,severe,sedate,sage,safe,simultaneous,similar,silent,smiling,skilful,awful,accurate,acute,alternate,audacious,ardent,admiring,absolute,appropriate,approving,apparent,brave,brisk,brilliant,bad,bland,on,obvious,hesitating,hot,humorous,remorseful,respective,respectful,resigned,reproachful,repeated,rare,rapid,rapturous,rugged,wide,wistful,complacent,cruel,casual,chief,cheap,certain,ceremonious,cunning,civil,mild,miraculous,morbid,moral,monotonous,most,mutual,lone,loving,late,latter,laborious,legal,legitimate,unlike,uncommon,unconscious,unusual,ungrateful,unexpected,unsuccessful,universal,unintentional,unreserved,usual,vehement,vain,vacant,vague,violent,vivid,vigorous,queer,just,jovial,'most,'decided,zealous,proper,prosperous,professed,personal,pensive,partial,patient,total,triumphant,enjoying,entreating,expressive,excessive,intent,intense,indefinite,indignant,indifferent,instant,insane,infinite,ineffectual,incoherent,incredulous,incessant,inquiring,inquisitive,injurious,inviting,inapt,inward,imploring,implicit,impatient,imperfect,imperious,impetuous,doleful,distressful,distracted,disdainful,disrespectful,different,designed,deserved,decided,delightful,devoted,deferential,dreadful,noiseless,formal,former,grateful,graceful,gallant,successful,sore,strict,strange,stout,stupid,studious,shrinking,scarce,swimming,anxious,ancient,according,accidental,active,actual,attentive,argumentative,advantageous,absorbing,affecting,appealing,boastful,benignant,blushing,blameless,original,occasional,helpless,hoarse,rational,willing,composed,consequent,constant,conscientious,convenient,convulsive,continual,coaxing,careful,charming,childish,curious,mysterious,main,mournful,moderate,mere,mechanical,musical,laughing,undoubted,joyful,'according,'on,'sure,professional,passionate,tearful,instinctive,incidental,innocent,impressive,doubtful,dogged,dangerous,sorrowful,sheepish,singular,sincere,astonishing,affectionate,beautiful,handsome,hopeful,wonderful,wondering,compassionate,confident,confused,constrained,condescending,contemptuous,contented,manful,maiden,massive,mental,good-natured,good-humoured,solemn,assured,confidential 
 
-Ending with {',er,y,ly,est} are:
- dear 
+Ending with {s,d} are:
+ prejudice,privilege,praise,pledge,place,pursue,pore,picture,pile,figure,face,fade,frame,fee,refuse,require,reconcile,relate,relapse,rule,promise,penetrate,pause,pace,pane,pickle,piece,tie,tire,trifle,trouble,trace,trade,tremble,treasure,embrace,entrance,experience,expose,excuse,exchange,dispose,dispute,discourse,dislike,die,deserve,decline,deceive,dare,date,nerve,fatigue,force,glance,glove,glide,grace,gable,suppose,surprise,sacrifice,save,shade,share,shape,smile,score,slice,arrange,arrive,argue,age,advance,admire,abuse,appreciate,bore,bottle,bundle,bin,observe,heave,wave,cause,charge,change,chance,cease,circumstance,move,lodge,use,judge,joke,'ha,torture,taste,educate,endure,interpose,introduce,induce,include,inconvenience,inquire,involve,double,dance,note,sentence,settle,stroke,stone,article,believe,outrage,hope,waste,confine,contemplate,continue,cane,associate,assume,assure,manage,measure 
 
-Ending with {er,ly} are:
- dead,thick,grand,crooked,port,poor 
+Ending with {} are:
+ price,prime,pro,plum,plod,per,peace,pear,pepper,pure,pupil,pork,posse,piano,philosophic,t,1,nation,nan,nap,nice,nuts,fine,fifteen,fie,fiddle,far,faith,fain,fan,familiar,fat,fro,fright,frantic,fraud,frail,fret,fruit,four,fool,fog,fell,ferry,flag,flood,flit,g,ho,his,hind,hit,husky,hunt,hum,remorse,repel,repay,retrospect,revel,rebel,rip,rob,rot,rudder,rum,russia,rug,w,c,lo,little,list,liquid,left,length,lee,led,level,lever,lustre,knitting,kep,ketch,kent,kitchen,kid,yon,un,j,3,-a,5,6,zeal,problem,prog,process,prow,permit,peru,penny,pencil,pent,pens,portmanteau,pouring,potent,parliament,paris,parch,pad,pall,than,through,thou,two,twelve,twenty,twit,ta,tea,tempest,test,timber,true,truth,trip,trim,trot,trod,trait,trew,turret,tut,tucker,tumult,18,ed,easy,east,eagle,emphatic,empty,enthusiastic,english,eve,elastic,excise,extra,esse,egypt,ecstatic,eccentric,ere,ebb,in,is,immortal,diving,divorce,disadvantage,disdain,disrespect,dice,did,dire,dining,dig,dip,deceit,devotion,der,defer,defence,defend,dem,dan,drag,drive,drudge,drunk,dutch,duty,dull,due,dumb,not,noble,nor,non,novel,ninety,nursery,never,fishing,fatal,frozen,friends,freed,forth,forty,fore,forbid,forgot,for',fourpence,fears,gent',gee,glee,grass,grate,grain,gin,gipsy,guitar,gulp,gait,super,submit,subtle,surge,surf,such,success,suet,sent,self,serving,serene,sex,so,sale,sat,sang,sauce,shall,shaving,shabby,shore,shun,simple,sir,spin,spell,span,spur,scorn,scandal,slip,slap,skim,sky,sword,swim,awake,acquit,access,accident,across,am,along,ale,at,autumn,australia,are,arabian,ago,advent,adamant,admiral,aboard,absurd,able,abiding,after,afore,apart,apologetic,ah,ay,born,boast,bob,brandy,brass,bride,brim,broke,broad,brutal,bacchanal,baboo,ball,battle,basin,bail,but,buff,birth,big,blue,blank,blas,bliss,or,ought,o',over,oak,omit,have,hap,had,hall,has,hay,ha',hackney,heavily,heavy,hence,hem,hor,hob,highly,hiding,hither,hunger,human,ready,resting,respectable,relations,ran,race,raw,riding,ridge,ripe,rooks,robin,roads,romantic,rode,ruler,widder,wise,wire,which,white,whist,when,would,worse,worship,won,woe,wrap,wrath,wax,waist,compass,compel,comic,comment,con,could,courage,coffee,covent,coin,cows,club,crop,credit,crib,caul,cash,came,cabin,chap,chaise,chat,chalk,champion,chin,christmas,choice,chose,cherry,cent,cur,custom,my,mischief,military,middle,mort,monitor,mode,moon,music,mutton,much,mud,local,lounging,lot,log,lieu,large,lang,lap,lame,lave,knowing,keeps,yes,uncertain,under,undo,unto,unheard,upside,upper,vest,vent,van,vapour,vie,vicar,villa,vine,quest,quit,quo,jet,john,'me,'miss,'mad,'may,'my,'let,'look,'t,'hum,'you,'n,'o,'dan,'dear,'did,'w,'c,'ba,'for,'fine,'far,'s,'j,'un,'up,'em,'run,'rat,'k,23,prophet,proprietor,potential,partake,pastry,too,tom,them,they,thee,though,twinkling,tar,tan,tavern,testament,tires,troubles,trying,travelling,trades,turning,eating,extremes,eighteen,its,intellect,into,intrude,india,insert,infer,infirm,incur,don,dome,divers,dishonour,dimly,dirty,deeply,dens,demon,dancing,dressing,drawing,draughts,north,news,newly,netting,fires,fathers,frightened,foresee,forgive,fellows,getting,goose,gold,gossamer,gloomy,graves,grown,ginger,games,sunk,suns,superior,summer,seventy,seas,seam,seafaring,some,south,sofa,strive,strength,straight,straw,stony,stole,stomach,stipend,stir,sting,statu,stab,steel,steer,salem,saddle,sandy,saucepan,savages,shakes,shorter,sheep,shed,shelf,shivering,sixty,since,sinner,sitting,signal,sisters,smelling,smoothly,scholars,sleepy,systematic,and,any,amiable,amid,allus,authors,ass,asthma,artist,arter,agen,addition,books,boat-builder,bet,best,beset,before,beau,broken,brown,breaking,breathing,backgammon,banking,burning,blacking,blindly,ordinary,orphan,outside,outstrip,ours,older,overtake,happily,hands,haste,harder,hatch,hears,hers,housekeeping,horizon,rang,wicket,whims,whom,whole,whoo,whatever,working,works,workman,wooden,weather,weal,were,well,wen,wet,wedding,wedge,west,waters,walking,companions,compassion,comes,confer,concur,constitution,control,contempt,congenial,counter,counting,courts,copying,corks,cocked,cook's,cookery,closes,cannon,cancel,caps,camel,chops,centre,marvel,magic,maid,mail,may,malign,major,majestic,macbeth,machine,mea,met,merry,looking,lowest,livery,landing,lavender,yearn,yours,you're,undertake,undergo,verb,quarrels,'than,'though,'to,'trot,'two,'have,'hallo,'half,'her,'hear,'hey,'as,'am,'ah,'ay,'at,'again,'your,'never,'oh,'of,'or,'when,'we,'was,'will,'with,'would,'in,'is,'i'm,'could,'can,'child,'beg,'so,'shake,'six,'sweet,'see,'jane,'every,partners,pathetic,towns,tooth,tops,toils,tart,tape,every,inner,downs,doors,doubled,domestic,nettingall,forgiven,goings,guardians,sold,stronger,stained,steady,single,scarcely,agency,boarding,beef,beds,orderly,one's,hearties,hearth,horses,winds,what's,wealth,washing,warmin,warning,conveyance,candles,canter,curling,market,marking,metal,'too,'any,'not,'some,tombs,windows,meant 
 
-Ending with {',s} are:
- death,daughter,girl,side,creetur,boy,position,lion,doll,fellow,thing,gardener,her,Micawber,morning,path,Heep,impression,profession,labourer 
+Ending with {s,ly} are:
+ principal,penitent,ear,extreme,imp,new,ghost,savage,brief,home,common,cordial,cost,clerk,minute,particular,essential,feeling,beast,mortal,joint,sole 
 
-Ending with {er,t,ing} are:
- deal 
+Ending with {s,ing} are:
+ print,pin,find,fall,ring,round,pay,pillow,throw,tell,term,tick,eat,feel,gap,say,shoot,shrink,spar,spring,scrap,sweep,boat,bring,break,bank,burst,bit,hop,rat,will,writ,coast,cling,creep,lay,tower,toast,think,tear,seek,string,stock,stick,stand,star,steal,beat,bend,bind,weep,conflict,meet,understand,better,withdraw 
 
-Ending with {s,y,ing,ed} are:
- deliver,treat,shadow,air,hand,curl 
+Ending with {er} are:
+ prison,pet,d,nigh,fast,few,hung,less,v,prop,default,freshen,gay,suffolk,sell,should,small,awe,both,broth,old,moth,quaint,jail,tough,soon,often,heath,with,cant,mast,'art 
 
-Ending with {s,ed,ful} are:
- delight,pain 
+Ending with {'} are:
+ practice,people,pigs,family,for,flies,o,him,liabilities,least,you,up,peggotty,dirge,delegates,darling,now,nelson,gal,said,shame,smiths,system,syne,all,always,again,azackly,brazier,britannia,business,by,of,half,really,what,was,copperfield,more,me,jane,'david,'dick,'umble,parties,payment,there,tafflin,travels,elephants,indeed,nearer,gowans,giants,girls,shillings,boys,beach,birds,orfling,here,hopkins,wits,country,correspondence,coals,creatures,creeps,churchyard,moments,melancholy,ladies,'agnes,'yes,'no,'dora,'copperfield,tapping,travellers,does,doctors,debtors,stairs,sailors,attorneys,beein,copperfield's,yourself,visitors,thoughtless,everything,strangers,what's-your-name,measurement,offenders 
 
-Ending with {er,ly,est} are:
- deep,great,strong,slow,high,pleasant,plain,meek,proud,loud 
+Ending with {ing,ed,er} are:
+ pray,retain,destroy,furnish,boil,back,own,tend 
+
+Ending with {d,'} are:
+ please,heer 
+
+Ending with {ly,er} are:
+ pleasant,plain,port,poor,high,proud,thick,dead,deep,great,grand,slow,crooked,loud,meek 
+
+Ending with {s,'} are:
+ plate,position,fit,lion,death,daughter,fellow,girl,side,boy,her,heep,creetur,micawber,profession,path,thing,doll,gardener,morning,labourer,impression 
+
+Ending with {es} are:
+ peach,punch,potato,excess,dish,glass,gross,six,speech,branch,bush,bunch,coach,class,church,motto,loss,likeness,kindness,'do,eyelash,inch,snuff-box,hackney-coach,hero,work-box,mass,bells,wine-glass,weakness,tenderness 
+
+Ending with {ing} are:
+ peel,peck,purport,fir,fight,fry,foot,foam,fly,hid,hurry,hurt,relish,reply,re-open,rid,lend,us,prosper,petition,teem,try,distrust,disgust,differ,despair,defy,drink,dwell,fancy,front,fortify,forbear,forgiv,feed,glow,glimmer,glitter,gratify,giv,send,st,shift,spend,spread,smack,smell,scowl,school,screen,scratch,sneer,sniff,accord,accompany,apply,aid,breath,breed,busy,burden,build,buccaneer,harrow,worry,wan,wail,copy,correspond,cry,can,cast,carry,minister,milk,morn,lessen,yell,unbend,jest,'be,progress,twitch,endanger,even,extract,ink,digress,deny,forego,grind,superintend,search,soar,steam,study,sink,beseech,behold,bargain,howl,wallow,contrast,career,catch,chatter,marry,magnify,lower,'mean,'think,'speak,'keep,assert,withhold,weary,meander 
+
+Ending with {s,ly,d,'} are:
+ purpose 
+
+Ending with {ly,'s} are:
+ public,first,rascal,world,woman,unfortunate,gentleman 
+
+Ending with {s,ed} are:
+ post,nail,number,fidget,feast,fever,flaw,reappear,result,rein,root,row,ruin,link,limit,plant,pain,paper,pint,triumph,transport,track,disappear,dint,delight,forward,fund,gleam,group,groan,gift,suit,shriek,spirit,sport,scent,account,abstract,aim,book,bound,obtain,haunt,hazard,heat,rumour,wreck,wall,compliment,comb,cork,claim,crack,carpet,chain,tenant,stamp,steep,shoulder,sight,attain,button,ornament,wing,widen,warrant,view,talent,corkscrew 
+
+Ending with {ly,ness} are:
+ polite,frank,remote,rough,playful,peaceful,eager,exclusive,distinct,neat,fixed,sudden,sullen,sad,shy,shrewd,sick,sly,snug,abrupt,bold,bashful,harsh,restless,listless,unkind,querulous,painful,trustful,selfish,stiff,stern,bitter,wretched,watchful,conscious,careless,cheerful,mad,useful,thankful,tender,earnest,steadfast,hopeless,thoughtful 
+
+Ending with {s,d,y} are:
+ poke,store 
+
+Ending with {d,y} are:
+ pa,la,an,ma,'an 
 
 Ending with {s,y} are:
- den,flight,iron,room,mist,bulk,pit,down,feather,flower,seed,robber,weed,loft,heart,weight,meal 
+ pit,flight,a,room,iron,den,feather,flower,spoon,boot,bulk,robber,loft,'a,down,seed,heart,weed,weight,meal 
 
-Ending with {'s,s} are:
- day,it,elephant,tide,servant,ship,other,husband,relation,creature,chop,mariner,moment,month,king,It,donkey,doctor,night,employer,traveller,soul,sailor,speaker,aunt,author,one,ribbon,week,waiter,Murdstone,bed,brother,butcher,person,prisoner,proctor,lamb,Saturday,Spenlow,Spiker,Lord,Love,vessel,evening,soldier,angel,animal,attorney,horse,Doctor,Dora,officer 
-
-Ending with {er,ly,ness,est} are:
- dark,fresh,short,cold,bright,soft,low 
-
-Ending with {s,ing,ed,ful} are:
- dread,fear,regard,respect,play,doubt,thank,wonder 
-
-Ending with {er,'s,s,y,ing,ed} are:
- dream 
-
-Ending with {er,es,ing,ed} are:
- dress 
-
-Ending with {er,s,n,ing,ed} are:
- draw,flow,grow,show 
-
-Ending with {n,r} are:
- drive,eve,broke,O,ripe,partake,'O 
-
-Ending with {ly,ing} are:
- dry,exact 
-
-Ending with {est} are:
- dull,frail,trew,knowing,Dear,'Dear 
-
-Ending with {t} are:
- due,fain,tar,won,lo,kep,extremes,though,graves,games,savages,wen,closes,agen,'though,'Jane,hearties 
-
-Ending with {t,d,r} are:
- no 
-
-Ending with {'s,s,ly,d} are:
- name 
+Ending with {ly,d} are:
+ e,free,separate,secure,loose,intimate,state,spare,bare 
 
 Ending with {ly,ed,ness} are:
  narrow 
 
-Ending with {er,t} are:
- nigh 
+Ending with {s,ly,d,'s} are:
+ name,love 
 
-Ending with {r} are:
- nice,fine,tea,true,serene,wise,blue,prime,pure,lee,You,noble,thee,tape,able,outside,large,Close,'You,'you,conveyance,Strange,Office 
+Ending with {s,'s} are:
+ nature,husband,relation,king,prisoner,proctor,person,tide,elephant,it,day,night,seven,servant,ship,spiker,spenlow,author,aunt,other,ribbon,creature,chop,mine,moment,month,murdstone,lord,lamb,vessel,traveller,edward,employer,dolphin,doctor,dora,dragon,god,surgeon,soul,sailor,saturday,speaker,angel,animal,attorney,affection,bed,brother,butcher,one,horse,week,waiter,mariner,martyr,evening,donkey,soldier,officer 
 
-Ending with {'s,s,d} are:
+Ending with {y} are:
+ naught,flesh,fur,fust,b,ra,m,leaf,luck,q,tin,difficult,dirt,dew,finer,frost,forger,german,gloom,greed,guilt,sill,silk,speed,bull,oil,hoar,worth,war,craft,might,miser,liver,lad,ver,jeweller,jealous,'ever,'read,tips,ever,ironmonger,gravel,soot,streak,storm,stead,marsh,villain,stealth,beggar 
+
+Ending with {s,d,'s} are:
  nurse 
 
-Ending with {t,ed} are:
- ne,join 
+Ending with {ed,d} are:
+ ne 
 
-Ending with {s,ing} are:
- find,fall,eat,tell,term,tick,gap,string,stick,stand,stock,steal,say,shoot,shrink,spar,spring,sweep,scrap,ring,round,will,writ,coast,cling,creep,bring,break,bank,boat,bit,burst,print,pay,Think,feel,tower,toast,think,seek,hop,weep,conflict,meet,beat,bend,bind,pillow,lay,Say,better,understand 
-
-Ending with {y,ing} are:
+Ending with {ing,y} are:
  fish,silver,mould 
 
-Ending with {',s,ful} are:
- fit,plate 
+Ending with {ing,ed,es} are:
+ fix,flash,flourish,rush,kiss,profess,possess,pass,echo,dismiss,distinguish,accomplish,approach,box,brush,blush,wish,watch,miss,mop,touch,impress,stretch,astonish,address,march,caress 
 
-Ending with {er,y,ly,ness} are:
- fair 
+Ending with {ly,er,ness,y} are:
+ fair,hard 
 
-Ending with {'s,s,ly} are:
- friend,hour,mother,Heaven 
+Ending with {s,ly,'s} are:
+ friend,hour,year,heaven,mother 
 
-Ending with {ly,d} are:
- free,separate,secure,state,intimate,spare,bare 
+Ending with {ly,er,ness} are:
+ fresh,fond,dark,short,sweet,bright,rash,cold,low,quick,soft,weak 
 
-Ending with {er,ly,ness} are:
- fond,sweet,quick,rash,weak 
-
-Ending with {y,es} are:
+Ending with {es,y} are:
  fox 
 
 Ending with {s,ness} are:
- flat,square,wit,base 
+ flat,square,base,wit 
 
-Ending with {er,y,ness} are:
+Ending with {s,ing,ed,er} are:
+ flow,knock,draw,grow,show,bow,walk,wait,comfort,lock,labour,stream,sing,board,wander,offend 
+
+Ending with {er,ness,y} are:
  full 
 
-Ending with {n} are:
- in,so,strive,stole,chose,Russia,In,awake,Baboo,overtake,Me,Australia,Heave,India,foresee,forgive,undertake 
+Ending with {ly,'} are:
+ s 
 
-Ending with {s,ly,n} are:
- ear 
+Ending with {s,d,',y} are:
+ ha 
 
-Ending with {er,ed} are:
- employ,whisk 
+Ending with {ed,'s,er,y} are:
+ he 
 
-Ending with {s,ly} are:
- extreme,ghost,savage,cordial,cost,clerk,minute,brief,principal,essential,sole,home,mortal,beast,penitent,particular,joint,feeling 
+Ending with {ing,ed,y} are:
+ recover,trust,entreat,discover,dust,rain 
 
-Ending with {es,ly,ing,ed} are:
+Ending with {s,ing,er,y} are:
+ read,sleep,wind 
+
+Ending with {ing,ed,'} are:
+ remember 
+
+Ending with {s,ing,ed,er,'} are:
+ remind 
+
+Ending with {ed,es} are:
+ reproach,distress,wretch,witness,match 
+
+Ending with {ness} are:
+ red,pale,thin,idle,ill,disinterested,fitful,feeble,gentle,gruff,awkward,bald,rotten,wilful,compact,coarse,morose,unpleasant,forgetful,stubborn,artless,artful,houseless,wicked,wakeful,youthful,'good,wasteful 
+
+Ending with {ing,er} are:
+ rend,deal,buy,blunder,black,teach,interpret 
+
+Ending with {s,ing,ly,'s} are:
+ right 
+
+Ending with {ly,er,es,ness} are:
+ rich 
+
+Ending with {ed,y} are:
+ rust,snow,batter,chill,stump 
+
+Ending with {s,ly,d,ness} are:
+ like,close 
+
+Ending with {s,ly,d} are:
+ live,time 
+
+Ending with {s,ing,ly,ed,er,ness} are:
+ light 
+
+Ending with {s,er} are:
+ limb,grey,art,corn,cap,inn,sob,question 
+
+Ending with {s,ing,er} are:
+ lead,keep,garden,speak,hold 
+
+Ending with {s,ing,ed,'} are:
+ know,mind,mouth,seat,contract 
+
+Ending with {s,ly,er,ness} are:
+ kind,firm 
+
+Ending with {d,ness} are:
+ umble 
+
+Ending with {ly,ed} are:
+ prompt,perfect,slight,warm,manifest 
+
+Ending with {s,ing,ly,ed,y} are:
+ part 
+
+Ending with {ing,ed,er,y} are:
+ pitch,count 
+
+Ending with {',es,y} are:
+ to 
+
+Ending with {',y} are:
+ the,blood 
+
+Ending with {s,ing,ed,'s} are:
+ thread,guard 
+
+Ending with {s,ly,er} are:
+ tight 
+
+Ending with {s,ing,ed,y} are:
+ treat,deliver,need,shadow,air,hand,cheer,curl 
+
+Ending with {ed,er} are:
+ employ,whisk,long 
+
+Ending with {ing,ly,ed,es} are:
  express 
 
-Ending with {',s,d} are:
+Ending with {ing,ly} are:
+ exact,dry 
+
+Ending with {s,d,'} are:
  exercise,fire,house 
 
 Ending with {s,ing,d} are:
- eye,agree 
+ eye,see,agree,hear 
 
-Ending with {',y,es} are:
- to 
+Ending with {ing,'} are:
+ do 
 
-Ending with {',y,n} are:
- the 
+Ending with {ing,ly,ed} are:
+ disorder,clean,last,direct 
 
-Ending with {s,n,ing} are:
- throw,withdraw 
+Ending with {ly,er,',y} are:
+ dear 
 
-Ending with {'s,s,ing,ed} are:
- thread,guard 
+Ending with {s,ing,ed,'s,er,y} are:
+ dream 
 
-Ending with {s,ful} are:
- thowt,sin,regret,wake,power,kettle,joy,forget,sorrow,youth,event,thought 
+Ending with {ing,ed,er,es} are:
+ dress 
 
-Ending with {s,d,ful} are:
- taste,grace,waste,use,hope 
+Ending with {s,ing,'s} are:
+ neighbour,journey 
 
-Ending with {s,n} are:
- take,shake,rise,brow,bar,line,leather,doze,give,arise,mistake,your 
+Ending with {ly,ed,er,'} are:
+ near 
 
-Ending with {s,t} are:
- table,sea,plan,pen,ye,','a,'Ye 
+Ending with {ing,ly,ed,er} are:
+ faint,quiet 
 
-Ending with {t,d} are:
- ten 
+Ending with {s,ly,'} are:
+ father,sister 
 
-Ending with {s,ly,d} are:
- time 
+Ending with {s,ing,ed,'s,er} are:
+ form 
 
-Ending with {er,s,ly} are:
- tight 
-
-Ending with {y,ing,ed,ful} are:
- trust 
-
-Ending with {s,d,r} are:
- trade,observe,rule,wave,move,joke,torture,settle,manage,lodge 
-
-Ending with {d,r} are:
- tumble,shave,receive,choke,mature,advise,soothe 
-
-Ending with {ness,r} are:
- gentle,coarse,pale 
-
-Ending with {ly,est} are:
- genteel,common,mild,placid,keen,queer,willing,profound,loving 
-
-Ending with {es,t,ing,d} are:
+Ending with {ing,d,es} are:
  go 
 
-Ending with {es,ful} are:
- glass 
-
-Ending with {s,est} are:
- green,odd 
-
-Ending with {er,s} are:
- grey,corn,cap,limb,inn,sob,question,Inn 
-
-Ending with {s,r} are:
- grave,write,lose,adventure,office 
-
-Ending with {er,s,ing} are:
- garden,speak,lead,keep,hold 
-
-Ending with {er,est} are:
- gay,small,old,v,soon,often,young 
-
-Ending with {s,n,ing,d} are:
- see 
-
-Ending with {'s,s,ly,ed} are:
+Ending with {s,ly,ed,'s} are:
  second 
 
 Ending with {s,ly,ed} are:
  secret,wrong,court 
 
-Ending with {',ly,ness} are:
+Ending with {ly,',ness} are:
  serious 
 
-Ending with {s,es,ed} are:
- strip 
-
-Ending with {er,s,ing,ed} are:
- stream,walk,wait,comfort,board,bow,knock,sing,wander,lock,labour,offend 
-
-Ending with {ly,r} are:
- strange,safe,late 
-
-Ending with {ed,ness} are:
- still,sour 
-
-Ending with {ly,ness,est} are:
- stiff,stern,shrewd,bold,bitter,tender 
-
-Ending with {s,t,ing} are:
- star,pin 
-
-Ending with {s,y,d} are:
- store 
-
-Ending with {y,ed} are:
- stump,snow,rust,chill,batter 
-
-Ending with {s,y,ed} are:
+Ending with {s,ed,y} are:
  sand,water,cloud 
 
-Ending with {er,'s,ly,ness,est} are:
+Ending with {ly,'s,er,ness} are:
  sharp 
 
-Ending with {',ful} are:
- shame 
-
-Ending with {er,'s,d} are:
+Ending with {d,'s,er} are:
  she 
 
-Ending with {t,ing,ed} are:
- sigh,complain,learn,lean,restrain,weigh,constrain 
-
-Ending with {',s,ly} are:
- sister,father 
-
-Ending with {s,t,ing,ed} are:
- spoil,cover,burn 
-
-Ending with {n,d} are:
- spoke,crow 
-
-Ending with {s,y,ful} are:
- spoon 
-
-Ending with {er,ly,ed} are:
+Ending with {ly,ed,er} are:
  smart 
 
-Ending with {ly,ing,ed,ness,est} are:
+Ending with {ing,ly,ed,ness} are:
  smooth,clear 
 
-Ending with {ly,ed,est} are:
- slight,warm,prompt 
-
-Ending with {er,s,y,ing} are:
- sleep,read,wind 
-
-Ending with {es,ing} are:
+Ending with {ing,es} are:
  skirmish,cloth 
 
-Ending with {s,y,t,n} are:
- a,'A 
+Ending with {s,ed,'s} are:
+ arm 
 
-Ending with {',er} are:
+Ending with {ly,ed,es} are:
+ arch 
+
+Ending with {ing,d,'} are:
+ be 
+
+Ending with {s,ing,'} are:
+ blow 
+
+Ending with {er,'} are:
  out,off 
 
-Ending with {s,ly,ing,ed} are:
- open,blind,present,utter,order 
+Ending with {'s,y} are:
+ hair,'he,broker,health 
 
-Ending with {',s,y,t,d} are:
- ha 
+Ending with {ly,y} are:
+ honest,earth,modest 
 
-Ending with {er,'s,y,ed,r} are:
- he 
-
-Ending with {t,r} are:
- ho,'No 
-
-Ending with {s,ing,ed,est} are:
- reason 
-
-Ending with {',ing,ed} are:
- remember 
-
-Ending with {',er,s,ing,ed} are:
- remind 
-
-Ending with {ed,ful} are:
- resent 
-
-Ending with {er,ing} are:
- rend,buy,black,blunder,interpret,teach,Walk 
-
-Ending with {y,n} are:
- ra,war 
-
-Ending with {'s,s,ly,ing,ful} are:
- right 
-
-Ending with {er,es,ly,ness} are:
- rich 
-
-Ending with {s,ly,ness,est} are:
+Ending with {s,ly,ness} are:
  wild 
 
-Ending with {er,'s} are:
- widow 
-
-Ending with {ly,n,r} are:
- wide 
-
-Ending with {'s,ly} are:
- world,woman,public,First,gentleman,rascal,unfortunate 
-
-Ending with {t,n,ed} are:
- we 
-
-Ending with {es,ed} are:
- wretch,match,witness 
-
-Ending with {es,ing,ed,ful} are:
- watch 
-
-Ending with {t,ing} are:
- wan,can,S,even 
+Ending with {'s,er} are:
+ widow,young 
 
 Ending with {ly,d,ness} are:
  complete 
 
-Ending with {er,y,ing,ed} are:
- count,pitch 
-
-Ending with {er,ly,ing,ed,ness} are:
+Ending with {ing,ly,ed,er,ness} are:
  cool 
 
-Ending with {'s,ing,ed} are:
- cook,murder 
+Ending with {ing,ed,'s} are:
+ cook 
 
-Ending with {s,ly,t,d,ness,r} are:
- close 
+Ending with {ly,er,'} are:
+ clever,strong 
 
-Ending with {',er,ly} are:
- clever 
-
-Ending with {er,ly,ed,ness,est} are:
+Ending with {ly,ed,er,ness} are:
  calm 
 
-Ending with {',er,s,d,ful} are:
+Ending with {s,d,er,'} are:
  care 
 
-Ending with {s,y,ing,ed,ful} are:
- cheer,need 
+Ending with {s,er,y} are:
+ mist 
 
-Ending with {y,r} are:
- M 
+Ending with {ed,'s} are:
+ money 
 
-Ending with {',s,ing,ed,ful} are:
- mind,mouth 
-
-Ending with {',y,ly,ful} are:
- man 
-
-Ending with {ing,ed,ful} are:
- mourn,help 
-
-Ending with {',t,n} are:
- me 
-
-Ending with {',er,y} are:
+Ending with {er,',y} are:
  must 
 
-Ending with {',er,es,t,ing,d} are:
- be 
-
-Ending with {',s,n,ing} are:
- blow 
-
-Ending with {',y} are:
- blood 
-
-Ending with {',d} are:
- please,heer 
-
-Ending with {',s,ly,d} are:
- purpose 
-
-Ending with {s,y,d,r} are:
- poke 
-
-Ending with {s,y,ly,ing,ed} are:
- part 
-
-Ending with {s,ly,d,ness} are:
- like 
-
-Ending with {s,ly,d,r} are:
- live,love 
-
-Ending with {er,s,ly,ing,ed,ness,est} are:
- light 
-
-Ending with {y,d} are:
- la,an,An,'An 
-
-Ending with {',s,n,ing,ed} are:
- know 
-
-Ending with {er,s,ly,ness,est} are:
- kind 
-
-Ending with {d,ness} are:
- umble 
-
-Ending with {t,n,r} are:
- No 
-
-Ending with {'s,y,r} are:
- He,'He 
-
-Ending with {er,ly,ing,ed,est} are:
- quiet,faint 
-
-Ending with {',r} are:
- you 
-
-Ending with {'s,s,ing} are:
- journey,neighbour 
-
-Ending with {er,y,n} are:
- The,'the,'The 
-
-Ending with {',t} are:
- now,Jane 
-
-Ending with {s,ly,est} are:
- new 
-
-Ending with {',er,ly,ed,est} are:
- near 
-
-Ending with {er,s,ly,ness} are:
- firm 
-
-Ending with {er,'s,s,ing,ed} are:
- form 
-
-Ending with {y,ly} are:
- earth,honest,modest 
-
-Ending with {ing,ed,est} are:
- earn 
-
-Ending with {s,ing,ful} are:
- tear 
-
-Ending with {',s,ness} are:
- good 
-
-Ending with {s,ly,ing,ed,est} are:
- sound 
-
-Ending with {'s,s,ed} are:
- arm 
-
-Ending with {er,s,ful} are:
- art 
-
-Ending with {es,ly,ed} are:
- arch 
-
-Ending with {s,n,d} are:
- age,heave 
-
-Ending with {'s,y} are:
- hair,broker,health 
-
-Ending with {er,y,ly,ness,est} are:
- hard 
-
-Ending with {s,t,ing,d} are:
- hear 
-
-Ending with {ness,est} are:
- wicked 
-
-Ending with {s,y,ing} are:
- wear 
-
-Ending with {',s,ing,ed} are:
- contract 
-
-Ending with {y,n,d} are:
- Ma 
+Ending with {ing,ed,'s,er} are:
+ murder 
 
 Ending with {'s,es} are:
- mistress 
-
-Ending with {ly,ed} are:
- manifest,perfect 
-
-Ending with {s,y,ly,ed} are:
- master 
-
-Ending with {t,n} are:
- mea 
-
-Ending with {'s,d} are:
- men 
-
-Ending with {er,'s,s,ing,d} are:
- bear 
-
-Ending with {er,ed,est} are:
- long 
-
-Ending with {ly,n,d} are:
- loose 
-
-Ending with {s,n,ful} are:
- law 
-
-Ending with {es,n} are:
- Do 
-
-Ending with {'s,s,ly,n} are:
- year 
-
-Ending with {'s,r} are:
- 'he 
-
-Ending with {',t,r} are:
- 'no 
+ jip,mistress 
 
 Ending with {ing,d} are:
- Go 
+ 'go 
 
-Ending with {er,s,t,ing,ness,est} are:
+Ending with {s,',ness} are:
+ good 
+
+Ending with {ed,ness} are:
+ sour,still 
+
+Ending with {s,ed,es} are:
+ strip 
+
+Ending with {s,ing,d,'s,er} are:
+ bear 
+
+Ending with {s,ing,y} are:
+ wear 
+
+Ending with {ly,',y} are:
+ man 
+
+Ending with {d,'s} are:
+ men 
+
+Ending with {er,y} are:
+ 'the 
+
+Ending with {s,ly,ed,y} are:
+ master 
+
+Ending with {s,ing,er,ness} are:
  mean 
 

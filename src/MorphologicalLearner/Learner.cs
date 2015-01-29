@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -43,7 +42,7 @@ namespace MorphologicalLearner
 
             //pad with special begin and end symbols.
             //take only sentences that have more than one character (i.e. avoid ". p.s." interpretation as sentences, etc)
-            var temp = sentences.Select(sentence => sentence.TrimStart());
+            var temp = sentences.Select(sentence => sentence.TrimStart()).Select(sentence => sentence.ToLower());
 
             var SentencesWithBeginAndEndSymbols =
                 temp.Where(sentence => sentence.Count() > 1).Select(sentence => BeginOfSentence + sentence + EndOfSentence);
@@ -60,7 +59,6 @@ namespace MorphologicalLearner
                 {
                     m_trie.Add(sentenceWords[k]);
                 }
-                
             }
         }
 
@@ -103,10 +101,11 @@ namespace MorphologicalLearner
             //naturally this parameter value should be plotted more rigorously in a later stage of research.
             //(i.e. http://www.wikiwand.com/en/Receiver_operating_characteristic)
 
-            m_SuffixVector.LeaveOnlySuffixesAboveFrequencyThreshold(0.005);
+            float aboveFreq = 0.005f;
+            m_SuffixVector.LeaveOnlySuffixesAboveFrequencyThreshold(aboveFreq);
             MorphologicalMatrix mat = new MorphologicalMatrix(m_StemVector, m_SuffixVector);
 
-            mat.PrintNColumnsOfMatrix(mat.Matrix.ColumnCount, (float)0.005);
+            mat.PrintNColumnsOfMatrix(mat.Matrix.ColumnCount, aboveFreq);
             //m_SuffixVector.Statistics();
 
         }

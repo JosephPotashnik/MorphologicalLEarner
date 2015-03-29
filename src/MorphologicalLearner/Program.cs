@@ -10,6 +10,7 @@
 
             learn.BuildBigramsandTrie();
             learn.BuildMorphologicalMatrix();
+            learn.Search();
 
         }
     }

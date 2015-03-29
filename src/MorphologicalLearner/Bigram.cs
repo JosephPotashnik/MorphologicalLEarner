@@ -8,10 +8,10 @@ namespace MorphologicalLearner
     {
         //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
         private readonly Dictionary<string, Dictionary<string, int>> firstWordDictionary;
-                          //<word1,           <word2, count>>
+                          //<word1,                   <word2, count>>
         //the second dictionary lists the second word as a key, with all bigrams for which it is the second word
         private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
-                        //<word2,           <word1, count>>
+                        //<word2,                     <word1, count>>
 
         public BigramManager()
         {
@@ -85,7 +85,7 @@ namespace MorphologicalLearner
             return list;
         }
 
-        private IEnumerable<string> GetAllWordsBeforeWord(string secondword)
+        public IEnumerable<string> GetAllWordsBeforeWord(string secondword)
         {
             return ( secondWordDictionary.ContainsKey(secondword) ?
                  secondWordDictionary[secondword].Keys :
@@ -119,6 +119,18 @@ namespace MorphologicalLearner
         {
             var l = GetAllWordsBeforeWord(given.First());
             return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsBeforeWord(str)));
+        }
+
+        public IEnumerable<string> GetUnionOfBigramsWithFirstWords(IEnumerable<string> given)
+        {
+            var l = GetAllWordsAfterWord(given.First());
+            return given.Aggregate(l, (current, str) => current.Union(GetAllWordsAfterWord(str)));
+        }
+
+        public IEnumerable<string> GetUnionOfBigramsWithSecondWords(IEnumerable<string> given)
+        {
+            var l = GetAllWordsBeforeWord(given.First());
+            return given.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
         }
     }
 }

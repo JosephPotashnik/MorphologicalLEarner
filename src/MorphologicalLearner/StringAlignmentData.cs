@@ -1,5 +1,6 @@
 ﻿namespace MorphologicalLearner
 {
+    //reminder: struct (by c# rules) is copied by val, not by ref.
     public struct StringAlignmentData
     {
         private readonly TrieNode _father;

@@ -38,6 +38,18 @@
     <Reference Include="MathNet.Numerics.Data.Text">
       <HintPath>..\packages\MathNet.Numerics.Data.Text.3.1.0\lib\net40\MathNet.Numerics.Data.Text.dll</HintPath>
     </Reference>
+    <Reference Include="QuickGraph">
+      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Data">
+      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Graphviz">
+      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Graphviz.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph.Serialization">
+      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -49,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bigram.cs" />
-    <Compile Include="InflectedForms.cs" />
+    <Compile Include="CommonNeighborsGraph.cs" />
     <Compile Include="Learner.cs" />
     <Compile Include="MorphologicalMatrix.cs" />
     <Compile Include="Program.cs" />
@@ -57,6 +69,7 @@
     <Compile Include="StemVector.cs" />
     <Compile Include="SuffixVector.cs" />
     <Compile Include="StringAlignmentData.cs" />
+    <Compile Include="MorphologicalBucket.cs" />
     <Compile Include="Trie.cs" />
     <Compile Include="TrieNode.cs" />
   </ItemGroup>

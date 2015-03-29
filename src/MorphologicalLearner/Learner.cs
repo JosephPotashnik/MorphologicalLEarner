@@ -170,8 +170,8 @@ namespace MorphologicalLearner
 
             CommonNeighborsGraph neighborGraph = new CommonNeighborsGraph(m_BigramManager);
 
-            IEnumerable<string> rightWords = m_buckets[seedBucketIndex].Words().ToList();
-            IEnumerable<string> leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToList();
+            string[] rightWords = m_buckets[seedBucketIndex].Words().ToArray();
+            string[] leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
             neighborGraph.ComputeNeighborsGraphs(leftWords, rightWords);
 

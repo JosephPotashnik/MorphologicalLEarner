@@ -21,7 +21,7 @@ namespace MorphologicalLearner
 
         }
 
-        public void ComputeNeighborsGraphs(IEnumerable<string> leftWords, IEnumerable<string> rightWords)
+        public void ComputeNeighborsGraphs(string[] leftWords, string[] rightWords)
         {
             //there are two common neighbors graphs: the common neighbors of left words and of right words.
             neighborGraphOfLeftWords = ComputeCommonNeighborsGraphOf(leftWords, rightWords, Learner.Direction.Left);
@@ -31,7 +31,7 @@ namespace MorphologicalLearner
         //this function gets two sets of words as arguments that represent a bipartite graph, and returns a common neighbors graph
         //the neighbors are computed for the argument "theseWords", I do not compute the neighbors of the "otherWords".
         //the direction argument signifies whether "theseWords" are the left or right side of the bipartite graph.
-        private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(IEnumerable<string> theseWords, IEnumerable<string> otherWords, Learner.Direction dir)
+        private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(string[] theseWords, string[] otherWords, Learner.Direction dir)
         {
             var commonNeighborsGraph  = new Dictionary<string, Dictionary<string, int>>();
 

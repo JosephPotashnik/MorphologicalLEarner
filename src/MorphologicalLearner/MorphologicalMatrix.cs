@@ -86,6 +86,12 @@ namespace MorphologicalLearner
 
         private void AddWordsToBuckets(Vector<float>[] Columns, Vector<float>[] ColumnBasis, StemVector stems)
         {
+            //sefi - repetition of code. please fix it.
+            int i = 0;
+            var suffixDic = new Dictionary<string, int>(); //get name of suffix, return index of the row in the matrix.
+            foreach (var s in suffixArray)
+                suffixDic[s] = i++;
+
             for (var k = 0; k < Columns.Count(); ++k)
             {
                 for (var j = 0; j < ColumnBasis.Count(); ++j)
@@ -94,8 +100,14 @@ namespace MorphologicalLearner
                     buckets[j].Add(stemArray[k]);
 
                     var derived = stems.GetAllDerivedForms(stemArray[k]);
+
+                    //don't add into bucket if the suffix isn't...
                     foreach (var d in derived)
-                        buckets[j].Add(d);
+                    {
+                        if (suffixDic.ContainsKey(d.Value))
+                            //if the suffix has not been considered in the morphological matrix, don't add
+                            buckets[j].Add(d.Key);
+                    }
                     break;
                 }
             }

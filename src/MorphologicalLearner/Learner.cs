@@ -16,6 +16,8 @@ namespace MorphologicalLearner
         private const string BeginOfSentence = "#beginS# ";
         private const string EndOfSentence = " #endS#";
         private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
+        private const int minCommonNeighbors = 3;
+
         private const float minimalFreq = 0.005f;
         private readonly BigramManager m_BigramManager;
         private readonly StemVector m_StemVector;
@@ -106,7 +108,7 @@ namespace MorphologicalLearner
 
                         //to stem vector, add the stem, the suffix and the derived form.
                         m_StemVector.Add(fatherName, data.Difference);
-                        m_StemVector.AddDerivedForm(fatherName, sonName);
+                        m_StemVector.AddDerivedForm(fatherName, new KeyValuePair < string, string>(sonName, data.Difference));
                     }
                 }
             }
@@ -145,16 +147,29 @@ namespace MorphologicalLearner
             //first, find seed in the morphological matrix.
             var seedBucketIndex = m_mat.FindSeed();
 
+            Console.WriteLine("{0}",string.Join(",", m_buckets[seedBucketIndex].Suffixes().ToArray()));
+
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
 
             var rightWords = m_buckets[seedBucketIndex].Words().ToArray();
+            Console.WriteLine("{0}", string.Join(",", rightWords));
+
             var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
-            neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords);
+            neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
             NeighborGraph = neighborGraph;
 
             var scc = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
-            scc = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
+            //scc = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
+
+            foreach (var component in scc)
+            {
+                if (component.Count > 10)
+                {
+                    string s = string.Join(", ", component.Keys.ToArray());
+                    Console.WriteLine("{0}", s);
+                }
+            }
         }
     }
 }

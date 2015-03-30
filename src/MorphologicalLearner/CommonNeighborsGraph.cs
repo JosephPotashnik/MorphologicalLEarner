@@ -17,18 +17,18 @@ namespace MorphologicalLearner
         public Dictionary<string, Dictionary<string, int>> LeftWordsNeighborhoods { get; private set; }
         public Dictionary<string, Dictionary<string, int>> RightWordsNeighborhoods { get; private set; }
 
-        public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords)
+        public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
             //there are two common neighbors graphs: the common neighbors of left words and of right words.
-            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords, Learner.Direction.Left);
-            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords, Learner.Direction.Right);
+            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords, Learner.Direction.Left, MinCommonNeighbors);
+            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords, Learner.Direction.Right, MinCommonNeighbors);
         }
 
         //this function gets two sets of words as arguments that represent a bipartite graph, and returns a common neighbors graph
         //the neighbors are computed for the argument "theseWords", I do not compute the neighbors of the "otherWords".
         //the direction argument signifies whether "theseWords" are the left or right side of -the bipartite graph-.
         private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(string[] theseWords,
-            string[] otherWords, Learner.Direction dir)
+            string[] otherWords, Learner.Direction dir, int MinCommonNeighbors)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
 
@@ -52,8 +52,8 @@ namespace MorphologicalLearner
                     else
                         commonNeighbors = bigramMan.IntersectTwoSecondWords(word1, word2).Intersect(otherWords).Count();
 
-                    //if no common neighbors, don't create edges/values in dictionary (more economy)
-                    if (commonNeighbors != 0)
+                    //add to common neighbors graph only if meets threshold.
+                    if (commonNeighbors >= MinCommonNeighbors)
                     {
                         commonNeighborsGraph[word1][word2] = commonNeighbors;
                         commonNeighborsGraph[word2][word1] = commonNeighbors;

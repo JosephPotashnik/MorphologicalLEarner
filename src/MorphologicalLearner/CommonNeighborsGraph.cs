@@ -20,15 +20,15 @@ namespace MorphologicalLearner
         public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
             //there are two common neighbors graphs: the common neighbors of left words and of right words.
-            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords, Learner.Direction.Left, MinCommonNeighbors);
-            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords, Learner.Direction.Right, MinCommonNeighbors);
+            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords, BigramManager.LookupDirection.LookToRight, MinCommonNeighbors);
+            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords, BigramManager.LookupDirection.LookToLeft, MinCommonNeighbors);
         }
 
         //this function gets two sets of words as arguments that represent a bipartite graph, and returns a common neighbors graph
-        //the neighbors are computed for the argument "theseWords", I do not compute the neighbors of the "otherWords".
-        //the direction argument signifies whether "theseWords" are the left or right side of -the bipartite graph-.
+        //the neighbors are computed for the argument "theseWords", I do not compute the common neighbor graph of the "otherWords".
+        //the direction argument signifies "theseWords" should look to their left neighbors or to their right neighbors.
         private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(string[] theseWords,
-            string[] otherWords, Learner.Direction dir, int MinCommonNeighbors)
+            string[] otherWords, BigramManager.LookupDirection dir, int MinCommonNeighbors)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
 
@@ -44,13 +44,9 @@ namespace MorphologicalLearner
                         commonNeighborsGraph[word1].ContainsKey(word2))
                         continue;
 
-                    if (dir == Learner.Direction.Left)
-
-                        //take the common neighbors of two left words and intersect them with rightwords argument
-                        //(because we may be interested not in all possible words to the right but only in some subset of them).
-                        commonNeighbors = bigramMan.IntersectTwoFirstWords(word1, word2).Intersect(otherWords).Count();
-                    else
-                        commonNeighbors = bigramMan.IntersectTwoSecondWords(word1, word2).Intersect(otherWords).Count();
+                    //(we may be interested not in all possible words to the right/left (which is what IntesectTwoWords() returns)
+                    //but only in some morphological subset of them).
+                    commonNeighbors = bigramMan.IntersectTwoWords(word1, word2, dir).Intersect(otherWords).Count();
 
                     //add to common neighbors graph only if meets threshold.
                     if (commonNeighbors >= MinCommonNeighbors)
@@ -100,9 +96,7 @@ namespace MorphologicalLearner
                             currentComponent[currentNode][outNode] = graph[currentNode][outNode];
 
                             if (unvisitedNodes.Contains(outNode))
-                            {
                                 ComponentNodesToVisit.Enqueue(outNode);
-                            }
                         }
                     }
                 }

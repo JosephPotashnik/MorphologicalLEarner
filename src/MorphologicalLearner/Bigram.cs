@@ -5,6 +5,13 @@ namespace MorphologicalLearner
 {
     public class BigramManager
     {
+
+        public enum LookupDirection
+        {
+            LookToLeft,
+            LookToRight
+        };
+
         //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
         private readonly Dictionary<string, Dictionary<string, int>> firstWordDictionary;
         //<word1,                   <word2, count>>
@@ -98,6 +105,14 @@ namespace MorphologicalLearner
                 ? firstWordDictionary[firstword].Keys
                 : Enumerable.Empty<string>());
         }
+        public IEnumerable<string> IntersectTwoWords(string word1, string word2, LookupDirection dir)
+        {
+            if (dir == LookupDirection.LookToRight)
+                return IntersectTwoFirstWords(word1, word2);
+            else
+                return IntersectTwoSecondWords(word1, word2);
+        }
+
 
         public IEnumerable<string> IntersectTwoFirstWords(string firstWord1, string firstWord2)
         {

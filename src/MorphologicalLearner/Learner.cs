@@ -7,12 +7,6 @@ namespace MorphologicalLearner
 {
     public class Learner
     {
-        public enum Direction
-        {
-            Left,
-            Right
-        };
-
         private const string BeginOfSentence = "#beginS# ";
         private const string EndOfSentence = " #endS#";
         private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
@@ -159,10 +153,10 @@ namespace MorphologicalLearner
             neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
             NeighborGraph = neighborGraph;
 
-            var scc = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
-            //scc = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
+            var sccRight = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
+            var sccLeft = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
 
-            foreach (var component in scc)
+            foreach (var component in sccRight)
             {
                 if (component.Count > 10)
                 {

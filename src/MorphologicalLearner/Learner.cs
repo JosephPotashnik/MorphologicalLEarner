@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using QuickGraph;
-using QuickGraph.Algorithms;
+
 
 namespace MorphologicalLearner
 {
@@ -30,6 +29,9 @@ namespace MorphologicalLearner
         private MorphologicalMatrix m_mat;
         private Dictionary<string, int> WordsInBuckets;
         private Dictionary<string, List<int>> WordsInPOS;
+        private CommonNeighborsGraph neighborGraph;
+
+        public CommonNeighborsGraph NeighborGraph { get; set; }
 
         public Learner()
         {
@@ -139,27 +141,6 @@ namespace MorphologicalLearner
             }
         }
 
-       /* private void Color(IEnumerable<string> givenWords, Direction dir)
-        {
-            IEnumerable<string> neighborWords = Enumerable.Empty<string>();
-            //first, return the set of words left/right to the words
-            if (dir == Direction.Left)
-               neighborWords =  m_BigramManager.GetUnionOfBigramsWithSecondWords(givenWords);
-            else
-                neighborWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(givenWords);
-
-            CreateBiPartiteGraph(givenWords, neighborWords, dir);
-
-        }*/
-
-        private void ComputeCommonNeighbors()
-        {
-
-            
-
-
-
-        }
 
         public void Search()
         {
@@ -168,79 +149,17 @@ namespace MorphologicalLearner
             //first, find seed in the morphological matrix.
             int seedBucketIndex = m_mat.FindSeed();
 
-            CommonNeighborsGraph neighborGraph = new CommonNeighborsGraph(m_BigramManager);
+            neighborGraph = new CommonNeighborsGraph(m_BigramManager);
 
             string[] rightWords = m_buckets[seedBucketIndex].Words().ToArray();
             string[] leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
-            neighborGraph.ComputeNeighborsGraphs(leftWords, rightWords);
+            neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords);
+            NeighborGraph = neighborGraph;
 
-        }
+            var scc = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
+            scc = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
 
- 
-        public void BiPartiteGraph(MorphologicalMatrix mat, int firstSet, int SecondSet)
-        {
-
-            var words1 = mat.Words(firstSet).ToArray();
-            var words2 = mat.Words(SecondSet).ToArray();
-            int words1Count = words1.Count();
-            int words2Count = words2.Count();
-
-            bool[,] ExistingBigrams = new bool[words1Count, words2Count];
-            int nCount = 0;
-            for (int k = 0; k < words1Count; ++k)
-            {
-                for (int j = 0; j < words2Count; ++j)
-                {
-                    ExistingBigrams[k, j] = m_BigramManager.Exists(words1[k], words2[j]);
-                    if (ExistingBigrams[k, j])
-                    {
-                        nCount++;
-                    }
-                }
-            }
-
-            float StrengthBetweenCategories = (float)nCount / (words1Count*words2Count);
-        }
-
-        void StronglyConnectedComponent()
-        { /*var words = mat.Words(2).ToArray();
-            StringBuilder sb = new StringBuilder();
-
-            var g = new AdjacencyGraph<string, Edge<string>>();
-
-            bool[,] PotentialCategories = new bool[words.Count(),words.Count()];
-            IEnumerable<string> intersect;
-            for (int k = 0; k < words.Count(); ++k)
-            {
-                for (int j = 0; j < words.Count(); ++j)
-                {
-                    intersect = m_BigramManager.IntersectTwoSecondWords(words[k], words[j]);
-                    PotentialCategories[k, j] = intersect.Any();
-                    if (PotentialCategories[k, j])
-                        g.AddVerticesAndEdge(new Edge<string>(words[k], words[j]));
-                }
-            }
-            IDictionary<string, int> components = new Dictionary<string, int>();
-
-            int count = g.StronglyConnectedComponents<string, Edge<string>>(out components);
-
-            foreach (var kv in components)
-            {
-
-                Console.WriteLine("Vertex {0} is connected to {1} other strongly connected components", kv.Key, kv.Value);
-            }
-            /*
-                 var intersection = m_BigramManager.IntersectTwoSecondWords(words[k], words[k + 1]);
-
-                    sb.AppendFormat("words before {0} and before {1} are: {2} {3}",
-                        words[k], words[k+1],
-                        Environment.NewLine,
-                String.Join(", ", intersection.ToArray()));
-                sb.AppendLine();
-                 
-            File.WriteAllText(Intersections, sb.ToString());
-            */
         }
     }
 }

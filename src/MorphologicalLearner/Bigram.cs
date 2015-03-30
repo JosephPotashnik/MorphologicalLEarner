@@ -3,15 +3,14 @@ using System.Linq;
 
 namespace MorphologicalLearner
 {
-
     public class BigramManager
     {
         //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
         private readonly Dictionary<string, Dictionary<string, int>> firstWordDictionary;
-                          //<word1,                   <word2, count>>
+        //<word1,                   <word2, count>>
         //the second dictionary lists the second word as a key, with all bigrams for which it is the second word
         private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
-                        //<word2,                     <word1, count>>
+        //<word2,                     <word1, count>>
 
         public BigramManager()
         {
@@ -21,12 +20,11 @@ namespace MorphologicalLearner
 
         public void Add(string word1, string word2)
         {
-
             if (firstWordDictionary.ContainsKey(word1))
             {
                 var val = firstWordDictionary[word1];
                 if (val.ContainsKey(word2))
-                    val[word2]++;   
+                    val[word2]++;
                 else
                     val[word2] = 1;
             }
@@ -61,9 +59,9 @@ namespace MorphologicalLearner
 
         public int Count(string word1, string word2)
         {
-            return (Exists(word1, word2) ?
-                firstWordDictionary[word1][word2] :
-            0);
+            return (Exists(word1, word2)
+                ? firstWordDictionary[word1][word2]
+                : 0);
         }
 
         public List<KeyValuePair<KeyValuePair<string, string>, int>> BigramsAboveCountThresholdN(int n)
@@ -78,7 +76,9 @@ namespace MorphologicalLearner
                     var count = innerDic[word2];
                     if (count >= n)
                     {
-                        list.Add(new KeyValuePair<KeyValuePair<string, string>, int>(new KeyValuePair<string, string>(word1, word2), count));
+                        list.Add(
+                            new KeyValuePair<KeyValuePair<string, string>, int>(
+                                new KeyValuePair<string, string>(word1, word2), count));
                     }
                 }
             }
@@ -87,16 +87,16 @@ namespace MorphologicalLearner
 
         public IEnumerable<string> GetAllWordsBeforeWord(string secondword)
         {
-            return ( secondWordDictionary.ContainsKey(secondword) ?
-                 secondWordDictionary[secondword].Keys :
-                 Enumerable.Empty<string>());
+            return (secondWordDictionary.ContainsKey(secondword)
+                ? secondWordDictionary[secondword].Keys
+                : Enumerable.Empty<string>());
         }
 
         private IEnumerable<string> GetAllWordsAfterWord(string firstword)
         {
-            return (firstWordDictionary.ContainsKey(firstword) ?
-                 firstWordDictionary[firstword].Keys :
-                 Enumerable.Empty<string>());
+            return (firstWordDictionary.ContainsKey(firstword)
+                ? firstWordDictionary[firstword].Keys
+                : Enumerable.Empty<string>());
         }
 
         public IEnumerable<string> IntersectTwoFirstWords(string firstWord1, string firstWord2)

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-
 
 namespace MorphologicalLearner
 {
@@ -20,18 +17,15 @@ namespace MorphologicalLearner
         private const string EndOfSentence = " #endS#";
         private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
         private const float minimalFreq = 0.005f;
-
-        private readonly Trie m_trie;
-        private SuffixVector m_SuffixVector;
-        private StemVector m_StemVector;
-        private MorphologicalBucket[] m_buckets;
         private readonly BigramManager m_BigramManager;
+        private readonly StemVector m_StemVector;
+        private readonly SuffixVector m_SuffixVector;
+        private readonly Trie m_trie;
+        private readonly Dictionary<string, int> WordsInBuckets;
+        private MorphologicalBucket[] m_buckets;
         private MorphologicalMatrix m_mat;
-        private Dictionary<string, int> WordsInBuckets;
-        private Dictionary<string, List<int>> WordsInPOS;
         private CommonNeighborsGraph neighborGraph;
-
-        public CommonNeighborsGraph NeighborGraph { get; set; }
+        private Dictionary<string, List<int>> WordsInPOS;
 
         public Learner()
         {
@@ -43,13 +37,15 @@ namespace MorphologicalLearner
             m_buckets = null;
             WordsInBuckets = new Dictionary<string, int>();
             WordsInPOS = new Dictionary<string, List<int>>();
-
         }
+
+        public CommonNeighborsGraph NeighborGraph { get; set; }
 
         public void BuildBigramsandTrie()
         {
             //read sentences. (usused delimiters for sentence level: ' ' and '-')
-            var sentenceDelimiters = new[] { '\r', '\n', '(', ')', '?', ',', '*', '.', ';', '!', '\\', '/', ':', '"', '—', };
+            var sentenceDelimiters = new[]
+            {'\r', '\n', '(', ')', '?', ',', '*', '.', ';', '!', '\\', '/', ':', '"', '—'};
             var filestring = File.ReadAllText(TrainingCorpusFileName);
             var sentences = filestring.Split(sentenceDelimiters, StringSplitOptions.RemoveEmptyEntries);
 
@@ -58,7 +54,8 @@ namespace MorphologicalLearner
             //take only sentences that have more than one character (i.e. avoid ". p.s." interpretation as sentences, etc)
             //pad with special being and end of sentences symbols.
             var SentencesWithBeginAndEndSymbols =
-                temp.Where(sentence => sentence.Count() > 1).Select(sentence => BeginOfSentence + sentence + EndOfSentence);
+                temp.Where(sentence => sentence.Count() > 1)
+                    .Select(sentence => BeginOfSentence + sentence + EndOfSentence);
 
             foreach (var sentence in SentencesWithBeginAndEndSymbols)
             {
@@ -68,7 +65,7 @@ namespace MorphologicalLearner
                 //add pairs of adjacent words to bigram manager (including begin and end of sentence symbols)
                 for (var k = 0; k < sentenceWords.Count() - 1; ++k)
                     m_BigramManager.Add(sentenceWords[k], sentenceWords[k + 1]);
-                
+
                 for (var k = 1; k < sentenceWords.Count() - 1; ++k)
                 {
                     //add each word to trie (skip begin and end of sentence symbols).
@@ -101,7 +98,8 @@ namespace MorphologicalLearner
                     //push all found nodes to the queue.
                     queue.Enqueue(data.Son);
 
-                    if (data.Father != m_trie)  //if the father data is the root, don't add. (every string will be a suffix of the empty root string, we're not interested).
+                    if (data.Father != m_trie)
+                        //if the father data is the root, don't add. (every string will be a suffix of the empty root string, we're not interested).
                     {
                         //to suffix vector, add the suffix and the stem
                         m_SuffixVector.Add(data.Difference, fatherName);
@@ -109,7 +107,6 @@ namespace MorphologicalLearner
                         //to stem vector, add the stem, the suffix and the derived form.
                         m_StemVector.Add(fatherName, data.Difference);
                         m_StemVector.AddDerivedForm(fatherName, sonName);
-
                     }
                 }
             }
@@ -131,9 +128,9 @@ namespace MorphologicalLearner
 
         private void PutAllWordsIntoBuckets()
         {
-            for (int i = 0; i < m_buckets.Count(); i++)
+            for (var i = 0; i < m_buckets.Count(); i++)
             {
-                IEnumerable<string> words = m_buckets[i].Words();
+                var words = m_buckets[i].Words();
                 //for each word, assign its morphological bucket index.
                 //note: some words were not put into buckets (since their morphological significance was below threshold)
                 foreach (var w in words)
@@ -141,27 +138,23 @@ namespace MorphologicalLearner
             }
         }
 
-
         public void Search()
         {
             //takes a morphological matrix m_mat and a bigram manager m_BigramManager
 
             //first, find seed in the morphological matrix.
-            int seedBucketIndex = m_mat.FindSeed();
+            var seedBucketIndex = m_mat.FindSeed();
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
 
-            string[] rightWords = m_buckets[seedBucketIndex].Words().ToArray();
-            string[] leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
+            var rightWords = m_buckets[seedBucketIndex].Words().ToArray();
+            var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
             neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords);
             NeighborGraph = neighborGraph;
 
             var scc = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
             scc = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
-
         }
     }
 }
-
-

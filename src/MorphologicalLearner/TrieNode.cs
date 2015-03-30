@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MorphologicalLearner
 {
-    public class TrieNode 
+    public class TrieNode
     {
         private readonly Dictionary<char, TrieNode> m_Children;
         private readonly Queue<string> m_Values;
@@ -61,6 +61,7 @@ namespace MorphologicalLearner
         {
             m_Values.Enqueue(value);
         }
+
         public override string ToString()
         {
             return (m_Values.First());
@@ -86,65 +87,12 @@ namespace MorphologicalLearner
         {
             return m_Children.SelectMany(kvp => kvp.Value.AmISuffix(data, kvp.Key));
         }
-        
+
         //the function returns a list of all shortest words whose "this" node is their prefix (e.g. "intern", "interim", but not "interns" will be returned for "inter")
         public IEnumerable<StringAlignmentData> ExpandSuffixes()
         {
             var d = new StringAlignmentData(this);
             return SearchSons(d);
         }
-
-
-
-        /* UNUSED CODE - in working order.
-        
-         * //public IEnumerable<string> Values() { return m_Values;  }
-        //private IEnumerable<TrieNode> Children() { return m_Children.Values; } //nodes of the children (i.e. the values of the dictionary}
-         * 
-        protected virtual IEnumerable<string> Retrieve(string query, int position)
-        {
-            return
-                EndOfString(position, query)
-                    ? ValuesClose() // ValuesDeep() // SEFI - changed from returning the values in the entire subtree of query to the closest values in the subtree
-                    : SearchDeep(query, position);
-        }
-
-        protected virtual IEnumerable<string> SearchDeep(string query, int position)
-        {
-            TrieNode nextNode = GetChildOrNull(query, position);
-            return nextNode != null
-                       ? nextNode.Retrieve(query, position + 1)
-                       : Enumerable.Empty<string>();
-        }
-
-        private IEnumerable<string> ValuesClose()
-        {
-            return Children().SelectMany(t => t.ValuesOrNull() ?? t.ValuesClose());
-        }
-
-        //if no value, return null. otherwise return the values sequence.
-        private IEnumerable<string> ValuesOrNull()
-        {
-            foreach (var c in Values()) { return Values(); }
-            return null;
-        }
-     
-        private IEnumerable<string> ValuesDeep()
-        {
-            return
-                Subtree()
-                    .SelectMany(node => node.Values());
-        }
-
-        protected IEnumerable<TrieNode> Subtree()
-        {
-
-            return
-                Enumerable.Repeat(this, 1)
-                    .Concat(Children().SelectMany(child => child.Subtree()));
-        }
-             
-      */
     }
 }
-

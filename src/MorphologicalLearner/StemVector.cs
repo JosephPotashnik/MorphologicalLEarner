@@ -5,22 +5,23 @@ namespace MorphologicalLearner
 {
     public class StemVector
     {
+        private readonly Dictionary<string, List<string>> m_derivedFormsDic;
         //the stem, and list of all suffixes that apply to the stem.
-        private Dictionary<string, List<string>> m_dic;
-
-
-        private Dictionary<string, List<string>> m_derivedFormsDic;
-        public Dictionary<string, List<string>> StemDic() {  return m_dic; }
+        private readonly Dictionary<string, List<string>> m_dic;
 
         public StemVector()
-	    {
+        {
             m_dic = new Dictionary<string, List<string>>();
             m_derivedFormsDic = new Dictionary<string, List<string>>();
-	    }
+        }
+
+        public Dictionary<string, List<string>> StemDic()
+        {
+            return m_dic;
+        }
 
         public int NumberOfStems()
         {
-
             return m_dic.Keys.Count;
         }
 
@@ -39,6 +40,7 @@ namespace MorphologicalLearner
 
             m_derivedFormsDic[stemName].Add(derivedForm);
         }
+
         public string[] GetAllStems()
         {
             return m_dic.Select(k => k.Key).ToArray();

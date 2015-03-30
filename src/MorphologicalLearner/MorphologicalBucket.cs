@@ -4,8 +4,8 @@ namespace MorphologicalLearner
 {
     public class MorphologicalBucket
     {
-        private Dictionary<string, int> words;
-        private List<string> suffixes;
+        private readonly List<string> suffixes;
+        private readonly Dictionary<string, int> words;
 
         public MorphologicalBucket()
         {
@@ -21,7 +21,7 @@ namespace MorphologicalLearner
 
         public IEnumerable<string> Suffixes()
         {
-            return suffixes; 
+            return suffixes;
         }
 
         public IEnumerable<string> Words()

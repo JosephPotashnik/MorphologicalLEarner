@@ -1,17 +1,14 @@
 ﻿namespace MorphologicalLearner
 {
-    class Program
+    internal class Program
     {
-
-
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var learn = new Learner();
 
             learn.BuildBigramsandTrie();
             learn.BuildMorphologicalMatrix();
             learn.Search();
-
         }
     }
 }

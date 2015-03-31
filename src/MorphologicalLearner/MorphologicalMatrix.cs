@@ -87,7 +87,7 @@ namespace MorphologicalLearner
         private void AddWordsToBuckets(Vector<float>[] Columns, Vector<float>[] ColumnBasis, StemVector stems)
         {
             //sefi - repetition of code. please fix it.
-            int i = 0;
+            var i = 0;
             var suffixDic = new Dictionary<string, int>(); //get name of suffix, return index of the row in the matrix.
             foreach (var s in suffixArray)
                 suffixDic[s] = i++;

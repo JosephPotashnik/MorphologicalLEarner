@@ -12,7 +12,7 @@ namespace MorphologicalLearner
         public StemVector()
         {
             m_dic = new Dictionary<string, List<string>>();
-            m_derivedFormsDic = new Dictionary<string, List<KeyValuePair<string,string>>>();
+            m_derivedFormsDic = new Dictionary<string, List<KeyValuePair<string, string>>>();
         }
 
         public Dictionary<string, List<string>> StemDic()
@@ -36,7 +36,7 @@ namespace MorphologicalLearner
         public void AddDerivedForm(string stemName, KeyValuePair<string, string> derivedFormPair)
         {
             if (!m_derivedFormsDic.ContainsKey(stemName))
-                m_derivedFormsDic[stemName] = new List<KeyValuePair<string,string>>();
+                m_derivedFormsDic[stemName] = new List<KeyValuePair<string, string>>();
 
             m_derivedFormsDic[stemName].Add(derivedFormPair);
         }

@@ -23,7 +23,7 @@ namespace MorphologicalLearner
         public void Add(string key)
         {
             Add(key, 0, key);
-                // the key is both the path to the leaf node and also the value of the leaf node in a morphological learning task.
+            // the key is both the path to the leaf node and also the value of the leaf node in a morphological learning task.
         }
     }
 }

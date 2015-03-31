@@ -20,8 +20,10 @@ namespace MorphologicalLearner
         public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
             //there are two common neighbors graphs: the common neighbors of left words and of right words.
-            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords, BigramManager.LookupDirection.LookToRight, MinCommonNeighbors);
-            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords, BigramManager.LookupDirection.LookToLeft, MinCommonNeighbors);
+            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords,
+                BigramManager.LookupDirection.LookToRight, MinCommonNeighbors);
+            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords,
+                BigramManager.LookupDirection.LookToLeft, MinCommonNeighbors);
         }
 
         //this function gets two sets of words as arguments that represent a bipartite graph, and returns a common neighbors graph

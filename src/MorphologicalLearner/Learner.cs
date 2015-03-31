@@ -11,7 +11,6 @@ namespace MorphologicalLearner
         private const string EndOfSentence = " #endS#";
         private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
         private const int minCommonNeighbors = 3;
-
         private const float minimalFreq = 0.005f;
         private readonly BigramManager m_BigramManager;
         private readonly StemVector m_StemVector;
@@ -102,7 +101,8 @@ namespace MorphologicalLearner
 
                         //to stem vector, add the stem, the suffix and the derived form.
                         m_StemVector.Add(fatherName, data.Difference);
-                        m_StemVector.AddDerivedForm(fatherName, new KeyValuePair < string, string>(sonName, data.Difference));
+                        m_StemVector.AddDerivedForm(fatherName,
+                            new KeyValuePair<string, string>(sonName, data.Difference));
                     }
                 }
             }
@@ -141,7 +141,7 @@ namespace MorphologicalLearner
             //first, find seed in the morphological matrix.
             var seedBucketIndex = m_mat.FindSeed();
 
-            Console.WriteLine("{0}",string.Join(",", m_buckets[seedBucketIndex].Suffixes().ToArray()));
+            Console.WriteLine("{0}", string.Join(",", m_buckets[seedBucketIndex].Suffixes().ToArray()));
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
 
@@ -156,11 +156,11 @@ namespace MorphologicalLearner
             var sccRight = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
             var sccLeft = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
 
-            foreach (var component in sccRight)
+            foreach (var component in sccLeft)
             {
                 if (component.Count > 10)
                 {
-                    string s = string.Join(", ", component.Keys.ToArray());
+                    var s = string.Join(", ", component.Keys.ToArray());
                     Console.WriteLine("{0}", s);
                 }
             }

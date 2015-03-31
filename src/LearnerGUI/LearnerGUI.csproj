@@ -34,27 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GraphX.PCL.Common">
-      <HintPath>..\packages\GraphX.2.1.7\lib\net40-client\GraphX.PCL.Common.dll</HintPath>
+    <Reference Include="Microsoft.Msagl">
+      <HintPath>..\packages\MSAGL\Microsoft.Msagl.dll</HintPath>
     </Reference>
-    <Reference Include="GraphX.PCL.Logic">
-      <HintPath>..\packages\GraphX.2.1.7\lib\net40-client\GraphX.PCL.Logic.dll</HintPath>
+    <Reference Include="Microsoft.Msagl.Drawing">
+      <HintPath>..\packages\MSAGL\Microsoft.Msagl.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="GraphX.WPF.Controls">
-      <HintPath>..\packages\GraphX.2.1.7\lib\net40-client\GraphX.WPF.Controls.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Msagl.GraphViewerGdi">
+      <HintPath>..\packages\MSAGL\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
-    <Reference Include="QuickGraph">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Data">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Graphviz">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Graphviz.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Serialization">
-      <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Serialization.dll</HintPath>
+    <Reference Include="Microsoft.Msagl.WpfGraphControl">
+      <HintPath>..\packages\MSAGL\Microsoft.Msagl.WpfGraphControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -71,21 +61,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="LearnerGUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="LearnerGUI.xaml.cs">
+      <DependentUpon>LearnerGUI.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -107,7 +88,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

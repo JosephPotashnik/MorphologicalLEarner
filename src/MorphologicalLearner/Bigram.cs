@@ -5,7 +5,6 @@ namespace MorphologicalLearner
 {
     public class BigramManager
     {
-
         public enum LookupDirection
         {
             LookToLeft,
@@ -105,14 +104,13 @@ namespace MorphologicalLearner
                 ? firstWordDictionary[firstword].Keys
                 : Enumerable.Empty<string>());
         }
+
         public IEnumerable<string> IntersectTwoWords(string word1, string word2, LookupDirection dir)
         {
             if (dir == LookupDirection.LookToRight)
                 return IntersectTwoFirstWords(word1, word2);
-            else
-                return IntersectTwoSecondWords(word1, word2);
+            return IntersectTwoSecondWords(word1, word2);
         }
-
 
         public IEnumerable<string> IntersectTwoFirstWords(string firstWord1, string firstWord2)
         {

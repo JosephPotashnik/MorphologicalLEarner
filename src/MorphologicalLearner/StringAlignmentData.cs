@@ -29,6 +29,6 @@
         {
             get { return _difference; }
             set { _difference = value; }
-        } //for now it will be just a string, later it will have to be something more complicated.
+        }
     }
 }

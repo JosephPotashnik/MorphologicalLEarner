@@ -9,7 +9,8 @@ namespace MorphologicalLearner
         [STAThread]
         private static void Main(string[] args)
         {
-            var learn = new Learner();
+            string filenname = "David Copperfield";
+            var learn = new Learner(filenname);
 
             learn.BuildBigramsandTrie();
             learn.BuildMorphologicalMatrix();

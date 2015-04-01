@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace MorphologicalLearner
 {
@@ -9,7 +10,7 @@ namespace MorphologicalLearner
     {
         private const string BeginOfSentence = "#beginS# ";
         private const string EndOfSentence = " #endS#";
-        private const string TrainingCorpusFileName = @"..\..\..\..\input texts\David Copperfield.txt";
+        private const string TrainingCorpusFileDirectory= @"..\..\..\..\input texts\";
         private const int minCommonNeighbors = 3;
         private const float minimalFreq = 0.005f;
         private readonly BigramManager m_BigramManager;
@@ -21,9 +22,11 @@ namespace MorphologicalLearner
         private MorphologicalMatrix m_mat;
         private CommonNeighborsGraph neighborGraph;
         private Dictionary<string, List<int>> WordsInPOS;
+        private string m_FileName;
 
-        public Learner()
+        public Learner(string fileName)
         {
+            m_FileName = fileName;
             m_trie = new Trie();
             m_BigramManager = new BigramManager();
             m_SuffixVector = new SuffixVector();
@@ -34,10 +37,23 @@ namespace MorphologicalLearner
             WordsInPOS = new Dictionary<string, List<int>>();
         }
 
+        public void Learn()
+        {
+
+            BuildBigramsandTrie();
+            BuildMorphologicalMatrix();
+            Search();
+
+        }
         public CommonNeighborsGraph NeighborGraph { get; set; }
 
         public void BuildBigramsandTrie()
         {
+
+            string TrainingCorpusFileName = TrainingCorpusFileDirectory + m_FileName + ".txt";
+            string TrainingCorpusNeighboursToRightFileName = TrainingCorpusFileDirectory + m_FileName + "RightNeighbors.json";
+            string TrainingCorpusNeighboursToLeftFileName = TrainingCorpusFileDirectory + m_FileName + "LeftNeighbors.json";
+
             //read sentences. (usused delimiters for sentence level: ' ' and '-')
             var sentenceDelimiters = new[]
             {'\r', '\n', '(', ')', '?', ',', '*', '.', ';', '!', '\\', '/', ':', '"', '—'};
@@ -69,6 +85,37 @@ namespace MorphologicalLearner
                     //the bucket index (nonnegative integer) is computed later. -1 = unclassified.
                     WordsInBuckets[sentenceWords[k]] = -1;
                 }
+            }
+
+            ReadOrWriteBigramNeighbors(TrainingCorpusNeighboursToRightFileName, TrainingCorpusNeighboursToLeftFileName);
+
+        }
+
+        private void ReadOrWriteBigramNeighbors(string TrainingCorpusNeighboursToRightFileName,
+            string TrainingCorpusNeighboursToLeftFileName)
+        {
+            if (!File.Exists(TrainingCorpusNeighboursToRightFileName))
+            {
+                //this stage may take awfully long time.
+                m_BigramManager.ComputeAllCommonNeighbors(BigramManager.LookupDirection.LookToRight, TrainingCorpusNeighboursToRightFileName);
+
+
+            }
+            else
+            {
+                //read
+            }
+
+
+            if (!File.Exists(TrainingCorpusNeighboursToLeftFileName))
+            {
+                m_BigramManager.ComputeAllCommonNeighbors(BigramManager.LookupDirection.LookToLeft, TrainingCorpusNeighboursToLeftFileName);
+
+    
+            }
+            else
+            {
+                //read
             }
         }
 
@@ -155,15 +202,6 @@ namespace MorphologicalLearner
 
             var sccRight = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
             var sccLeft = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
-
-            foreach (var component in sccLeft)
-            {
-                if (component.Count > 10)
-                {
-                    var s = string.Join(", ", component.Keys.ToArray());
-                    Console.WriteLine("{0}", s);
-                }
-            }
         }
     }
 }

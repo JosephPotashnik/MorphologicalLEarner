@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace MorphologicalLearner
 {
@@ -26,6 +29,7 @@ namespace MorphologicalLearner
 
         public void Add(string word1, string word2)
         {
+
             if (firstWordDictionary.ContainsKey(word1))
             {
                 var val = firstWordDictionary[word1];
@@ -144,6 +148,67 @@ namespace MorphologicalLearner
         {
             var l = GetAllWordsBeforeWord(given.First());
             return given.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
+        }
+
+        /*public class CommonNeighbors
+        {
+            public List<CommonNeighborsEntry> Entries { get; set; }
+            public LookupDirection Direction { get; set; }
+        }*/
+        
+        public class CommonNeighborsEntry
+        {
+            public string Word1 { get; set; }
+            public string Word2 { get; set; }
+            public string[] CommonNeighbors { get; set; }
+        }
+
+        public void ComputeAllCommonNeighbors(LookupDirection direction, string fileName)
+        {
+            //get all first words.
+            string[] words;
+            if (direction == LookupDirection.LookToRight)
+                words = firstWordDictionary.Keys.ToArray();
+            else
+                words = secondWordDictionary.Keys.ToArray();
+
+            Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+            foreach (var word1 in words)
+            {
+                List<CommonNeighborsEntry> entriesForWord1 = new List<CommonNeighborsEntry>();
+                Console.WriteLine("writing common neighbors for all neighbors of {0}", word1);
+
+                foreach (var word2 in words)
+                {
+
+                    if (word1 == word2) continue;
+
+                    CommonNeighborsEntry entry = new CommonNeighborsEntry {Word1 = word1, Word2 = word2};
+
+                    if (string.Compare(word1, word2) > 0) //word1 is greater than word2, switch strings/
+                    {
+                        entry.Word1 = word2;
+                        entry.Word2 = word1;
+                    }
+
+                    //if we already scanned these words, skip.
+                    if (dic.ContainsKey(entry.Word1) && dic[entry.Word1].ContainsKey(entry.Word2))
+                        continue;
+
+                    if (!dic.ContainsKey(entry.Word1))
+                        dic[entry.Word1] = new Dictionary<string, int>();
+
+                    //push into dictionary to keep track of scanned pairs.
+                    dic[entry.Word1][entry.Word2] = 1;
+                    //compute common neighbors
+
+                    entry.CommonNeighbors = IntersectTwoWords(entry.Word1, entry.Word2, direction).ToArray();
+                    entriesForWord1.Add(entry);
+                }
+
+                string new_json = JsonConvert.SerializeObject(entriesForWord1);
+                File.AppendAllText(fileName, new_json);
+            }
         }
     }
 }

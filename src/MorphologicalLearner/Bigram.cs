@@ -110,21 +110,45 @@ namespace MorphologicalLearner
                 : Enumerable.Empty<string>());
         }
 
-        public IEnumerable<string> IntersectTwoWords(string word1, string word2, LookupDirection dir)
+        public string[] IntersectTwoWords(string word1, string word2, LookupDirection dir)
         {
             if (dir == LookupDirection.LookToRight)
                 return IntersectTwoFirstWords(word1, word2);
             return IntersectTwoSecondWords(word1, word2);
         }
 
-        public IEnumerable<string> IntersectTwoFirstWords(string firstWord1, string firstWord2)
+        public string[] IntersectTwoFirstWords(string firstWord1, string firstWord2)
         {
-            return GetAllWordsAfterWord(firstWord1).Intersect(GetAllWordsAfterWord(firstWord2));
+            //return GetAllWordsAfterWord(firstWord1).Intersect(GetAllWordsAfterWord(firstWord2));
+
+            return GetAllWordsAfterWord(firstWord1).ToArray().Intersect(GetAllWordsAfterWord(firstWord2).ToArray()).ToArray();
+
+            //var commonNeighborsList = new List<string>();
+
+            //foreach (var secondword in firstWordDictionary[firstWord1].Keys)
+            //{
+            //    if (secondWordDictionary[secondword].ContainsKey(firstWord2))
+            //    commonNeighborsList.Add(secondword);
+            //}
+            //return commonNeighborsList;
         }
 
-        public IEnumerable<string> IntersectTwoSecondWords(string secondWord1, string secondWord2)
+        public string[] IntersectTwoSecondWords(string secondWord1, string secondWord2)
         {
-            return GetAllWordsBeforeWord(secondWord1).Intersect(GetAllWordsBeforeWord(secondWord2));
+            //return GetAllWordsBeforeWord(secondWord1).Intersect(GetAllWordsBeforeWord(secondWord2));
+
+            return GetAllWordsBeforeWord(secondWord1).ToArray().Intersect(GetAllWordsBeforeWord(secondWord2).ToArray()).ToArray();
+
+
+            //var commonNeighborsList = new List<string>();
+
+            //foreach (var firstword in secondWordDictionary[secondWord1].Keys)
+            //{
+            //    if (firstWordDictionary[firstword].ContainsKey(secondWord2))
+            //        commonNeighborsList.Add(firstword);
+            //}
+            //return commonNeighborsList;
+
         }
 
         public IEnumerable<string> GetIntersectOfBigramsWithFirstWords(IEnumerable<string> given)

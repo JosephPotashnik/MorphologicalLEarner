@@ -33,9 +33,6 @@ namespace MorphologicalLearner
             string[] otherWords, BigramManager.LookupDirection dir, int MinCommonNeighbors)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
-
-            foreach (var word1 in theseWords)
-                commonNeighborsGraph[word1] = new Dictionary<string, int>();
             var commonNeighbors = 0;
             Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
 
@@ -63,6 +60,13 @@ namespace MorphologicalLearner
                     //add to common neighbors graph only if meets threshold.
                     if (commonNeighbors >= MinCommonNeighbors)
                     {
+
+                        if (!commonNeighborsGraph.ContainsKey(word1)) 
+                            commonNeighborsGraph[word1] = new Dictionary<string, int>();
+
+                        if (!commonNeighborsGraph.ContainsKey(word2))
+                            commonNeighborsGraph[word2] = new Dictionary<string, int>();
+
                         commonNeighborsGraph[word1][word2] = commonNeighbors;
                         commonNeighborsGraph[word2][word1] = commonNeighbors;
                     }

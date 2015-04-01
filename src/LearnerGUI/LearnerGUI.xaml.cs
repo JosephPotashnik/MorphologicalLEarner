@@ -36,6 +36,7 @@ using System.Windows.Input;
 using Microsoft.Msagl.Core.Routing;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
+using Microsoft.Msagl.Layout.MDS;
 using Microsoft.Msagl.WpfGraphControl;
 using MorphologicalLearner;
 using ModifierKeys = System.Windows.Input.ModifierKeys;
@@ -182,7 +183,7 @@ namespace LearnerGUI
             try
             {
                 var graph = new Graph();
-
+                graph.LayoutAlgorithmSettings = new MdsLayoutSettings();
                 learner.Learn();
 
                 var g = learner.NeighborGraph.RightWordsNeighborhoods;
@@ -216,8 +217,9 @@ namespace LearnerGUI
                 graph.Attr.LayerDirection = LayerDirection.LR;
                 
                  graph.LayoutAlgorithmSettings.EdgeRoutingSettings.RouteMultiEdgesAsBundles = true;
-                graph.LayoutAlgorithmSettings.EdgeRoutingSettings.EdgeRoutingMode = EdgeRoutingMode.SplineBundling;
+                //graph.LayoutAlgorithmSettings.EdgeRoutingSettings.EdgeRoutingMode = EdgeRoutingMode.SplineBundling;
                 //layout the graph and draw it
+
                 graphViewer.Graph = graph;
             }
             catch (Exception e)

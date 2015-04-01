@@ -91,7 +91,6 @@ namespace LearnerGUI
             //CreateAndLayoutAndDisplayGraph(null, null);
             //graphViewer.MainPanel.MouseLeftButtonUp += TestApi;
 
-
             learner = new Learner("David Copperfield");
 
             appWindow.Show();
@@ -187,25 +186,35 @@ namespace LearnerGUI
                 learner.Learn();
 
                 var g = learner.NeighborGraph.RightWordsNeighborhoods;
+                Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+
                 HashSet<string> visitedNodes = new HashSet<string>();
-                foreach (var node in g.Keys)
+
+                foreach (var word1 in g.Keys)
                 {
-                    visitedNodes.Add(node);
-                    foreach (var outnode in g[node].Keys)
+                    visitedNodes.Add(word1);
+                    foreach (var word2 in g[word1].Keys)
                     {
-                            graph.AddEdge(node, outnode);
+
+                        if (word1 == word2)
+                            continue;
+
+                        //if we already scanned these words in the opposite order, skip.
+                        if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
+                            continue;
+
+                        if (!dic.ContainsKey(word1))
+                            dic[word1] = new Dictionary<string, int>();
+
+                        //push into dictionary to keep track of scanned pairs.
+                        dic[word1][word2] = 1;
+                        var e = graph.AddEdge(word1, word2);
+                        e.Attr.ArrowheadAtTarget = ArrowStyle.None;
                     }
                 }
 
-                foreach (var node in g.Keys)
-                {
-                    visitedNodes.Add(node);
-                    foreach (var outnode in g[node].Keys)
-                    {
-                        graph.AddEdge(node, outnode);
-                    }
-                }
                 graph.Attr.LayerDirection = LayerDirection.LR;
+                
                  graph.LayoutAlgorithmSettings.EdgeRoutingSettings.RouteMultiEdgesAsBundles = true;
                 graph.LayoutAlgorithmSettings.EdgeRoutingSettings.EdgeRoutingMode = EdgeRoutingMode.SplineBundling;
                 //layout the graph and draw it

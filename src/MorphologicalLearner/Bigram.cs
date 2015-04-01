@@ -176,6 +176,9 @@ namespace MorphologicalLearner
 
         public void ComputeAllCommonNeighbors(LookupDirection direction, string fileName)
         {
+            FileStream fileStream = new FileStream(fileName, FileMode.Append);
+            var bFormatter = new BinaryFormatter();
+
             //get all first words.
             string[] words;
             if (direction == LookupDirection.LookToRight)
@@ -184,13 +187,15 @@ namespace MorphologicalLearner
                 words = secondWordDictionary.Keys.ToArray();
 
             Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+            NeighborsOfWord[] allEntries = new NeighborsOfWord[words.Count()];
+            List<CommonNeighborsEntry>[] allLists = new List<CommonNeighborsEntry>[words.Count()];
             int i = 0;
             foreach (var word1 in words)
             {
-                i++;
-                NeighborsOfWord entriesForWord1 = new NeighborsOfWord();
-                entriesForWord1.Word = word1;
-                var list = new List<CommonNeighborsEntry>();
+                allEntries[i] = new NeighborsOfWord();
+                allEntries[i].Word = word1;
+                allLists[i] = new List<CommonNeighborsEntry>();
+
                 Console.WriteLine("writing common neighbors for all neighbors of {0}", word1);
                 Console.WriteLine("{0} out of {1}", i.ToString(), words.Count().ToString());
 
@@ -209,42 +214,43 @@ namespace MorphologicalLearner
                     //push into dictionary to keep track of scanned pairs.
                     dic[word1][word2] = 1;
 
-                    CommonNeighborsEntry entry = new CommonNeighborsEntry { Word1 = word1, Word2 = word2 };
-
-                    //compute common neighbors
-                    entry.CommonNeighbors = IntersectTwoWords(word1, word2, direction).ToArray();
-                    entry.Count = entry.CommonNeighbors.Count();
+                    var neighbors = IntersectTwoWords(word1, word2, direction).ToArray();
 
                     //if no common neighbors, don't write
-                    if (entry.Count > 0)
-                        list.Add(entry);
+                    if (neighbors.Any())
+                    {
+                        string[] n = neighbors.ToArray();
+
+                        allLists[i].Add(new CommonNeighborsEntry
+                        {
+                            Word1 = word1,
+                            Word2 = word2,
+                            CommonNeighbors = n,
+                            Count = n.Count()
+                        });
+                    }
                 }
 
-                entriesForWord1.Count = list.Count;
-                entriesForWord1.ListOfNeighbors = list.ToArray();
+                allEntries[i].Count = allLists[i].Count;
+                allEntries[i].ListOfNeighbors = allLists[i].ToArray();
 
-                WriteToNeighborFile(fileName, entriesForWord1);
-
-
-                //the next code is possibly useless. 
+                //dispose of current loop data.
                 {
-                    list.Clear();
-                    list = null;
+                    allLists[i].Clear();
+                    allLists[i] = null;
 
-                    entriesForWord1.ListOfNeighbors = null;
-                    entriesForWord1 = null;
+                   // allEntries[i].ListOfNeighbors = null;
+                    //allEntries[i] = null;
                 }
 
-            }
-        }
+                i++;
 
-        private static void WriteToNeighborFile(string fileName, NeighborsOfWord entriesForWord1)
-        {
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Append))
-            {
-                var bFormatter = new BinaryFormatter();
-                bFormatter.Serialize(fileStream, entriesForWord1);
             }
-        }
+
+            for(int k=0;k<words.Count();++k)
+                //write to file.
+                bFormatter.Serialize(fileStream, allEntries[k]); 
+
+        }    
     }
 }

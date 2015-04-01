@@ -87,7 +87,8 @@ namespace MorphologicalLearner
                 }
             }
 
-            ReadOrWriteBigramNeighbors(TrainingCorpusNeighboursToRightFileName, TrainingCorpusNeighboursToLeftFileName);
+            //not in working order!
+            //ReadOrWriteBigramNeighbors(TrainingCorpusNeighboursToRightFileName, TrainingCorpusNeighboursToLeftFileName);
 
         }
 

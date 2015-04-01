@@ -37,14 +37,24 @@ namespace MorphologicalLearner
             foreach (var word1 in theseWords)
                 commonNeighborsGraph[word1] = new Dictionary<string, int>();
             var commonNeighbors = 0;
+            Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
 
             foreach (var word1 in theseWords)
             {
                 foreach (var word2 in theseWords)
                 {
-                    if ((word1 == word2) ||
-                        commonNeighborsGraph[word1].ContainsKey(word2))
+                    if (word1 == word2)
                         continue;
+
+                    //if we already scanned these words in the opposite order, skip.
+                    if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
+                        continue;
+
+                    if (!dic.ContainsKey(word1))
+                        dic[word1] = new Dictionary<string, int>();
+
+                    //push into dictionary to keep track of scanned pairs.
+                    dic[word1][word2] = 1;
 
                     //(we may be interested not in all possible words to the right/left (which is what IntesectTwoWords() returns)
                     //but only in some morphological subset of them).
@@ -67,12 +77,7 @@ namespace MorphologicalLearner
         {
             var Components = new List<Dictionary<string, Dictionary<string, int>>>();
             //get all vertices.
-            var nodes =
-                graph.Keys.Select(node => graph[node].Keys)
-                    .Aggregate<Dictionary<string, int>.KeyCollection, IEnumerable<string>>(graph.Keys,
-                        (current, values) => current.Union(values));
-
-            var unvisitedNodes = new HashSet<string>(nodes);
+            var unvisitedNodes = new HashSet<string>(graph.Keys);
 
             var ComponentNodesToVisit = new Queue<string>();
 

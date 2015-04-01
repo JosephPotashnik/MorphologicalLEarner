@@ -51,8 +51,8 @@ namespace MorphologicalLearner
         {
 
             string TrainingCorpusFileName = TrainingCorpusFileDirectory + m_FileName + ".txt";
-            string TrainingCorpusNeighboursToRightFileName = TrainingCorpusFileDirectory + m_FileName + "RightNeighbors.json";
-            string TrainingCorpusNeighboursToLeftFileName = TrainingCorpusFileDirectory + m_FileName + "LeftNeighbors.json";
+            string TrainingCorpusNeighboursToRightFileName = TrainingCorpusFileDirectory + m_FileName + "RightNeighbors.bin";
+            string TrainingCorpusNeighboursToLeftFileName = TrainingCorpusFileDirectory + m_FileName + "LeftNeighbors.bin";
 
             //read sentences. (usused delimiters for sentence level: ' ' and '-')
             var sentenceDelimiters = new[]

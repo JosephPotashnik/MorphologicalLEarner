@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 
 namespace MorphologicalLearner
@@ -155,11 +156,21 @@ namespace MorphologicalLearner
             public List<CommonNeighborsEntry> Entries { get; set; }
             public LookupDirection Direction { get; set; }
         }*/
-        
+               
+        [Serializable()]
+        public class NeighborsOfWord
+        {
+            public string Word { get; set; }
+            public int Count { get; set; }
+            public CommonNeighborsEntry[] ListOfNeighbors { get; set; } 
+
+        }
+        [Serializable()]
         public class CommonNeighborsEntry
         {
             public string Word1 { get; set; }
             public string Word2 { get; set; }
+            public int Count { get; set; }
             public string[] CommonNeighbors { get; set; }
         }
 
@@ -173,41 +184,66 @@ namespace MorphologicalLearner
                 words = secondWordDictionary.Keys.ToArray();
 
             Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+            int i = 0;
             foreach (var word1 in words)
             {
-                List<CommonNeighborsEntry> entriesForWord1 = new List<CommonNeighborsEntry>();
+                i++;
+                NeighborsOfWord entriesForWord1 = new NeighborsOfWord();
+                entriesForWord1.Word = word1;
+                var list = new List<CommonNeighborsEntry>();
                 Console.WriteLine("writing common neighbors for all neighbors of {0}", word1);
+                Console.WriteLine("{0} out of {1}", i.ToString(), words.Count().ToString());
 
                 foreach (var word2 in words)
                 {
 
                     if (word1 == word2) continue;
 
-                    CommonNeighborsEntry entry = new CommonNeighborsEntry {Word1 = word1, Word2 = word2};
-
-                    if (string.Compare(word1, word2) > 0) //word1 is greater than word2, switch strings/
-                    {
-                        entry.Word1 = word2;
-                        entry.Word2 = word1;
-                    }
-
-                    //if we already scanned these words, skip.
-                    if (dic.ContainsKey(entry.Word1) && dic[entry.Word1].ContainsKey(entry.Word2))
+                    //if we already scanned these words in the opposite order, skip.
+                    if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
                         continue;
 
-                    if (!dic.ContainsKey(entry.Word1))
-                        dic[entry.Word1] = new Dictionary<string, int>();
+                    if (!dic.ContainsKey(word1))
+                        dic[word1] = new Dictionary<string, int>();
 
                     //push into dictionary to keep track of scanned pairs.
-                    dic[entry.Word1][entry.Word2] = 1;
-                    //compute common neighbors
+                    dic[word1][word2] = 1;
 
-                    entry.CommonNeighbors = IntersectTwoWords(entry.Word1, entry.Word2, direction).ToArray();
-                    entriesForWord1.Add(entry);
+                    CommonNeighborsEntry entry = new CommonNeighborsEntry { Word1 = word1, Word2 = word2 };
+
+                    //compute common neighbors
+                    entry.CommonNeighbors = IntersectTwoWords(word1, word2, direction).ToArray();
+                    entry.Count = entry.CommonNeighbors.Count();
+
+                    //if no common neighbors, don't write
+                    if (entry.Count > 0)
+                        list.Add(entry);
                 }
 
-                string new_json = JsonConvert.SerializeObject(entriesForWord1);
-                File.AppendAllText(fileName, new_json);
+                entriesForWord1.Count = list.Count;
+                entriesForWord1.ListOfNeighbors = list.ToArray();
+
+                WriteToNeighborFile(fileName, entriesForWord1);
+
+
+                //the next code is possibly useless. 
+                {
+                    list.Clear();
+                    list = null;
+
+                    entriesForWord1.ListOfNeighbors = null;
+                    entriesForWord1 = null;
+                }
+
+            }
+        }
+
+        private static void WriteToNeighborFile(string fileName, NeighborsOfWord entriesForWord1)
+        {
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Append))
+            {
+                var bFormatter = new BinaryFormatter();
+                bFormatter.Serialize(fileStream, entriesForWord1);
             }
         }
     }

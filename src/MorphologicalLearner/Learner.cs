@@ -35,15 +35,14 @@ namespace MorphologicalLearner
             m_buckets = null;
             WordsInBuckets = new Dictionary<string, int>();
             WordsInPOS = new Dictionary<string, List<int>>();
-        }
-
-        public void Learn()
-        {
 
             BuildBigramsandTrie();
             BuildMorphologicalMatrix();
-            Search();
+        }
 
+        public void Learn(int bucketNumber = -1)
+        {
+            Search(bucketNumber);
         }
         public CommonNeighborsGraph NeighborGraph { get; set; }
 
@@ -183,27 +182,21 @@ namespace MorphologicalLearner
             }
         }
 
-        public void Search()
+        public void Search(int bucketNumber)
         {
-            //takes a morphological matrix m_mat and a bigram manager m_BigramManager
+            if (bucketNumber == -1)
+                bucketNumber = m_mat.FindSeed();
 
-            //first, find seed in the morphological matrix.
-            var seedBucketIndex = m_mat.FindSeed();
-
-            Console.WriteLine("{0}", string.Join(",", m_buckets[seedBucketIndex].Suffixes().ToArray()));
+            Console.WriteLine("{0}", string.Join(",", m_buckets[bucketNumber].Suffixes().ToArray()));
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
-            //seedBucketIndex = 18;
-            var rightWords = m_buckets[seedBucketIndex].Words().ToArray();
+            var rightWords = m_buckets[bucketNumber].Words().ToArray();
             Console.WriteLine("{0}", string.Join(",", rightWords));
 
             var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
             neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
             NeighborGraph = neighborGraph;
-
-           // var sccRight = CommonNeighborsGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
-           // var sccLeft = CommonNeighborsGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
         }
 
         public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(Dictionary<string, Dictionary<string, int>> graph)

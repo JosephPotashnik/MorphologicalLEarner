@@ -128,6 +128,7 @@ namespace LearnerGUI
             graphViewer1.MouseDown += WpfApplicationSample_MouseDown;
             graphViewer1.MouseUp += deleteSelected_Click;
 
+
             //CreateAndLayoutAndDisplayGraph(null, null);
             //graphViewer.MainPanel.MouseLeftButtonUp += TestApi;
 
@@ -256,44 +257,35 @@ namespace LearnerGUI
             leftWindow.Show();
         }
 
-        private void ReadLogicalGraph(Graph[] graphs, int i, Dictionary<string, Dictionary<string, int>> logicalGraph)
+        private void ReadLogicalGraph(Graph[] graphs, int i, Dictionary<string, Dictionary<string, int>> g)
         {
             try
             {
                 graphs[i].LayoutAlgorithmSettings = new MdsLayoutSettings();
-
-                var listOfComponents = learner.StronglyConnectedComponents(logicalGraph);
-
                 Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
-
-                HashSet<string> visitedNodes = new HashSet<string>();
-
-                foreach (var g in listOfComponents)
+                foreach (var word1 in g.Keys)
                 {
-                    foreach (var word1 in g.Keys)
+                    foreach (var word2 in g[word1].Keys)
                     {
-                        visitedNodes.Add(word1);
-                        foreach (var word2 in g[word1].Keys)
-                        {
-                            if (word1 == word2)
-                                continue;
+                        if (word1 == word2)
+                            continue;
 
-                            //if we already scanned these words in the opposite order, skip.
-                            if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
-                                continue;
+                        //if we already scanned these words in the opposite order, skip.
+                        if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
+                            continue;
 
-                            if (!dic.ContainsKey(word1))
-                                dic[word1] = new Dictionary<string, int>();
+                        if (!dic.ContainsKey(word1))
+                            dic[word1] = new Dictionary<string, int>();
 
-                            //push into dictionary to keep track of scanned pairs.
-                            dic[word1][word2] = 1;
-                            var e = graphs[i].AddEdge(word1, word2);
-                            e.Attr.ArrowheadAtTarget = ArrowStyle.None;
-                            e.Attr.LineWidth *= g[word1][word2]/3;
-                            //the number of common neighbors determines the strength of the edge.
-                        }
+                        //push into dictionary to keep track of scanned pairs.
+                        dic[word1][word2] = 1;
+                        var e = graphs[i].AddEdge(word1, word2);
+                        e.Attr.ArrowheadAtTarget = ArrowStyle.None;
+                        e.Attr.LineWidth *= g[word1][word2]/3;
+                        //the number of common neighbors determines the strength of the edge.
                     }
                 }
+
                 graphs[i].Attr.LayerDirection = LayerDirection.LR;
 
                 graphs[i].LayoutAlgorithmSettings.EdgeRoutingSettings.RouteMultiEdgesAsBundles = true;

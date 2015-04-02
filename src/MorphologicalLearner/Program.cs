@@ -11,10 +11,7 @@ namespace MorphologicalLearner
         {
             string filenname = "David Copperfield";
             var learn = new Learner(filenname);
-
-            learn.BuildBigramsandTrie();
-            learn.BuildMorphologicalMatrix();
-            learn.Search();
+            learn.Search(-1);
         }
     }
 }

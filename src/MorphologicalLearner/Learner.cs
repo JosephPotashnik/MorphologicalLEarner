@@ -66,7 +66,7 @@ namespace MorphologicalLearner
             //pad with special being and end of sentences symbols.
             var SentencesWithBeginAndEndSymbols =
                 temp.Where(sentence => sentence.Count() > 1)
-                    .Select(sentence => BeginOfSentence + sentence + EndOfSentence);
+                    .Select(sentence => /*BeginOfSentence +*/ sentence + EndOfSentence);
 
             foreach (var sentence in SentencesWithBeginAndEndSymbols)
             {
@@ -77,7 +77,8 @@ namespace MorphologicalLearner
                 for (var k = 0; k < sentenceWords.Count() - 1; ++k)
                     m_BigramManager.Add(sentenceWords[k], sentenceWords[k + 1]);
 
-                for (var k = 1; k < sentenceWords.Count() - 1; ++k)
+                // if beginS is unused, k begins from 0, not from 1!
+                for (var k = 0; k < sentenceWords.Count() - 1; ++k)
                 {
                     //add each word to trie (skip begin and end of sentence symbols).
                     m_trie.Add(sentenceWords[k]);
@@ -192,7 +193,7 @@ namespace MorphologicalLearner
             Console.WriteLine("{0}", string.Join(",", m_buckets[seedBucketIndex].Suffixes().ToArray()));
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
-
+            //seedBucketIndex = 18;
             var rightWords = m_buckets[seedBucketIndex].Words().ToArray();
             Console.WriteLine("{0}", string.Join(",", rightWords));
 
@@ -201,8 +202,19 @@ namespace MorphologicalLearner
             neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
             NeighborGraph = neighborGraph;
 
-            var sccRight = neighborGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
-            var sccLeft = neighborGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
+           // var sccRight = CommonNeighborsGraph.StronglyConnectedComponents(neighborGraph.RightWordsNeighborhoods);
+           // var sccLeft = CommonNeighborsGraph.StronglyConnectedComponents(neighborGraph.LeftWordsNeighborhoods);
         }
+
+        public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(Dictionary<string, Dictionary<string, int>> graph)
+        {
+            return CommonNeighborsGraph.StronglyConnectedComponents(graph);
+        }
+
+        public void Color(Dictionary<string, Dictionary<string, int>> graph)
+        {
+            
+        }
+
     }
 }

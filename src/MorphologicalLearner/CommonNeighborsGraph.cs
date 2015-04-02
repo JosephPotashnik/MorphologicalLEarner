@@ -44,6 +44,7 @@ namespace MorphologicalLearner
                         continue;
 
                     //if we already scanned these words in the opposite order, skip.
+                    //common neighbors is a symmetric relation.
                     if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
                         continue;
 
@@ -76,7 +77,7 @@ namespace MorphologicalLearner
             return commonNeighborsGraph;
         }
 
-        public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(
+        static public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(
             Dictionary<string, Dictionary<string, int>> graph)
         {
             var Components = new List<Dictionary<string, Dictionary<string, int>>>();

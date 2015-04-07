@@ -105,6 +105,7 @@ namespace GUI
             // clusters.
 
             ClusterCalculator clusterCalculator = new ClusterCalculator();
+            clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
 
             ICollection<Community> clusters =
                 clusterCalculator.CalculateGraphMetrics(graph);

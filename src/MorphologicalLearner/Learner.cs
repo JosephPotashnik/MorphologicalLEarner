@@ -187,11 +187,11 @@ namespace MorphologicalLearner
             if (bucketNumber == -1)
                 bucketNumber = m_mat.FindSeed();
 
-            Console.WriteLine("{0}", string.Join(",", m_buckets[bucketNumber].Suffixes().ToArray()));
+            //Console.WriteLine("{0}", string.Join(",", m_buckets[bucketNumber].Suffixes().ToArray()));
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
             var rightWords = m_buckets[bucketNumber].Words().ToArray();
-            Console.WriteLine("{0}", string.Join(",", rightWords));
+            //Console.WriteLine("{0}", string.Join(",", rightWords));
 
             var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 

@@ -83,11 +83,6 @@ namespace GUI
                     }
                 }
 
-               // graphs[i].Attr.LayerDirection = LayerDirection.LR;
-
-               // graphs[i].LayoutAlgorithmSettings.EdgeRoutingSettings.RouteMultiEdgesAsBundles = true;
-                //graph.LayoutAlgorithmSettings.EdgeRoutingSettings.EdgeRoutingMode = EdgeRoutingMode.SplineBundling;
-                //layout the graph and draw it
             }
             catch (Exception e)
             {

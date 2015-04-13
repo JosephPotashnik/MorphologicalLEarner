@@ -27,79 +27,15 @@ namespace GUI
             CreateAndShowGroups();
         }
 
-        private IVertex GetorAddVertex(string word, Dictionary<string, IVertex> addedVertices, IGraph graph)
-        {
-            IVertex ver;
-            if (!addedVertices.ContainsKey(word))
-            {
-                ver = new Vertex();
-                addedVertices[word] = ver;
-
-                ver.SetValue(ReservedMetadataKeys.PerVertexShape,
-           VertexShape.Label);
-
-                ver.SetValue(ReservedMetadataKeys.PerVertexLabel, word);
-
-
-
-                graph.Vertices.Add(ver);
-            }
-            else
-                ver = addedVertices[word];
-
-            return ver;
-        }
-        private IGraph ReadLogicalGraph(Dictionary<string, Dictionary<string, int>> g)
-        {
-             IGraph graph = new Graph(GraphDirectedness.Undirected);
-            try
-            {
-                var addedVertices = new Dictionary<string, IVertex>();
-
-                Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
-                foreach (var word1 in g.Keys)
-                {
-                    foreach (var word2 in g[word1].Keys)
-                    {
-                        if (word1 == word2)
-                            continue;
-
-                        //if we already scanned these words in the opposite order, skip.
-                        if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
-                            continue;
-
-                        if (!dic.ContainsKey(word1))
-                            dic[word1] = new Dictionary<string, int>();
-
-                        //push into dictionary to keep track of scanned pairs.
-                        dic[word1][word2] = 1;
-
-                        IVertex ver1 = GetorAddVertex(word1, addedVertices, graph);
-                        IVertex ver2 = GetorAddVertex(word2, addedVertices, graph);
-                        
-                        IEdge e = graph.Edges.Add(ver1, ver2);
-                        //e.SetValue(ReservedMetadataKeys.EdgeWeight, g[word1][word2]);
-
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.ToString(), "Load Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return graph;
-        }
+        
+        
 
         private void CreateAndShowGroups()
         {
             // Create a new graph.
 
             learner.Learn();
-            var g = learner.NeighborGraph.RightWordsNeighborhoods;
-
-            IGraph graph = ReadLogicalGraph(g);
+            IGraph graph = learner.ReadLogicalGraph();
 
             // Use a ClusterCalculator to partition the graph's vertices into
             // clusters.

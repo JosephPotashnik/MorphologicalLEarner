@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Smrf.NodeXL.Core;
+using Smrf.NodeXL.Algorithms;
+using Smrf.NodeXL.Visualization.Wpf;
+using System.Drawing;
 
 namespace MorphologicalLearner
 {
@@ -25,6 +29,7 @@ namespace MorphologicalLearner
         private CommonNeighborsGraph neighborGraph;
         private Dictionary<string, List<int>> WordsInPOS;
         private string m_FileName;
+        private int m_bucketNumber;
 
         public Learner(string fileName)
         {
@@ -46,6 +51,8 @@ namespace MorphologicalLearner
         {
             Search(bucketNumber);
         }
+
+        
         public CommonNeighborsGraph NeighborGraph { get; set; }
 
         public void BuildBigramsandTrie()
@@ -178,6 +185,7 @@ namespace MorphologicalLearner
 
             //col 4 = {stem, ed, ing}
             MaxCol = 4;
+            m_bucketNumber = MaxCol;
             //row 0 = stem, row 2 = ing, row 4 = ed.
             //MaxRow = 4; 
 
@@ -194,13 +202,97 @@ namespace MorphologicalLearner
 
             neighborGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
             NeighborGraph = neighborGraph;
+
+
         }
 
-
-        public void Color(Dictionary<string, Dictionary<string, int>> graph)
+        private IVertex GetorAddVertex(string word, Dictionary<string, IVertex> addedVertices, IGraph graph, int bucketNumber)
         {
-            
+            System.Drawing.Color[] colors = new[]
+            {
+                System.Drawing.Color.Blue,
+                System.Drawing.Color.Red,
+                System.Drawing.Color.Green,
+                System.Drawing.Color.Black,
+                System.Drawing.Color.Brown,
+                System.Drawing.Color.CadetBlue,
+                System.Drawing.Color.Orange,
+                System.Drawing.Color.Violet,
+                System.Drawing.Color.Teal,
+                System.Drawing.Color.DeepPink,
+                System.Drawing.Color.Cyan,
+                System.Drawing.Color.Crimson,
+                System.Drawing.Color.Coral,
+                System.Drawing.Color.MidnightBlue,
+            };
+
+            IVertex ver;
+            if (!addedVertices.ContainsKey(word))
+            {
+                ver = new Vertex();
+                addedVertices[word] = ver;
+
+                ver.SetValue(ReservedMetadataKeys.PerVertexShape,
+           VertexShape.Label);
+
+                ver.SetValue(ReservedMetadataKeys.PerVertexLabel, word);
+                graph.Vertices.Add(ver);
+
+                int suffixIndex = m_buckets[bucketNumber].GetSuffixIndex(word);
+                ver.SetValue(ReservedMetadataKeys.PerColor, colors[suffixIndex]);
+
+            }
+            else
+                ver = addedVertices[word];
+
+            return ver;
         }
+
+        public IGraph ReadLogicalGraph()
+        {
+            var g = NeighborGraph.RightWordsNeighborhoods;
+
+            IGraph graph = new Graph(GraphDirectedness.Undirected);
+            try
+            {
+                var addedVertices = new Dictionary<string, IVertex>();
+
+                Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+                foreach (var word1 in g.Keys)
+                {
+                    foreach (var word2 in g[word1].Keys)
+                    {
+                        if (word1 == word2)
+                            continue;
+
+                        //if we already scanned these words in the opposite order, skip.
+                        if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
+                            continue;
+
+                        if (!dic.ContainsKey(word1))
+                            dic[word1] = new Dictionary<string, int>();
+
+                        //push into dictionary to keep track of scanned pairs.
+                        dic[word1][word2] = 1;
+
+                        IVertex ver1 = GetorAddVertex(word1, addedVertices, graph, m_bucketNumber);
+                        IVertex ver2 = GetorAddVertex(word2, addedVertices, graph, m_bucketNumber);
+
+                        IEdge e = graph.Edges.Add(ver1, ver2);
+                        //e.SetValue(ReservedMetadataKeys.EdgeWeight, g[word1][word2]);
+
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.ToString(), "Load Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return graph;
+        }
+
 
     }
 }

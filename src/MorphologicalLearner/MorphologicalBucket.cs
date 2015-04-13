@@ -47,6 +47,11 @@ namespace MorphologicalLearner
             return words.Keys.Count;
         }
 
+        public int GetSuffixIndex(string word)
+        {
+            return words[word];
+        }
+
         public void Add(string word, int suffixIndex)
         {
             if (!words.ContainsKey((word)))

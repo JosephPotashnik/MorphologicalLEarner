@@ -43,8 +43,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Smrf.NodeXL.Algorithms">
+      <HintPath>..\NodeXLClassLibraries_1.0.1.332\Smrf.NodeXL.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="Smrf.NodeXL.Control.Wpf">
+      <HintPath>..\NodeXLClassLibraries_1.0.1.332\Smrf.NodeXL.Control.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Smrf.NodeXL.Core">
+      <HintPath>..\NodeXLClassLibraries_1.0.1.332\Smrf.NodeXL.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Smrf.NodeXL.Layouts">
+      <HintPath>..\NodeXLClassLibraries_1.0.1.332\Smrf.NodeXL.Layouts.dll</HintPath>
+    </Reference>
+    <Reference Include="Smrf.NodeXL.Visualization.Wpf">
+      <HintPath>..\NodeXLClassLibraries_1.0.1.332\Smrf.NodeXL.Visualization.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

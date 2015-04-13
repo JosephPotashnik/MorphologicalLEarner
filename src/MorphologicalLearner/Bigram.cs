@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using MathNet.Numerics.LinearAlgebra;
 using Newtonsoft.Json;
 
 namespace MorphologicalLearner
@@ -21,6 +22,11 @@ namespace MorphologicalLearner
         //the second dictionary lists the second word as a key, with all bigrams for which it is the second word
         private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
         //<word2,                     <word1, count>>
+
+
+
+
+
 
         public BigramManager()
         {
@@ -64,16 +70,18 @@ namespace MorphologicalLearner
 
         public bool Exists(string word1, string word2)
         {
+
             return (firstWordDictionary.ContainsKey(word1) &&
                     firstWordDictionary[word1].ContainsKey(word2));
+            
         }
 
-        public int Count(string word1, string word2)
+        /*public int Count(string word1, string word2)
         {
             return (Exists(word1, word2)
                 ? firstWordDictionary[word1][word2]
                 : 0);
-        }
+        }*/
 
         public List<KeyValuePair<KeyValuePair<string, string>, int>> BigramsAboveCountThresholdN(int n)
         {
@@ -119,36 +127,20 @@ namespace MorphologicalLearner
 
         public string[] IntersectTwoFirstWords(string firstWord1, string firstWord2)
         {
-            //return GetAllWordsAfterWord(firstWord1).Intersect(GetAllWordsAfterWord(firstWord2));
-
-            return GetAllWordsAfterWord(firstWord1).ToArray().Intersect(GetAllWordsAfterWord(firstWord2).ToArray()).ToArray();
-
-            //var commonNeighborsList = new List<string>();
-
-            //foreach (var secondword in firstWordDictionary[firstWord1].Keys)
-            //{
-            //    if (secondWordDictionary[secondword].ContainsKey(firstWord2))
-            //    commonNeighborsList.Add(secondword);
-            //}
-            //return commonNeighborsList;
+            return
+                GetAllWordsAfterWord(firstWord1)
+                    .ToArray()
+                    .Intersect(GetAllWordsAfterWord(firstWord2).ToArray())
+                    .ToArray();
         }
 
         public string[] IntersectTwoSecondWords(string secondWord1, string secondWord2)
         {
-            //return GetAllWordsBeforeWord(secondWord1).Intersect(GetAllWordsBeforeWord(secondWord2));
-
-            return GetAllWordsBeforeWord(secondWord1).ToArray().Intersect(GetAllWordsBeforeWord(secondWord2).ToArray()).ToArray();
-
-
-            //var commonNeighborsList = new List<string>();
-
-            //foreach (var firstword in secondWordDictionary[secondWord1].Keys)
-            //{
-            //    if (firstWordDictionary[firstword].ContainsKey(secondWord2))
-            //        commonNeighborsList.Add(firstword);
-            //}
-            //return commonNeighborsList;
-
+            return
+                GetAllWordsBeforeWord(secondWord1)
+                    .ToArray()
+                    .Intersect(GetAllWordsBeforeWord(secondWord2).ToArray())
+                    .ToArray();
         }
 
         public IEnumerable<string> GetIntersectOfBigramsWithFirstWords(IEnumerable<string> given)
@@ -175,106 +167,6 @@ namespace MorphologicalLearner
             return given.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
         }
 
-        /*public class CommonNeighbors
-        {
-            public List<CommonNeighborsEntry> Entries { get; set; }
-            public LookupDirection Direction { get; set; }
-        }*/
-               
-        [Serializable()]
-        public class NeighborsOfWord
-        {
-            public string Word { get; set; }
-            public int Count { get; set; }
-            public CommonNeighborsEntry[] ListOfNeighbors { get; set; } 
-
-        }
-        [Serializable()]
-        public class CommonNeighborsEntry
-        {
-            public string Word1 { get; set; }
-            public string Word2 { get; set; }
-            public int Count { get; set; }
-            public string[] CommonNeighbors { get; set; }
-        }
-
-        public void ComputeAllCommonNeighbors(LookupDirection direction, string fileName)
-        {
-            FileStream fileStream = new FileStream(fileName, FileMode.Append);
-            var bFormatter = new BinaryFormatter();
-
-            //get all first words.
-            string[] words;
-            if (direction == LookupDirection.LookToRight)
-                words = firstWordDictionary.Keys.ToArray();
-            else
-                words = secondWordDictionary.Keys.ToArray();
-
-            Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
-            NeighborsOfWord[] allEntries = new NeighborsOfWord[words.Count()];
-            List<CommonNeighborsEntry>[] allLists = new List<CommonNeighborsEntry>[words.Count()];
-            int i = 0;
-            foreach (var word1 in words)
-            {
-                allEntries[i] = new NeighborsOfWord();
-                allEntries[i].Word = word1;
-                allLists[i] = new List<CommonNeighborsEntry>();
-
-                Console.WriteLine("writing common neighbors for all neighbors of {0}", word1);
-                Console.WriteLine("{0} out of {1}", i.ToString(), words.Count().ToString());
-
-                foreach (var word2 in words)
-                {
-
-                    if (word1 == word2) continue;
-
-                    //if we already scanned these words in the opposite order, skip.
-                    if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
-                        continue;
-
-                    if (!dic.ContainsKey(word1))
-                        dic[word1] = new Dictionary<string, int>();
-
-                    //push into dictionary to keep track of scanned pairs.
-                    dic[word1][word2] = 1;
-
-                    var neighbors = IntersectTwoWords(word1, word2, direction).ToArray();
-
-                    //if no common neighbors, don't write
-                    if (neighbors.Any())
-                    {
-                        string[] n = neighbors.ToArray();
-
-                        allLists[i].Add(new CommonNeighborsEntry
-                        {
-                            Word1 = word1,
-                            Word2 = word2,
-                            CommonNeighbors = n,
-                            Count = n.Count()
-                        });
-                    }
-                }
-
-                allEntries[i].Count = allLists[i].Count;
-                allEntries[i].ListOfNeighbors = allLists[i].ToArray();
-
-                //dispose of current loop data.
-                {
-                    allLists[i].Clear();
-                    allLists[i] = null;
-
-                   // allEntries[i].ListOfNeighbors = null;
-                    //allEntries[i] = null;
-                }
-
-                i++;
-
-            }
-
-            for(int k=0;k<words.Count();++k)
-                //write to file.
-                bFormatter.Serialize(fileStream, allEntries[k]); 
-
-        }    
+     
     }
 }

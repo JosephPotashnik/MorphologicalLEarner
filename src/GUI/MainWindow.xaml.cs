@@ -105,7 +105,9 @@ namespace GUI
             // clusters.
 
             ClusterCalculator clusterCalculator = new ClusterCalculator();
-            clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
+            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
+            clusterCalculator.Algorithm = ClusterAlgorithm.ClausetNewmanMoore;
+
 
             ICollection<Community> clusters =
                 clusterCalculator.CalculateGraphMetrics(graph);
@@ -139,7 +141,7 @@ namespace GUI
 
             // Tell the layout class how to lay out the groups.
             nodeXLControl1.Layout.BoxLayoutAlgorithm =
-                BoxLayoutAlgorithm.ForceDirected;
+                BoxLayoutAlgorithm.Treemap;
 
             // Tell the NodeXLControl to lay out and draw the graph.
             nodeXLControl1.DrawGraph(true);

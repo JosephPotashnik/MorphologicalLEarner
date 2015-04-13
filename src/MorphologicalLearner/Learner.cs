@@ -10,8 +10,10 @@ namespace MorphologicalLearner
     {
         private const string BeginOfSentence = "#beginS# ";
         private const string EndOfSentence = " #endS#";
+        public const string StemSymbol = "###";
+
         private const string TrainingCorpusFileDirectory= @"..\..\..\..\input texts\";
-        private const int minCommonNeighbors = 3;
+        private const int minCommonNeighbors = 4;
         private const float minimalFreq = 0.005f;
         private readonly BigramManager m_BigramManager;
         private readonly StemVector m_StemVector;
@@ -62,12 +64,12 @@ namespace MorphologicalLearner
             //discard empty spaces, lowercase. I will not be concerned with capitalization for now.
             var temp = sentences.Select(sentence => sentence.TrimStart()).Select(sentence => sentence.ToLower());
             //take only sentences that have more than one character (i.e. avoid ". p.s." interpretation as sentences, etc)
-            //pad with special being and end of sentences symbols.
-            var SentencesWithBeginAndEndSymbols =
-                temp.Where(sentence => sentence.Count() > 1)
-                    .Select(sentence => /*BeginOfSentence +*/ sentence + EndOfSentence);
+  
+            var SentencesAboveOneWord =
+                temp.Where(sentence => sentence.Count() > 1);
+                    //.Select(sentence => BeginOfSentence + sentence + EndOfSentence);
 
-            foreach (var sentence in SentencesWithBeginAndEndSymbols)
+            foreach (var sentence in SentencesAboveOneWord)
             {
                 //split to words
                 var sentenceWords = sentence.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
@@ -76,8 +78,7 @@ namespace MorphologicalLearner
                 for (var k = 0; k < sentenceWords.Count() - 1; ++k)
                     m_BigramManager.Add(sentenceWords[k], sentenceWords[k + 1]);
 
-                // if beginS is unused, k begins from 0, not from 1!
-                for (var k = 0; k < sentenceWords.Count() - 1; ++k)
+                for (var k = 0; k < sentenceWords.Count(); ++k)
                 {
                     //add each word to trie (skip begin and end of sentence symbols).
                     m_trie.Add(sentenceWords[k]);
@@ -87,38 +88,8 @@ namespace MorphologicalLearner
                 }
             }
 
-            //not in working order!
-            //ReadOrWriteBigramNeighbors(TrainingCorpusNeighboursToRightFileName, TrainingCorpusNeighboursToLeftFileName);
-
         }
-
-        private void ReadOrWriteBigramNeighbors(string TrainingCorpusNeighboursToRightFileName,
-            string TrainingCorpusNeighboursToLeftFileName)
-        {
-            if (!File.Exists(TrainingCorpusNeighboursToRightFileName))
-            {
-                //this stage may take awfully long time.
-                m_BigramManager.ComputeAllCommonNeighbors(BigramManager.LookupDirection.LookToRight, TrainingCorpusNeighboursToRightFileName);
-
-
-            }
-            else
-            {
-                //read
-            }
-
-
-            if (!File.Exists(TrainingCorpusNeighboursToLeftFileName))
-            {
-                m_BigramManager.ComputeAllCommonNeighbors(BigramManager.LookupDirection.LookToLeft, TrainingCorpusNeighboursToLeftFileName);
-
-    
-            }
-            else
-            {
-                //read
-            }
-        }
+       
 
         private void BuildStemAndSuffixVectors()
         {
@@ -134,7 +105,17 @@ namespace MorphologicalLearner
                 var node = queue.Dequeue();
                 var list = node.ExpandSuffixes();
 
-                foreach (var data in list)
+                if (node != m_trie)
+                {
+                    string stemName = node.ToString();
+                    m_SuffixVector.Add(StemSymbol, stemName);
+                    m_StemVector.AddDerivedForm(node.ToString(),
+                        new KeyValuePair<string, string>(stemName, StemSymbol));
+                    m_StemVector.Add(stemName, StemSymbol);
+
+                }
+
+            foreach (var data in list)
                 {
                     fatherName = data.Father.ToString();
                     sonName = data.Son.ToString();
@@ -147,10 +128,12 @@ namespace MorphologicalLearner
                         //to suffix vector, add the suffix and the stem
                         m_SuffixVector.Add(data.Difference, fatherName);
 
+
                         //to stem vector, add the stem, the suffix and the derived form.
                         m_StemVector.Add(fatherName, data.Difference);
                         m_StemVector.AddDerivedForm(fatherName,
                             new KeyValuePair<string, string>(sonName, data.Difference));
+
                     }
                 }
             }
@@ -184,14 +167,28 @@ namespace MorphologicalLearner
 
         public void Search(int bucketNumber)
         {
-            if (bucketNumber == -1)
-                bucketNumber = m_mat.FindSeed();
 
-            //Console.WriteLine("{0}", string.Join(",", m_buckets[bucketNumber].Suffixes().ToArray()));
+            int MaxRow = 0, MaxCol = 0;
+            if (bucketNumber == -1)
+                m_mat.FindSeed(out MaxCol, out MaxRow);
+
+     
+
+            Console.WriteLine("{0}", string.Join(",", m_buckets[MaxCol].Suffixes().ToArray()));
+
+            //col 4 = {stem, ed, ing}
+            MaxCol = 4;
+            //row 0 = stem, row 2 = ing, row 4 = ed.
+            //MaxRow = 4; 
 
             neighborGraph = new CommonNeighborsGraph(m_BigramManager);
-            var rightWords = m_buckets[bucketNumber].Words().ToArray();
-            //Console.WriteLine("{0}", string.Join(",", rightWords));
+            //var rightWords = m_buckets[MaxCol].WordsOfSuffix(MaxRow).ToArray();
+            var rightWords = m_buckets[MaxCol].Words().ToArray();
+
+            //var morerightWords =  m_buckets[MaxCol].WordsOfSuffix(2).ToArray();
+            //rightWords = rightWords.Union(morerightWords).ToArray();
+
+            Console.WriteLine("{0}", string.Join(",", rightWords));
 
             var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
 
@@ -199,10 +196,6 @@ namespace MorphologicalLearner
             NeighborGraph = neighborGraph;
         }
 
-        public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(Dictionary<string, Dictionary<string, int>> graph)
-        {
-            return CommonNeighborsGraph.StronglyConnectedComponents(graph);
-        }
 
         public void Color(Dictionary<string, Dictionary<string, int>> graph)
         {

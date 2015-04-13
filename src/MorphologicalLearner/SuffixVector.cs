@@ -10,6 +10,7 @@ namespace MorphologicalLearner
         private const string SuffixStatistics = @"..\..\..\..\David Copperfield Suffix Statistics.txt";
         //the suffix, and list of all stems that this suffix applies to.
         private Dictionary<string, List<string>> m_dic;
+        
 
         public SuffixVector()
         {
@@ -25,7 +26,8 @@ namespace MorphologicalLearner
                 m_dic[diff] = new List<string>();
 
             m_dic[diff].Add(stem);
-            Total++;
+            if (diff != Learner.StemSymbol)
+                Total++;
         }
 
         //write functions that return rules passing a certain threshold.
@@ -42,6 +44,7 @@ namespace MorphologicalLearner
         //2. relative frequency threshold: rules that appear more than N/Total times.
         public void LeaveOnlySuffixesAboveFrequencyThreshold(double frequency)
         {
+            var countOfStems = m_dic[Learner.StemSymbol].Count;
             var newdict = m_dic
                 .Where(c => (double) c.Value.Count/Total >= frequency)
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);

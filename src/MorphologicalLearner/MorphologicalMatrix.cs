@@ -39,12 +39,13 @@ namespace MorphologicalLearner
             {
                 foreach (var suffix in kvp.Value)
                 {
-                    //it is possible that the suffix has been omitted from the suffix vector because it was below 
-                    //threshold of consideration.
-                    if (suffixDic.ContainsKey(suffix))
+                    //1. it is possible that the suffix has been omitted from the suffix vector because it was below 
+                    //threshold of consideration. 
+
+
+                    if (suffixDic.ContainsKey(suffix) /*&& suffix != Learner.StemSymbol*/)
                     {
                         Matrix[suffixDic[suffix], stemDic[kvp.Key]] = 1;
-                        //inflectedArray[suffixDic[suffix], stemDic[kvp.Key]] = "";
                     }
                 }
             }
@@ -97,16 +98,17 @@ namespace MorphologicalLearner
                 for (var j = 0; j < ColumnBasis.Count(); ++j)
                 {
                     if (!Columns[k].Equals(ColumnBasis[j])) continue;
-                    buckets[j].Add(stemArray[k]);
+                    
+                    //TEST
+                    //buckets[j].Add(stemArray[k]);
 
                     var derived = stems.GetAllDerivedForms(stemArray[k]);
 
-                    //don't add into bucket if the suffix isn't...
                     foreach (var d in derived)
                     {
                         if (suffixDic.ContainsKey(d.Value))
                             //if the suffix has not been considered in the morphological matrix, don't add
-                            buckets[j].Add(d.Key);
+                            buckets[j].Add(d.Key, suffixDic[d.Value]);
                     }
                     break;
                 }
@@ -184,7 +186,7 @@ namespace MorphologicalLearner
             return NormalizedAmbiguityCounts;
         }
 
-        public int FindSeed()
+        public void FindSeed(out int maxCol, out int maxRow)
         {
             //the seed is a cell in the morphological matrix, A(i,j), which is factored from two components:
             //1. the heaviest bucket, i.e. the number of words having that inflection in this column (initial category)
@@ -214,9 +216,8 @@ namespace MorphologicalLearner
                 weightedMatrix.SetRow(i,
                     weightedMatrix.Row(i).Add(AmbiguityWeight*normalizedAmbiguities[i]));
 
-            int maxRow = 0, maxCol = 0;
             float MaxVal = 0;
-
+            maxRow = maxCol = 0;
             for (var k = 0; k < weightedMatrix.ColumnCount; k++)
             {
                 for (var l = 0; l < weightedMatrix.RowCount; l++)
@@ -231,7 +232,7 @@ namespace MorphologicalLearner
             }
 
             //string suffixSeed = suffixArray[maxRow];
-            return maxCol; //MorphologicalBucket seed = buckets[maxCol];
+          //MorphologicalBucket seed = buckets[maxCol];
         }
 
         public void PrintCategories()

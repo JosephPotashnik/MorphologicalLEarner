@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using MathNet.Numerics.LinearAlgebra;
+using Newtonsoft.Json;
 
 namespace MorphologicalLearner
 {
@@ -12,64 +15,62 @@ namespace MorphologicalLearner
             bigramMan = Man;
             LeftWordsNeighborhoods = new Dictionary<string, Dictionary<string, int>>();
             RightWordsNeighborhoods = new Dictionary<string, Dictionary<string, int>>();
+
         }
 
         public Dictionary<string, Dictionary<string, int>> LeftWordsNeighborhoods { get; private set; }
         public Dictionary<string, Dictionary<string, int>> RightWordsNeighborhoods { get; private set; }
 
+
         public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
+
+            var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
+            var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
+
             //there are two common neighbors graphs: the common neighbors of left words and of right words.
-            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords,
-                BigramManager.LookupDirection.LookToRight, MinCommonNeighbors);
-            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(rightWords, leftWords,
-                BigramManager.LookupDirection.LookToLeft, MinCommonNeighbors);
+            //LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(leftWords, rightWords,
+             //   BigramManager.LookupDirection.LookToRight, MinCommonNeighbors);
+
+
+            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
+                                                                    0,
+                                                                    leftWords.Count(),
+                                                                    MinCommonNeighbors,
+                                                                    leftWords);
+
+
+            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
+                                                                    leftWords.Count(),
+                                                                    leftWords.Count()+rightWords.Count(),
+                                                                    MinCommonNeighbors,
+                                                                    rightWords);
         }
 
         //this function gets two sets of words as arguments that represent a bipartite graph, and returns a common neighbors graph
         //the neighbors are computed for the argument "theseWords", I do not compute the common neighbor graph of the "otherWords".
         //the direction argument signifies "theseWords" should look to their left neighbors or to their right neighbors.
-        private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(string[] theseWords,
-            string[] otherWords, BigramManager.LookupDirection dir, int MinCommonNeighbors)
+        private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(Matrix<float> neighborMatrix,int IndexStart,int IndexEnd, int MinCommonNeighbors, string[] theseWords)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
-            var commonNeighbors = 0;
             Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
 
-            foreach (var word1 in theseWords)
+            for (int i = IndexStart; i < IndexEnd; i++)
             {
-                foreach (var word2 in theseWords)
+                for (int j = i; j < IndexEnd; j++)
                 {
-                    if (word1 == word2)
-                        continue;
+                    if (i == j) continue;
 
-                    //if we already scanned these words in the opposite order, skip.
-                    //common neighbors is a symmetric relation.
-                    if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
-                        continue;
+                    int neighbors = (int)neighborMatrix[i, j];
 
-                    if (!dic.ContainsKey(word1))
-                        dic[word1] = new Dictionary<string, int>();
+                    if (neighbors >= MinCommonNeighbors)
 
-                    //push into dictionary to keep track of scanned pairs.
-                    dic[word1][word2] = 1;
-
-                    //(we may be interested not in all possible words to the right/left (which is what IntesectTwoWords() returns)
-                    //but only in some morphological subset of them).
-                    commonNeighbors = bigramMan.IntersectTwoWords(word1, word2, dir).Intersect(otherWords).Count();
-
-                    //add to common neighbors graph only if meets threshold.
-                    if (commonNeighbors >= MinCommonNeighbors)
                     {
+                        if (!commonNeighborsGraph.ContainsKey(theseWords[i - IndexStart]))
+                            commonNeighborsGraph[theseWords[i - IndexStart]] = new Dictionary<string, int>();
 
-                        if (!commonNeighborsGraph.ContainsKey(word1)) 
-                            commonNeighborsGraph[word1] = new Dictionary<string, int>();
+                        commonNeighborsGraph[theseWords[i - IndexStart]][theseWords[j - IndexStart]] = neighbors;
 
-                        if (!commonNeighborsGraph.ContainsKey(word2))
-                            commonNeighborsGraph[word2] = new Dictionary<string, int>();
-
-                        commonNeighborsGraph[word1][word2] = commonNeighbors;
-                        commonNeighborsGraph[word2][word1] = commonNeighbors;
                     }
                 }
             }
@@ -77,45 +78,48 @@ namespace MorphologicalLearner
             return commonNeighborsGraph;
         }
 
-        static public List<Dictionary<string, Dictionary<string, int>>> StronglyConnectedComponents(
-            Dictionary<string, Dictionary<string, int>> graph)
+
+        public Matrix<float> CreateAdjacencyMatrix(string[] leftwords, string[] rightwords)
         {
-            var Components = new List<Dictionary<string, Dictionary<string, int>>>();
-            //get all vertices.
-            var unvisitedNodes = new HashSet<string>(graph.Keys);
+            int matrixSize = leftwords.Count() + rightwords.Count();
+            var adjacencyMatrix = Matrix<float>.Build.Sparse(matrixSize, matrixSize);
 
-            var ComponentNodesToVisit = new Queue<string>();
 
-            while (unvisitedNodes.Any())
+            int leftwordsCount = leftwords.Count();
+            int rightwordsCount = rightwords.Count();
+            for (int i = 0; i < leftwordsCount; i++)
             {
-                ComponentNodesToVisit.Enqueue(unvisitedNodes.First());
-                var currentComponent = new Dictionary<string, Dictionary<string, int>>();
-
-                while (ComponentNodesToVisit.Any())
+                //the indices of the right words in the neighbor matrix begins after all
+                //the words of left words.
+                for (int j = leftwordsCount; j < leftwordsCount + rightwordsCount; j++)
                 {
-                    var currentNode = ComponentNodesToVisit.Dequeue();
-                    unvisitedNodes.Remove(currentNode);
 
-                    if (graph.ContainsKey(currentNode))
+                    //if we already scanned the inverse order, skip.
+                    if (adjacencyMatrix[i, j] > 0)
+                        continue;
+
+
+                    if (bigramMan.Exists(leftwords[i], rightwords[j - leftwordsCount]))
                     {
-                        if (!currentComponent.ContainsKey(currentNode))
-                        {
-                            var innerDic = new Dictionary<string, int>();
-                            currentComponent[currentNode] = innerDic;
-                        }
-                        foreach (var outNode in graph[currentNode].Keys)
-                        {
-                            currentComponent[currentNode][outNode] = graph[currentNode][outNode];
+                        adjacencyMatrix[i, j] = 1;
+                        adjacencyMatrix[j,i] = 1;
 
-                            if (unvisitedNodes.Contains(outNode))
-                                ComponentNodesToVisit.Enqueue(outNode);
-                        }
                     }
                 }
-                Components.Add(currentComponent);
             }
 
-            return Components;
+            return adjacencyMatrix;
         }
+
+        private Matrix<float> CreateCommonNeighborsMatrix(Matrix<float> adjacencyMatrix)
+        {
+            //the common neightbor matrix is the adjacency matrix squared.
+            var commonNeighborMatrix = Matrix<float>.Build.Sparse(adjacencyMatrix.ColumnCount, adjacencyMatrix.ColumnCount);
+            commonNeighborMatrix = adjacencyMatrix.Power(2);
+            return commonNeighborMatrix;
+
+        }
+
+
     }
 }

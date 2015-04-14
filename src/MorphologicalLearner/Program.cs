@@ -11,7 +11,7 @@ namespace MorphologicalLearner
         {
             string filenname = "David Copperfield";
             var learn = new Learner(filenname);
-            learn.Search(-1);
+            learn.Learn();
         }
     }
 }

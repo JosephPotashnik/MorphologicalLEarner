@@ -69,7 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bigram.cs" />
+    <Compile Include="BigramManager.cs" />
     <Compile Include="CommonNeighborsGraph.cs" />
     <Compile Include="Learner.cs" />
     <Compile Include="MorphologicalMatrix.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="StemVector.cs" />
     <Compile Include="SuffixVector.cs" />
     <Compile Include="StringAlignmentData.cs" />
-    <Compile Include="MorphologicalBucket.cs" />
+    <Compile Include="MorphologicalVector.cs" />
     <Compile Include="Trie.cs" />
     <Compile Include="TrieNode.cs" />
   </ItemGroup>

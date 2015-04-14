@@ -10,12 +10,20 @@ namespace MorphologicalLearner
     public class MorphologicalMatrix
     {
         private const string SuffixDistributions = @"..\..\..\..\David Copperfield Suffix Distributions.txt";
-        private readonly string[] stemArray;
-        private readonly string[] suffixArray;
-        private MorphologicalBucket[] buckets;
+        private string[] stemArray;
+        private string[] suffixArray;
+        private MorphologicalVector[] vectors;
+        public MorphologicalVector GetMorphVector(int index) { return vectors[index]; }
+        //computational matrices
         private Matrix<float> columnBasisMatrix;
 
         public MorphologicalMatrix(StemVector stems, SuffixVector suffixes)
+        {
+            var occMatrix = CreateOccurrencesMatrix(stems, suffixes);
+            InitializeMorphologicalVectors(stems, occMatrix);
+        }
+
+        private Matrix<float> CreateOccurrencesMatrix(StemVector stems, SuffixVector suffixes)
         {
             stemArray = stems.GetAllStems();
             suffixArray = suffixes.GetAllSuffixes();
@@ -31,61 +39,41 @@ namespace MorphologicalLearner
             foreach (var s in suffixArray)
                 suffixDic[s] = i++;
 
-            Matrix = Matrix<float>.Build.Dense(suffixArray.Count(), stemArray.Count());
-            //string[,] inflectedArray = new string[suffixArray.Count(), stemArray.Count()];
+            var occurencesMatrix = Matrix<float>.Build.Dense(suffixArray.Count(), stemArray.Count());
 
             var ListOfStemsWithTheirSuffixes = stems.StemDic();
             foreach (var kvp in ListOfStemsWithTheirSuffixes)
             {
                 foreach (var suffix in kvp.Value)
                 {
-                    //1. it is possible that the suffix has been omitted from the suffix vector because it was below 
+                    //it is possible that the suffix has been omitted from the suffix vector because it was below 
                     //threshold of consideration. 
-
-
                     if (suffixDic.ContainsKey(suffix) /*&& suffix != Learner.StemSymbol*/)
                     {
-                        Matrix[suffixDic[suffix], stemDic[kvp.Key]] = 1;
+                        occurencesMatrix[suffixDic[suffix], stemDic[kvp.Key]] = 1;
                     }
                 }
             }
+
+            return occurencesMatrix;
         }
 
-        public Matrix<float> Matrix { get; private set; }
-
-        private string StemAt(int index)
+        private void InitializeMorphologicalVectors(StemVector stems, Matrix<float> occurencesMatrix)
         {
-            return stemArray[index];
-        }
-
-        private string SuffixAt(int index)
-        {
-            return suffixArray[index];
-        }
-
-        public MorphologicalBucket[] InitializeMorphologicalBuckets(StemVector stems)
-        {
-            var Columns = Matrix.EnumerateColumns().ToArray();
+            var Columns = occurencesMatrix.EnumerateColumns().ToArray();
             var ColumnBasis = Columns.Distinct().ToArray();
             columnBasisMatrix = Matrix<float>.Build.DenseOfColumnVectors(Columns.Distinct());
 
-            //we will take later each bucket to be the first approximation of a syntactic category.
-            //this is a safe assumption as the number of  different attested combinations will be far greater
-            //then the mumber of syntactic categories. if there are elements belonging to different syntactic categories, 
-            //they will have to be recognized as such and serparted in a later stage.
-            buckets = new MorphologicalBucket[ColumnBasis.Count()];
+            vectors = new MorphologicalVector[ColumnBasis.Count()];
+            
+            for (var j = 0; j < ColumnBasis.Count(); ++j)
+                vectors[j] = new MorphologicalVector();
 
-            //create a bucket that represents a certain morphological pattern (i.e. a column in the morphological matrix)
-            //and push inside all the words that match that pattern.
-
-            AddParticipatingSuffixesToBuckets(ColumnBasis);
-
-            AddWordsToBuckets(Columns, ColumnBasis, stems);
-
-            return buckets;
+            //AddParticipatingSuffixesToMorphologicalVectors(ColumnBasis);  //unused; for debugging purposes (writing the suffixes' names)
+            AddWordsToMorphologicalVectors(Columns, ColumnBasis, stems);
         }
 
-        private void AddWordsToBuckets(Vector<float>[] Columns, Vector<float>[] ColumnBasis, StemVector stems)
+        private void AddWordsToMorphologicalVectors(Vector<float>[] Columns, Vector<float>[] ColumnBasis, StemVector stems)
         {
             //sefi - repetition of code. please fix it.
             var i = 0;
@@ -99,28 +87,23 @@ namespace MorphologicalLearner
                 {
                     if (!Columns[k].Equals(ColumnBasis[j])) continue;
                     
-                    //TEST
-                    //buckets[j].Add(stemArray[k]);
-
                     var derived = stems.GetAllDerivedForms(stemArray[k]);
 
                     foreach (var d in derived)
                     {
                         if (suffixDic.ContainsKey(d.Value))
                             //if the suffix has not been considered in the morphological matrix, don't add
-                            buckets[j].Add(d.Key, suffixDic[d.Value]);
+                            vectors[j].AddWord(d.Key, suffixDic[d.Value]);
                     }
                     break;
                 }
             }
         }
 
-        private void AddParticipatingSuffixesToBuckets(Vector<float>[] ColumnBasis)
+        private void AddParticipatingSuffixesToMorphologicalVectors(Vector<float>[] ColumnBasis)
         {
             for (var j = 0; j < ColumnBasis.Count(); ++j)
             {
-                buckets[j] = new MorphologicalBucket();
-
                 //get the suffix strings participating in the current column
                 var SuffixNamesForColumn = ColumnBasis[j].Zip(suffixArray,
                     (f, s) => new {Number = f, SuffixName = s});
@@ -129,32 +112,32 @@ namespace MorphologicalLearner
                     SuffixNamesForColumn.Where(c => c.Number > 0).Select(c => c.SuffixName);
 
                 foreach (var str in listOfSuffixes)
-                    buckets[j].AddSuffix(str);
+                    vectors[j].AddSuffix(str);
             }
         }
 
         private float[] GetNormalizedFrequencies()
         {
-            var numOfCat = buckets.Count();
+            var numOfCat = vectors.Count();
             var normalizedFrequencies = new float[numOfCat];
 
-            var minFreq = buckets[0].Count();
+            var minFreq = vectors[0].Count();
             var maxFreq = minFreq;
 
             //go over the categories and find the min/max frequencies.
             for (var i = 1; i < numOfCat; i++)
             {
-                if (minFreq > buckets[i].Count())
-                    minFreq = buckets[i].Count();
-                if (maxFreq < buckets[i].Count())
-                    maxFreq = buckets[i].Count();
+                if (minFreq > vectors[i].Count())
+                    minFreq = vectors[i].Count();
+                if (maxFreq < vectors[i].Count())
+                    maxFreq = vectors[i].Count();
             }
 
             //once obtained, normalize all frequencies relative to the distance between the min and max freq:
             var distance = maxFreq - minFreq;
 
             for (var i = 0; i < numOfCat; i++)
-                normalizedFrequencies[i] = (buckets[i].Count() - minFreq)/(float) distance;
+                normalizedFrequencies[i] = (vectors[i].Count() - minFreq)/(float) distance;
 
             return normalizedFrequencies;
         }
@@ -186,7 +169,13 @@ namespace MorphologicalLearner
             return NormalizedAmbiguityCounts;
         }
 
-        public void FindSeed(out int maxCol, out int maxRow)
+        private string[] GetAllWordsWithGivenSuffixIndex(int index)
+        {
+            IEnumerable<string> str = Enumerable.Empty<string>();
+            return vectors.Aggregate(str, (current, bucket) => current.Union(bucket.WordsOfSuffix(index))).ToArray();
+        }
+
+        public string[] FindSeed()
         {
             //the seed is a cell in the morphological matrix, A(i,j), which is factored from two components:
             //1. the heaviest bucket, i.e. the number of words having that inflection in this column (initial category)
@@ -199,7 +188,6 @@ namespace MorphologicalLearner
             //2. the ambguity of the cell, i.e if the inflection does not appear in other columns (initial estimation of categories).
             //less ambiguous cells are better 
             var normalizedAmbiguities = GetNormalizedAmbiguities();
-
 
             //for the moment, assuming that the weights of the frequencies and of the ambiguities are the same.
             //we can test the learning for different weights.
@@ -217,7 +205,9 @@ namespace MorphologicalLearner
                     weightedMatrix.Row(i).Add(AmbiguityWeight*normalizedAmbiguities[i]));
 
             float MaxVal = 0;
-            maxRow = maxCol = 0;
+            int maxRow = 0;
+            int maxCol = 0;
+
             for (var k = 0; k < weightedMatrix.ColumnCount; k++)
             {
                 for (var l = 0; l < weightedMatrix.RowCount; l++)
@@ -230,9 +220,22 @@ namespace MorphologicalLearner
                     }
                 }
             }
+            //col 4 = {stem, ed, ing}
+            //MaxCol = 0;
 
-            //string suffixSeed = suffixArray[maxRow];
-          //MorphologicalBucket seed = buckets[maxCol];
+            //row 0 = stem, row 2 = ing, row 4 = ed.
+            maxRow = 4; 
+          //string suffixSeed = suffixArray[maxRow];
+            
+            //the entire column:
+            return vectors[maxCol].Words().ToArray();
+
+            //the entire row:
+            //return GetAllWordsWithGivenSuffixIndex(maxRow);
+
+            //or the specific suffix in the column
+            //return vectors[maxCol].WordsOfSuffix(maxRow).ToArray();
+
         }
 
         public void PrintCategories()
@@ -243,7 +246,7 @@ namespace MorphologicalLearner
             sb.AppendLine();
             sb.AppendLine();
 
-            foreach (var c in buckets)
+            foreach (var c in vectors)
             {
                 sb.AppendFormat("Ending with {{{0}}} are:{1} {2} {3}",
                     string.Join(",", c.Suffixes().ToArray()),
@@ -257,7 +260,7 @@ namespace MorphologicalLearner
 
         public IEnumerable<string> Words(int categoryIndex)
         {
-            return buckets[categoryIndex].Words();
+            return vectors[categoryIndex].Words();
         }
     }
 }

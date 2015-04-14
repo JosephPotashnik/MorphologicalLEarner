@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using MathNet.Numerics.LinearAlgebra;
-using Newtonsoft.Json;
 
 namespace MorphologicalLearner
 {
@@ -23,11 +18,6 @@ namespace MorphologicalLearner
         private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
         //<word2,                     <word1, count>>
 
-
-
-
-
-
         public BigramManager()
         {
             firstWordDictionary = new Dictionary<string, Dictionary<string, int>>();
@@ -36,7 +26,6 @@ namespace MorphologicalLearner
 
         public void Add(string word1, string word2)
         {
-
             if (firstWordDictionary.ContainsKey(word1))
             {
                 var val = firstWordDictionary[word1];
@@ -68,12 +57,10 @@ namespace MorphologicalLearner
             }
         }
 
-        public bool Exists(string word1, string word2)
+        public bool Exists(string firstWord, string secondWord)
         {
-
-            return (firstWordDictionary.ContainsKey(word1) &&
-                    firstWordDictionary[word1].ContainsKey(word2));
-            
+            return (firstWordDictionary.ContainsKey(firstWord) &&
+                    firstWordDictionary[firstWord].ContainsKey(secondWord));
         }
 
         /*public int Count(string word1, string word2)
@@ -145,26 +132,30 @@ namespace MorphologicalLearner
 
         public IEnumerable<string> GetIntersectOfBigramsWithFirstWords(IEnumerable<string> given)
         {
-            var l = GetAllWordsAfterWord(given.First());
-            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsAfterWord(str)));
+            var enumerable = given as string[] ?? given.ToArray();
+            var l = GetAllWordsAfterWord(enumerable.First());
+            return enumerable.Aggregate(l, (current, str) => current.Intersect(GetAllWordsAfterWord(str)));
         }
 
         public IEnumerable<string> GetIntersectOfBigramsWithSecondWords(IEnumerable<string> given)
         {
-            var l = GetAllWordsBeforeWord(given.First());
-            return given.Aggregate(l, (current, str) => current.Intersect(GetAllWordsBeforeWord(str)));
+            var enumerable = given as string[] ?? given.ToArray();
+            var l = GetAllWordsBeforeWord(enumerable.First());
+            return enumerable.Aggregate(l, (current, str) => current.Intersect(GetAllWordsBeforeWord(str)));
         }
 
         public IEnumerable<string> GetUnionOfBigramsWithFirstWords(IEnumerable<string> given)
         {
-            var l = GetAllWordsAfterWord(given.First());
-            return given.Aggregate(l, (current, str) => current.Union(GetAllWordsAfterWord(str)));
+            var enumerable = given as string[] ?? given.ToArray();
+            var l = GetAllWordsAfterWord(enumerable.First());
+            return enumerable.Aggregate(l, (current, str) => current.Union(GetAllWordsAfterWord(str)));
         }
 
         public IEnumerable<string> GetUnionOfBigramsWithSecondWords(IEnumerable<string> given)
         {
-            var l = GetAllWordsBeforeWord(given.First());
-            return given.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
+            var enumerable = given as string[] ?? given.ToArray();
+            var l = GetAllWordsBeforeWord(enumerable.First());
+            return enumerable.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
         }
 
      

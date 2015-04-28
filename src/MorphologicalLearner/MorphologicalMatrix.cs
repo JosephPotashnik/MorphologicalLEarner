@@ -13,8 +13,6 @@ namespace MorphologicalLearner
         private string[] stemArray;
         private string[] suffixArray;
         private MorphologicalVector[] vectors;
-        public MorphologicalVector GetMorphVector(int index) { return vectors[index]; }
-        //computational matrices
         private Matrix<float> columnBasisMatrix;
 
         public MorphologicalMatrix(StemVector stems, SuffixVector suffixes)
@@ -69,7 +67,7 @@ namespace MorphologicalLearner
             for (var j = 0; j < ColumnBasis.Count(); ++j)
                 vectors[j] = new MorphologicalVector();
 
-            //AddParticipatingSuffixesToMorphologicalVectors(ColumnBasis);  //unused; for debugging purposes (writing the suffixes' names)
+            AddParticipatingSuffixesToMorphologicalVectors(ColumnBasis);  //unused; for debugging purposes (writing the suffixes' names)
             AddWordsToMorphologicalVectors(Columns, ColumnBasis, stems);
         }
 
@@ -224,17 +222,17 @@ namespace MorphologicalLearner
             //MaxCol = 0;
 
             //row 0 = stem, row 2 = ing, row 4 = ed.
-            maxRow = 4; 
-          //string suffixSeed = suffixArray[maxRow];
+            //maxRow = 4; 
+           //string suffixSeed = suffixArray[maxRow];
             
             //the entire column:
-            return vectors[maxCol].Words().ToArray();
+            //return vectors[maxCol].Words().ToArray();
 
             //the entire row:
             //return GetAllWordsWithGivenSuffixIndex(maxRow);
 
             //or the specific suffix in the column
-            //return vectors[maxCol].WordsOfSuffix(maxRow).ToArray();
+            return vectors[maxCol].WordsOfSuffix(maxRow).ToArray();
 
         }
 

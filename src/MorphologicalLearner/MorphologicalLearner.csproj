@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BiClique.cs" />
     <Compile Include="BigramManager.cs" />
     <Compile Include="CommonNeighborsGraph.cs" />
     <Compile Include="Learner.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="MorphologicalVector.cs" />
     <Compile Include="Trie.cs" />
     <Compile Include="TrieNode.cs" />
+    <Compile Include="TrigramManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

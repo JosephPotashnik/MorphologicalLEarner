@@ -21,66 +21,54 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-
-            learner = new Learner("David Copperfield");
-
+            //learner = new Learner("David Copperfield");
+            learner = new Learner("CorwinBooks");
             CreateAndShowGroups();
         }
-
-        
-        
 
         private void CreateAndShowGroups()
         {
             // Create a new graph.
 
-            learner.Learn();
-            IGraph graph = learner.ReadLogicalGraph();
+            learner.LookForSyntacticCategoryCandidates();
+            ClusterAndDrawGraph(Learner.LocationInBipartiteGraph.LeftWords, nodeXLControlLeft);
+            ClusterAndDrawGraph(Learner.LocationInBipartiteGraph.RightWords, nodeXLControlRight);
+        }
 
-            // Use a ClusterCalculator to partition the graph's vertices into
-            // clusters.
-
-            ClusterCalculator clusterCalculator = new ClusterCalculator();
-            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
-            clusterCalculator.Algorithm = ClusterAlgorithm.ClausetNewmanMoore;
-
-
-            ICollection<Community> clusters =
-                clusterCalculator.CalculateGraphMetrics(graph);
+        private void ClusterAndDrawGraph(Learner.LocationInBipartiteGraph loc, NodeXLControl ctrl)
+        {
+            IGraph graph = learner.ReadLogicalGraph(loc);
+            ICollection<Community> clusters = learner.GetClusters(graph);
 
             // One group will be created for each cluster.
-
             List<GroupInfo> groups = new List<GroupInfo>();
 
             foreach (Community cluster in clusters)
             {
                 // Create a group.
-
                 GroupInfo group = new GroupInfo();
-                groups.Add(group);
+                groups.Add(@group);
 
                 // Populate the group with the cluster's vertices.
                 foreach (IVertex vertex in cluster.Vertices)
-                {
-                    group.Vertices.AddLast(vertex);
-                }
+                    @group.Vertices.AddLast(vertex);
             }
 
             // Store the group information as metadata on the graph.
             graph.SetValue(ReservedMetadataKeys.GroupInfo, groups.ToArray());
 
             // Assign the graph to the NodeXLControl.
-            nodeXLControl1.Graph = graph;
+            ctrl.Graph = graph;
 
             // Tell the layout class to use the groups.
-            nodeXLControl1.Layout.LayoutStyle = LayoutStyle.UseGroups;
+            ctrl.Layout.LayoutStyle = LayoutStyle.UseGroups;
 
             // Tell the layout class how to lay out the groups.
-            nodeXLControl1.Layout.BoxLayoutAlgorithm =
+            ctrl.Layout.BoxLayoutAlgorithm =
                 BoxLayoutAlgorithm.Treemap;
 
             // Tell the NodeXLControl to lay out and draw the graph.
-            nodeXLControl1.DrawGraph(true);
+            ctrl.DrawGraph(true);
         }
     }
 }

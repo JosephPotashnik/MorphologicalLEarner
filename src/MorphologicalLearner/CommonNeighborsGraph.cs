@@ -126,9 +126,14 @@ namespace MorphologicalLearner
             return adjacencyMatrix.Power(2);
         }
 
-        public IGraph ReadLogicalGraph()
+        public IGraph ReadLogicalGraph(Learner.LocationInBipartiteGraph loc)
         {
-            var g = RightWordsNeighborhoods;
+            Dictionary<string, Dictionary<string, int>> g;
+
+            if (loc == Learner.LocationInBipartiteGraph.LeftWords)
+                g = LeftWordsNeighborhoods;
+            else
+                g = RightWordsNeighborhoods;
 
             IGraph graph = new Graph(GraphDirectedness.Undirected);
             try

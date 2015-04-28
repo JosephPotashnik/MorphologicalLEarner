@@ -5,11 +5,7 @@ namespace MorphologicalLearner
 {
     public class BigramManager
     {
-        public enum LookupDirection
-        {
-            LookToLeft,
-            LookToRight
-        };
+
 
         //the first dictionary lists the first word as a key, with all bigrams for which it is the first word.
         private readonly Dictionary<string, Dictionary<string, int>> firstWordDictionary;
@@ -70,6 +66,7 @@ namespace MorphologicalLearner
                 : 0);
         }*/
 
+ 
         public List<KeyValuePair<KeyValuePair<string, string>, int>> BigramsAboveCountThresholdN(int n)
         {
             var list = new List<KeyValuePair<KeyValuePair<string, string>, int>>();
@@ -103,13 +100,6 @@ namespace MorphologicalLearner
             return (firstWordDictionary.ContainsKey(firstword)
                 ? firstWordDictionary[firstword].Keys
                 : Enumerable.Empty<string>());
-        }
-
-        public string[] IntersectTwoWords(string word1, string word2, LookupDirection dir)
-        {
-            if (dir == LookupDirection.LookToRight)
-                return IntersectTwoFirstWords(word1, word2);
-            return IntersectTwoSecondWords(word1, word2);
         }
 
         public string[] IntersectTwoFirstWords(string firstWord1, string firstWord2)
@@ -156,6 +146,12 @@ namespace MorphologicalLearner
             var enumerable = given as string[] ?? given.ToArray();
             var l = GetAllWordsBeforeWord(enumerable.First());
             return enumerable.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
+        }
+
+        public IEnumerable<string> RemoveSecondOrphanedWords(IEnumerable<string> given)
+        {
+            var enumerable = given as string[] ?? given.ToArray();
+            return given.Select(x => x).Where(x => secondWordDictionary.ContainsKey(x));
         }
 
      

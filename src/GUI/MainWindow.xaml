@@ -4,7 +4,15 @@
         xmlns:wpf="clr-namespace:Smrf.NodeXL.Visualization.Wpf;assembly=Smrf.NodeXL.Control.Wpf"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <wpf:NodeXLControl  Name="nodeXLControl1" HorizontalAlignment="
-                            Stretch" VerticalAlignment="Stretch"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <wpf:NodeXLControl  Grid.Column ="0" Name="nodeXLControlLeft" HorizontalAlignment="
+                            Left" VerticalAlignment="Stretch"/>
+
+        <wpf:NodeXLControl  Grid.Column="2" Name="nodeXLControlRight" HorizontalAlignment="
+                            Right" VerticalAlignment="Stretch" />
     </Grid>
 </Window>

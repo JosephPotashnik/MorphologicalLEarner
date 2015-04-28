@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using Smrf.NodeXL.Algorithms;
+using Smrf.NodeXL.Core;
 
 namespace MorphologicalLearner
 {
@@ -9,9 +12,12 @@ namespace MorphologicalLearner
         [STAThread]
         private static void Main(string[] args)
         {
-            string filenname = "David Copperfield";
-            var learn = new Learner(filenname);
-            learn.Learn();
+            //string filenname = "David Copperfield";
+            string filenname = "CorwinBooks";
+            var learner = new Learner(filenname);
+            var candidates = learner.LookForSyntacticCategoryCandidates();
+            //learner.EvaluateSyntacticCategoryOfCandidates(candidates);
+
         }
     }
 }

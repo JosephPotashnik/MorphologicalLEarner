@@ -64,6 +64,20 @@ namespace MorphologicalLearner
                                                                     rightWords);
         }
 
+        public void GetEdgesList(Dictionary<string, Dictionary<string, int>> dic )
+        {
+            List<Tuple<string, string, int>> list = new List<Tuple<string, string, int>>();
+
+            foreach (var word1 in dic.Keys)
+            {
+                foreach (var word2 in dic[word1].Keys)
+                {
+                    var t = new Tuple<string, string, int>(word1, word2, dic[word1][word2]);
+                    list.Add(t);
+                }
+
+            }
+        }
         private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(Matrix<float> neighborMatrix,int IndexStart,int IndexEnd, int MinCommonNeighbors, string[] theseWords)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
@@ -199,6 +213,47 @@ namespace MorphologicalLearner
                 ver = addedVertices[word];
 
             return ver;
+        }
+
+
+        public List<Edge> GetEdges(Learner.LocationInBipartiteGraph loc)
+        {
+            var list = new List<Edge>();
+
+            Dictionary<string, Dictionary<string, int>> g;
+
+            if (loc == Learner.LocationInBipartiteGraph.LeftWords)
+                g = LeftWordsNeighborhoods;
+            else
+                g = RightWordsNeighborhoods;
+
+            Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
+
+            foreach (var word1 in g.Keys)
+            {
+                foreach (var word2 in g[word1].Keys)
+                {
+                    if (word1 == word2)
+                        continue;
+
+                    //if we already scanned these words in the opposite order, skip.
+                    if (dic.ContainsKey(word2) && dic[word2].ContainsKey(word1))
+                        continue;
+
+                    if (!dic.ContainsKey(word1))
+                        dic[word1] = new Dictionary<string, int>();
+
+                    //push into dictionary to keep track of scanned pairs.
+                    dic[word1][word2] = 1;
+
+                    var edge = new Edge();
+                    edge.Vertex1 = word1;
+                    edge.Vertex2 = word2;
+                    edge.Weight = g[word1][word2];
+                    list.Add(edge);
+                }
+            }
+            return list;
         }
     }
 }

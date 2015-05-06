@@ -21,8 +21,8 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-            //learner = new Learner("David Copperfield");
-            learner = new Learner("CorwinBooks");
+            learner = new Learner("David Copperfield");
+            //learner = new Learner("CorwinBooks");
             CreateAndShowGroups();
         }
 

@@ -57,140 +57,7 @@ namespace MorphologicalLearner
             RightWords
         };
 
-        public IEnumerable<Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
-        {
-            var list = new List<Community>();
-            ICollection<Community> clusters = GetClusters(wordSetLeft, wordSetRight, loc);
-
-            if (clusters.Count == 1)
-            {
-                list.Add(clusters.First());
-                return list;
-            }
-
-            foreach (var cluster in clusters)
-            {
-                string[] wordsInCluster = new string[cluster.Vertices.Count];
-                int i = 0;
-
-                // Populate the group with the cluster's vertices.
-                foreach (IVertex vertex in cluster.Vertices)
-                    wordsInCluster[i++] = vertex.GetValue(ReservedMetadataKeys.PerVertexLabel) as string;
-
-                var sublist = Clusterize(wordSetLeft, wordsInCluster, loc);
-                list = list.Concat(sublist).ToList();
-            }
-            return list;
-
-        }
-        public ICollection<Community> GetClusters(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
-        {
-            commonNeighborsGraph.ComputeCommonNeighborsGraphs(wordSetLeft, wordSetRight, minCommonNeighbors);
-            IGraph graph = ReadLogicalGraph(loc);
-            ClusterCalculator clusterCalculator = new ClusterCalculator();
-            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.GirvanNewman;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.Clique;
-
-            return clusterCalculator.CalculateGraphMetrics(graph);
-
-        }
-
-
-        public ICollection<Community> Clusterize(string[] wordSet, LocationInBipartiteGraph loc)
-        {
-
-            if (loc == LocationInBipartiteGraph.RightWords)
-            {
-                var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(wordSet).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(leftWords, wordSet, minCommonNeighbors);
-
-            }
-            else
-            {
-                var rightWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(wordSet).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(wordSet, rightWords, minCommonNeighbors);
-            }
-
-            //get clusters.
-            IGraph graph = ReadLogicalGraph(loc);
-            return GetClusters(graph);
-
-        }
-
-        private void UnifyTwoClusters(IEnumerable<string> cluster1, IEnumerable<string> cluster2, LocationInBipartiteGraph location)
-        {
-            //concatenate (assumption: the sets are disjoint).
-            IEnumerable<string> concat = cluster1.Concat(cluster2);
-
-            //get superset of the union. This function also computes the neighbor
-            var wordSet = concat as string[] ?? concat.ToArray();
-            //IEnumerable<string> superset = GetSuperSet(wordSet, location);
-            //IGraph graph = ReadLogicalGraph(location);
-            //ICollection<Community> clusters =  GetClusters(graph);
-
-            ////delete that later
-            //var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(wordSet).ToArray();
-
-
-            //foreach (Community cluster in clusters)
-            //{
-            //    //Console.WriteLine("---");
-
-            //    string[] wordsInCluster = new string[cluster.Vertices.Count];
-            //    int i = 0;
-
-            //    // Populate the group with the cluster's vertices.
-            //    foreach (IVertex vertex in cluster.Vertices)
-            //        wordsInCluster[i++] = vertex.GetValue(ReservedMetadataKeys.PerVertexLabel) as string;
-
-            //    ICollection<Community> reclusters = Clusterize(leftWords, wordsInCluster, location);
-
-            //    foreach (Community clusterss in reclusters)
-            //    {
-            //        //Console.WriteLine("---");
-
-            //        string[] wordsInClustersss = new string[cluster.Vertices.Count];
-            //        int j = 0;
-
-            //        // Populate the group with the cluster's vertices.
-            //        foreach (IVertex vertex in clusterss.Vertices)
-            //            wordsInClustersss[j++] = vertex.GetValue(ReservedMetadataKeys.PerVertexLabel) as string;
-
-            //    }
-
-
-            //    //string words = string.Join(",", wordsInCluster);
-
-            //    //Console.WriteLine("{0}", words);
-            //    string[] InterSectWithCurrentCluster = wordSet.Intersect(wordsInCluster).ToArray();
-
-            //    string[] before =
-            //        m_BigramManager.GetUnionOfBigramsWithSecondWords(InterSectWithCurrentCluster).ToArray();
-            //    bool contained = !wordSet.Except(wordsInCluster).Any();
-            //}
-        }
-
-        private IEnumerable<string> GetSuperSet(IEnumerable<string> wordSet, LocationInBipartiteGraph location)
-        {
-            string[] superSetWords;
-            if (location == LocationInBipartiteGraph.RightWords)
-            {
-                var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(wordSet).ToArray();
-                superSetWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(leftWords).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(leftWords, superSetWords, minCommonNeighbors);
-
-            }
-            else
-            {
-                var rightWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(wordSet).ToArray();
-                superSetWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(superSetWords, rightWords, minCommonNeighbors);
-            }
-
-            return superSetWords;
-        }
-
+ 
         public void BuildBigramsandTrie(string fileName)
         {
             string TrainingCorpusFileName = TrainingCorpusFileDirectory + fileName + ".txt";
@@ -235,7 +102,6 @@ namespace MorphologicalLearner
                     WordsInBuckets[sentenceWords[k]] = -1;
                 }
             }
-
         }
        
         private void BuildStemAndSuffixVectors(out StemVector stemVector, out SuffixVector suffixVec)
@@ -366,21 +232,7 @@ namespace MorphologicalLearner
                
             }
         }
-
-        //public string[] LookForSyntacticCategoryCandidates()
-        //{
-        //    //for now, return just the seed.
-        //    string[] rightWords = m_mat.FindSeed();    
-
-        //    //GetSuperSet(rightWords, LocationInBipartiteGraph.RightWords);
-        //    var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
-
-        //    //rightWords = new string[] { "fixed", "passed", "addressed", "wished", "kissed", "approached" };
-
-        //    commonNeighborsGraph.ComputeCommonNeighborsGraphs(leftWords, rightWords, minCommonNeighbors);
-
-        //    return rightWords;
-        //}
+     
         public string[] FindMaximualInformationClusterFromLeft(string[] secondWords)
         {
 
@@ -433,32 +285,109 @@ namespace MorphologicalLearner
             return LargestCommunity;
         }
 
+        private void PrintClusters(IEnumerable<Community> list)
+        {
+            foreach (var cluster in list)
+            {
+                string[] names = cluster.Vertices.Select(vertex => vertex.GetValue(ReservedMetadataKeys.PerVertexLabel).ToString())
+                        .ToArray();
+                string str = string.Join(",", names);
+                Console.WriteLine("{0}", str);
+
+            }
+        }
 
         public string[] LookForSyntacticCategoryCandidates()
-        {
-               
+        {     
             //for now, return just the seed.
-            string[] secondWords = m_mat.FindSeed();
+            //string[] firstwords = m_mat.FindSeed();
+            string[] firstwords = m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.LeftWords, 100).ToArray();
+            var secondWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(firstwords).ToArray();
 
-            int len = secondWords.Count()/2;
-            string[] secondWord1 = new string[len];
-            string[] secondWord2 = new string[len];
-            for (int k = 0; k < len; k++)
-            {
-                secondWord1[k] = secondWords[k];
-                secondWord2[k] = secondWords[k + len];
-            }
+            secondWords =
+                secondWords.Intersect(m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.RightWords, 100)).ToArray();
 
-            UnifyTwoClusters(secondWord1, secondWord2, LocationInBipartiteGraph.RightWords);
-            
+            //var divisiveClusteringResults = Clusterize(firstwords, secondWords, LocationInBipartiteGraph.RightWords);
             //var firstWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
-            //commonNeighborsGraph.ComputeCommonNeighborsGraphs(firstWords, secondWords, 4);
 
-            //var list = commonNeighborsGraph.GetEdges(LocationInBipartiteGraph.LeftWords);
-            //ComputeCommunitiesInR(list);
+            commonNeighborsGraph.ComputeCommonNeighborsGraphs(firstwords, secondWords, 4);
 
+            var list = commonNeighborsGraph.GetEdges(LocationInBipartiteGraph.LeftWords);
+            ComputeCommunitiesInR(list);
+           
             return null;
         }
+
+        public IEnumerable<Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
+        {
+            var list = new List<Community>();
+            ICollection<Community> clusters = GetClusters(wordSetLeft, wordSetRight, loc);
+
+            if (clusters.Count == 1)
+            {
+                var cluster = clusters.First();
+                list.Add(cluster);
+                string[] names = cluster.Vertices.Select(vertex => vertex.GetValue(ReservedMetadataKeys.PerVertexLabel).ToString())
+        .ToArray();
+
+                string str = "cluster contains: " + string.Join(",", names);
+                Console.WriteLine("{0}", str);
+                return list;
+            }
+
+            foreach (var cluster in clusters)
+            {
+                string[] wordsInCluster = new string[cluster.Vertices.Count];
+                int i = 0;
+
+                // Populate the group with the cluster's vertices.
+                foreach (IVertex vertex in cluster.Vertices)
+                    wordsInCluster[i++] = vertex.GetValue(ReservedMetadataKeys.PerVertexLabel) as string;
+
+                var sublist = Clusterize(wordSetLeft, wordsInCluster, loc);
+                list = list.Concat(sublist).ToList();
+            }
+            return list;
+
+        }
+        public ICollection<Community> GetClusters(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
+        {
+            int commonNeigh = minCommonNeighbors;
+            //commonNeigh = 1;
+
+            commonNeighborsGraph.ComputeCommonNeighborsGraphs(wordSetLeft, wordSetRight, commonNeigh);
+            IGraph graph = ReadLogicalGraph(loc);
+            ClusterCalculator clusterCalculator = new ClusterCalculator();
+            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
+            //clusterCalculator.Algorithm = ClusterAlgorithm.GirvanNewman;
+            //clusterCalculator.Algorithm = ClusterAlgorithm.Clique;
+
+            return clusterCalculator.CalculateGraphMetrics(graph);
+
+        }
+
+
+
+        private IEnumerable<string> GetSuperSet(IEnumerable<string> wordSet, LocationInBipartiteGraph location)
+        {
+            string[] superSetWords;
+            if (location == LocationInBipartiteGraph.RightWords)
+            {
+                var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(wordSet).ToArray();
+                superSetWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(leftWords).ToArray();
+                commonNeighborsGraph.ComputeCommonNeighborsGraphs(leftWords, superSetWords, minCommonNeighbors);
+
+            }
+            else
+            {
+                var rightWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(wordSet).ToArray();
+                superSetWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
+                commonNeighborsGraph.ComputeCommonNeighborsGraphs(superSetWords, rightWords, minCommonNeighbors);
+            }
+
+            return superSetWords;
+        }
+
 
         public void ComputeCommunitiesInR(List<Edge> list)
         {
@@ -474,8 +403,11 @@ namespace MorphologicalLearner
             var concatArray = string.Join(",", edgeArray);
             string edgeListR = "e <- matrix( c(" + concatArray + "), nc=2, byrow=TRUE)";
 
-            Console.WriteLine(edgeListR);
+            //Console.WriteLine(edgeListR);
 
+            var DegreeDistribution = m_BigramManager.GetFrequencies(LocationInBipartiteGraph.LeftWords).ToArray();
+            var concatArray2 = string.Join(",", DegreeDistribution);
+            string freqeuncies = "x <- c(" + concatArray2 + ")";
 
             //load R
             REngine engine = REngine.GetInstance();
@@ -487,6 +419,14 @@ namespace MorphologicalLearner
             //engine.Evaluate("imc <- infomap.community(g)");
             engine.Evaluate("imc <- edge.betweenness.community(g)");
             //engine.Evaluate("imc <- fastgreedy.community(g)");
+            //engine.Evaluate("imc <- leading.eigenvector.community(g)");
+
+            engine.Evaluate(freqeuncies);
+            engine.Evaluate("y <- c(1:1500)");
+            engine.Evaluate("plot(density(x))");
+            //engine.Evaluate("plot(x, type=\"h\")");
+
+
             var communities = engine.Evaluate("communities <- communities(imc)").AsCharacter().ToArray();
             var graph = engine.Evaluate("V(g)$name").AsCharacter().ToArray();
 

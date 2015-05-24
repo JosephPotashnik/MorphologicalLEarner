@@ -167,11 +167,11 @@ namespace MorphologicalLearner
             return NormalizedAmbiguityCounts;
         }
 
-        private string[] GetAllWordsWithGivenSuffixIndex(int index)
-        {
-            IEnumerable<string> str = Enumerable.Empty<string>();
-            return vectors.Aggregate(str, (current, bucket) => current.Union(bucket.WordsOfSuffix(index))).ToArray();
-        }
+        //private string[] GetAllWordsWithGivenSuffixIndex(int index)
+        //{
+        //    IEnumerable<string> str = Enumerable.Empty<string>();
+        //    return vectors.Aggregate(str, (current, bucket) => current.Union(bucket.WordsOfSuffix(index))).ToArray();
+        //}
 
         public string[] FindSeed()
         {

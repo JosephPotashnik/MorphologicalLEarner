@@ -44,7 +44,7 @@ namespace MorphologicalLearner
         //2. relative frequency threshold: rules that appear more than N/Total times.
         public void LeaveOnlySuffixesAboveFrequencyThreshold(double frequency)
         {
-            var countOfStems = m_dic[Learner.StemSymbol].Count;
+            //var countOfStems = m_dic[Learner.StemSymbol].Count;
             var newdict = m_dic
                 .Where(c => (double) c.Value.Count/Total >= frequency)
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);

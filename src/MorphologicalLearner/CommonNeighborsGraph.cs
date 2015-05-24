@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
 using Smrf.NodeXL.Core;
@@ -9,27 +10,27 @@ namespace MorphologicalLearner
 {
     public class CommonNeighborsGraph
     {
-        private static System.Drawing.Color[] colors = new[]
+        private static Color[] colors = new[]
         {
-            System.Drawing.Color.Blue,
-            System.Drawing.Color.Red,
-            System.Drawing.Color.Green,
-            System.Drawing.Color.Black,
-            System.Drawing.Color.Brown,
-            System.Drawing.Color.CadetBlue,
-            System.Drawing.Color.Orange,
-            System.Drawing.Color.Violet,
-            System.Drawing.Color.Teal,
-            System.Drawing.Color.DeepPink,
-            System.Drawing.Color.Cyan,
-            System.Drawing.Color.Crimson,
-            System.Drawing.Color.Coral,
-            System.Drawing.Color.MidnightBlue,
-            System.Drawing.Color.Crimson,
-            System.Drawing.Color.DarkSalmon,
-            System.Drawing.Color.Firebrick,
-            System.Drawing.Color.Fuchsia,
-            System.Drawing.Color.Gold
+            Color.Blue,
+            Color.Red,
+            Color.Green,
+            Color.Black,
+            Color.Brown,
+            Color.CadetBlue,
+            Color.Orange,
+            Color.Violet,
+            Color.Teal,
+            Color.DeepPink,
+            Color.Cyan,
+            Color.Crimson,
+            Color.Coral,
+            Color.MidnightBlue,
+            Color.Crimson,
+            Color.DarkSalmon,
+            Color.Firebrick,
+            Color.Fuchsia,
+            Color.Gold
         };
 
         private readonly BigramManager bigramMan;
@@ -44,6 +45,12 @@ namespace MorphologicalLearner
 
         public Dictionary<string, Dictionary<string, int>> LeftWordsNeighborhoods { get; private set; }
         public Dictionary<string, Dictionary<string, int>> RightWordsNeighborhoods { get; private set; }
+
+        public static Color[] Colors
+        {
+            get { return colors; }
+            set { colors = value; }
+        }
 
         public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
@@ -64,20 +71,21 @@ namespace MorphologicalLearner
                                                                     rightWords);
         }
 
-        public void GetEdgesList(Dictionary<string, Dictionary<string, int>> dic )
-        {
-            List<Tuple<string, string, int>> list = new List<Tuple<string, string, int>>();
+        //public void GetEdgesList(Dictionary<string, Dictionary<string, int>> dic )
+        //{
+        //    var list = new List<Tuple<string, string, int>>();
 
-            foreach (var word1 in dic.Keys)
-            {
-                foreach (var word2 in dic[word1].Keys)
-                {
-                    var t = new Tuple<string, string, int>(word1, word2, dic[word1][word2]);
-                    list.Add(t);
-                }
+        //    foreach (var word1 in dic.Keys)
+        //    {
+        //        foreach (var word2 in dic[word1].Keys)
+        //        {
+        //            var t = new Tuple<string, string, int>(word1, word2, dic[word1][word2]);
+        //            list.Add(t);
+        //        }
 
-            }
-        }
+        //    }
+        //}
+
         private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(Matrix<float> neighborMatrix,int IndexStart,int IndexEnd, int MinCommonNeighbors, string[] theseWords)
         {
             var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();

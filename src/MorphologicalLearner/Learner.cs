@@ -13,7 +13,7 @@ namespace MorphologicalLearner
     {
         public string Vertex1 { get; set; }
         public string Vertex2 { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
     }
 
     public class Learner
@@ -29,7 +29,7 @@ namespace MorphologicalLearner
 
         private readonly Trie m_trie;
         private MorphologicalMatrix m_mat;
-        private CommonNeighborsGraph commonNeighborsGraph;
+        private CommonNeighborsGraphManager _commonNeighborsGraphManager;
 
 
         private readonly Dictionary<string, int> WordsInBuckets;
@@ -44,7 +44,7 @@ namespace MorphologicalLearner
             m_mat = null;
             WordsInBuckets = new Dictionary<string, int>();
             WordsInPOS = new Dictionary<string, List<int>>();
-            commonNeighborsGraph = new CommonNeighborsGraph(m_BigramManager);
+            _commonNeighborsGraphManager = new CommonNeighborsGraphManager(m_BigramManager);
 
             BuildBigramsandTrie(fileName);
             BuildMorphologicalMatrix();
@@ -186,7 +186,7 @@ namespace MorphologicalLearner
 
         public IGraph ReadLogicalGraph(LocationInBipartiteGraph loc)
         {
-            return commonNeighborsGraph.ReadLogicalGraph(loc);
+            return _commonNeighborsGraphManager.ReadLogicalGraph(loc);
         }
 
         public ICollection<Community> GetClusters(IGraph graph)
@@ -206,7 +206,7 @@ namespace MorphologicalLearner
         {
             IGraph graph = ReadLogicalGraph(LocationInBipartiteGraph.RightWords);
             ICollection<Community> clusters = GetClusters(graph);
-            string[] allWords = commonNeighborsGraph.RightWordsNeighborhoods.Keys.ToArray();
+            string[] allWords = _commonNeighborsGraphManager.RightWordsNeighborhoods.Graph.Keys.ToArray();
 
             string[] feasibleCandidates = allWords.Intersect(candidates).ToArray();
 
@@ -237,7 +237,7 @@ namespace MorphologicalLearner
         {
 
             var firstWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
-            commonNeighborsGraph.ComputeCommonNeighborsGraphs(firstWords, secondWords, 4);
+            _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstWords, secondWords, 4);
 
             string[] largestClusterSecondWords = GetWordsOfLargestCluster(LocationInBipartiteGraph.RightWords);
             string[] largestClusterFirstWords = GetWordsOfLargestCluster(LocationInBipartiteGraph.LeftWords);
@@ -297,24 +297,36 @@ namespace MorphologicalLearner
             }
         }
 
+        private bool GoodCandidate(string v)
+        {
+
+            return true;
+        }
         public string[] LookForSyntacticCategoryCandidates()
         {     
             //for now, return just the seed.
-            //string[] firstwords = m_mat.FindSeed();
-            string[] firstwords = m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.LeftWords, 100).ToArray();
-            var secondWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(firstwords).ToArray();
+            string[] secondWords = m_mat.FindSeed();
+            var firstwords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
+            _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstwords, secondWords, 4);
 
-            secondWords =
-                secondWords.Intersect(m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.RightWords, 100)).ToArray();
+            
+            var congraph = _commonNeighborsGraphManager.LeftWordsNeighborhoods;
+            var WordsByDegree = congraph.GraphDegrees.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
-            //var divisiveClusteringResults = Clusterize(firstwords, secondWords, LocationInBipartiteGraph.RightWords);
-            //var firstWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
-
-            commonNeighborsGraph.ComputeCommonNeighborsGraphs(firstwords, secondWords, 4);
-
-            var list = commonNeighborsGraph.GetEdges(LocationInBipartiteGraph.LeftWords);
-            ComputeCommunitiesInR(list);
-           
+            List<string> hubWords = new List<string>();
+            double min_hub_threshold = 10;
+            while (WordsByDegree.Any() &&  congraph.GraphDegrees[WordsByDegree[0]] > min_hub_threshold)
+            {
+                var v = WordsByDegree[0];
+                if (GoodCandidate(v))
+                {
+                    List<string> neighbors = congraph.Graph[v].Keys.ToList();
+                    neighbors.Add(v);
+                    WordsByDegree = WordsByDegree.Except(neighbors).ToList();
+                    hubWords.Add(v);
+                }
+            }
+            
             return null;
         }
 
@@ -355,7 +367,7 @@ namespace MorphologicalLearner
             int commonNeigh = minCommonNeighbors;
             //commonNeigh = 1;
 
-            commonNeighborsGraph.ComputeCommonNeighborsGraphs(wordSetLeft, wordSetRight, commonNeigh);
+            _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(wordSetLeft, wordSetRight, commonNeigh);
             IGraph graph = ReadLogicalGraph(loc);
             ClusterCalculator clusterCalculator = new ClusterCalculator();
             //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
@@ -375,14 +387,14 @@ namespace MorphologicalLearner
             {
                 var leftWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(wordSet).ToArray();
                 superSetWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(leftWords).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(leftWords, superSetWords, minCommonNeighbors);
+                _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(leftWords, superSetWords, minCommonNeighbors);
 
             }
             else
             {
                 var rightWords = m_BigramManager.GetUnionOfBigramsWithFirstWords(wordSet).ToArray();
                 superSetWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(rightWords).ToArray();
-                commonNeighborsGraph.ComputeCommonNeighborsGraphs(superSetWords, rightWords, minCommonNeighbors);
+                _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(superSetWords, rightWords, minCommonNeighbors);
             }
 
             return superSetWords;
@@ -423,8 +435,8 @@ namespace MorphologicalLearner
 
             engine.Evaluate(freqeuncies);
             engine.Evaluate("y <- c(1:1500)");
-            engine.Evaluate("plot(density(x))");
-            //engine.Evaluate("plot(x, type=\"h\")");
+            //engine.Evaluate("plot(density(x))");
+            engine.Evaluate("plot(x, y, type=\"h\")");
 
 
             var communities = engine.Evaluate("communities <- communities(imc)").AsCharacter().ToArray();
@@ -436,3 +448,14 @@ namespace MorphologicalLearner
         }
     }
 }
+
+            //string[] firstwords = m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.LeftWords, 100).ToArray();
+
+            //secondWords =
+            //    secondWords.Intersect(m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.RightWords, 100)).ToArray();
+
+            //var divisiveClusteringResults = Clusterize(firstwords, secondWords, LocationInBipartiteGraph.RightWords);
+
+
+            //var list = commonNeighborsGraph.GetEdges(LocationInBipartiteGraph.LeftWords);
+            //ComputeCommunitiesInR(list);

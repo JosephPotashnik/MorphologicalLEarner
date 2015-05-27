@@ -80,8 +80,9 @@
   <ItemGroup>
     <Compile Include="BiClique.cs" />
     <Compile Include="BigramManager.cs" />
-    <Compile Include="CommonNeighborsGraph.cs" />
+    <Compile Include="CommonNeighborsGraphManager.cs" />
     <Compile Include="Learner.cs" />
+    <Compile Include="LouvainMethod.cs" />
     <Compile Include="MorphologicalMatrix.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

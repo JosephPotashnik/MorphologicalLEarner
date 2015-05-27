@@ -16,6 +16,7 @@ namespace MorphologicalLearner
         //<word2,                     <word1, count>>
 
         //degree distributions (the edges considered for the degree calculations are by types, not by tokens).
+        // sefi maybe change to tokens!!?
         private readonly Dictionary<string, int> firstWordDegree;
         private readonly Dictionary<string, int> secondWordDegree;
 
@@ -36,6 +37,8 @@ namespace MorphologicalLearner
                 var val = firstWordDictionary[word1];
                 if (val.ContainsKey(word2))
                     val[word2]++;
+                // sefi maybe change to tokens!!? firstWordDegree[word1]++;
+
                 else
                 {
                     val[word2] = 1;
@@ -55,6 +58,7 @@ namespace MorphologicalLearner
                 var val = secondWordDictionary[word2];
                 if (val.ContainsKey(word1))
                     val[word1]++;
+                // sefi maybe change to tokens!!?
                 else
                 {
                     secondWordDegree[word2]++;
@@ -76,12 +80,12 @@ namespace MorphologicalLearner
                     firstWordDictionary[firstWord].ContainsKey(secondWord));
         }
 
-        /*public int Count(string word1, string word2)
+        public int Count(string word1, string word2)
         {
             return (Exists(word1, word2)
                 ? firstWordDictionary[word1][word2]
                 : 0);
-        }*/
+        }
 
  
         public List<KeyValuePair<KeyValuePair<string, string>, int>> BigramsAboveCountThresholdN(int n)

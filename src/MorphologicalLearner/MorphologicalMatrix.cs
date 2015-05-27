@@ -167,11 +167,11 @@ namespace MorphologicalLearner
             return NormalizedAmbiguityCounts;
         }
 
-        //private string[] GetAllWordsWithGivenSuffixIndex(int index)
-        //{
-        //    IEnumerable<string> str = Enumerable.Empty<string>();
-        //    return vectors.Aggregate(str, (current, bucket) => current.Union(bucket.WordsOfSuffix(index))).ToArray();
-        //}
+        private string[] GetAllWordsWithGivenSuffixIndex(int index)
+        {
+            IEnumerable<string> str = Enumerable.Empty<string>();
+            return vectors.Aggregate(str, (current, bucket) => current.Union(bucket.WordsOfSuffix(index))).ToArray();
+        }
 
         public string[] FindSeed()
         {
@@ -222,11 +222,11 @@ namespace MorphologicalLearner
             //MaxCol = 0;
 
             //row 0 = stem, row 2 = ing, row 4 = ed.
-            //maxRow = 4; 
+            maxRow = 4; 
            //string suffixSeed = suffixArray[maxRow];
             
             //the entire column:
-            return vectors[maxCol].Words().ToArray();
+            //return vectors[maxCol].Words().ToArray();
 
             //the entire row:
             //return GetAllWordsWithGivenSuffixIndex(maxRow);

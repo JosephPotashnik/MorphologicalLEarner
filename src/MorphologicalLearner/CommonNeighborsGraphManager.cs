@@ -8,7 +8,20 @@ using Smrf.NodeXL.Visualization.Wpf;
 
 namespace MorphologicalLearner
 {
+
     public class CommonNeighborsGraph
+    {
+        public Dictionary<string, Dictionary<string, double>> Graph { get; set; }
+        public Dictionary<string, double> GraphDegrees { get; set; }
+
+        public CommonNeighborsGraph()
+        {
+            Graph = new Dictionary<string, Dictionary<string, double>>();
+            GraphDegrees = new Dictionary<string, double>();
+        }
+    }
+
+    public class CommonNeighborsGraphManager
     {
         private static Color[] colors = new[]
         {
@@ -35,16 +48,16 @@ namespace MorphologicalLearner
 
         private readonly BigramManager bigramMan;
 
-        public CommonNeighborsGraph(BigramManager Man)
+        public CommonNeighborsGraphManager(BigramManager Man)
         {
             bigramMan = Man;
-            LeftWordsNeighborhoods = new Dictionary<string, Dictionary<string, int>>();
-            RightWordsNeighborhoods = new Dictionary<string, Dictionary<string, int>>();
+            LeftWordsNeighborhoods = new CommonNeighborsGraph();
+            RightWordsNeighborhoods = new CommonNeighborsGraph();
 
         }
 
-        public Dictionary<string, Dictionary<string, int>> LeftWordsNeighborhoods { get; private set; }
-        public Dictionary<string, Dictionary<string, int>> RightWordsNeighborhoods { get; private set; }
+        public CommonNeighborsGraph LeftWordsNeighborhoods { get; private set; }
+        public CommonNeighborsGraph RightWordsNeighborhoods { get; private set; }
 
         public static Color[] Colors
         {
@@ -52,11 +65,28 @@ namespace MorphologicalLearner
             set { colors = value; }
         }
 
-        public void ComputeCommonNeighborsGraphs(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
+        private static double FilterMinimumNeighbors(double weight)
+        {
+            if (weight < 4)
+                return 0;
+
+            return weight;
+        }
+
+        public void ComputeCommonNeighborsGraphFromCoOccurrenceGraph(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
 
             var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
+
+            //zero the weights if minimal weight is not met.
+            
+            var leftNeighbors = neighborMatrix.SubMatrix(0, leftWords.Count(), 0, leftWords.Count());
+            var rightNeighbors = neighborMatrix.SubMatrix(leftWords.Count(), rightWords.Count(), leftWords.Count(), rightWords.Count());
+
+            rightNeighbors.MapInplace(FilterMinimumNeighbors);
+            LouvainMethod louvain = new LouvainMethod(rightNeighbors);
+
 
             LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
                                                                     0,
@@ -86,9 +116,9 @@ namespace MorphologicalLearner
         //    }
         //}
 
-        private Dictionary<string, Dictionary<string, int>> ComputeCommonNeighborsGraphOf(Matrix<float> neighborMatrix,int IndexStart,int IndexEnd, int MinCommonNeighbors, string[] theseWords)
+        private CommonNeighborsGraph ComputeCommonNeighborsGraphOf(Matrix<double> neighborMatrix, int IndexStart, int IndexEnd, int MinCommonNeighbors, string[] theseWords)
         {
-            var commonNeighborsGraph = new Dictionary<string, Dictionary<string, int>>();
+            var commonNeighborsGraph = new CommonNeighborsGraph();
 
             for (var i = IndexStart; i < IndexEnd; i++)
             {
@@ -96,27 +126,36 @@ namespace MorphologicalLearner
                 {
                     if (i == j) continue;
 
-                    int neighbors = (int)neighborMatrix[i, j];
+                    double weightedNeighbors = neighborMatrix[i, j];
 
-                    if (neighbors >= MinCommonNeighbors)
+                    if ((int)weightedNeighbors >= MinCommonNeighbors)
 
                     {
-                        if (!commonNeighborsGraph.ContainsKey(theseWords[i - IndexStart]))
-                            commonNeighborsGraph[theseWords[i - IndexStart]] = new Dictionary<string, int>();
+                        if (!commonNeighborsGraph.Graph.ContainsKey(theseWords[i - IndexStart]))
+                        {
+                            commonNeighborsGraph.Graph[theseWords[i - IndexStart]] = new Dictionary<string, double>();
+                            commonNeighborsGraph.GraphDegrees[theseWords[i - IndexStart]] = 0;
+                        }
 
-                        commonNeighborsGraph[theseWords[i - IndexStart]][theseWords[j - IndexStart]] = neighbors;
+                        commonNeighborsGraph.Graph[theseWords[i - IndexStart]][theseWords[j - IndexStart]] = weightedNeighbors;
+                        commonNeighborsGraph.GraphDegrees[theseWords[i - IndexStart]] += weightedNeighbors;
+                        //hold the sum of all weights of the edges of the neighbors.
                     }
                 }
             }
 
+            //modify the degree to be the average of the weights (divide by count of neighbors).
+            foreach (var key in commonNeighborsGraph.Graph.Keys)
+                commonNeighborsGraph.GraphDegrees[key] = commonNeighborsGraph.GraphDegrees[key] / commonNeighborsGraph.Graph[key].Count;
+            
             return commonNeighborsGraph;
         }
 
 
-        public Matrix<float> CreateAdjacencyMatrix(string[] leftwords, string[] rightwords)
+        public Matrix<double> CreateAdjacencyMatrix(string[] leftwords, string[] rightwords)
         {
             int matrixSize = leftwords.Count() + rightwords.Count();
-            var adjacencyMatrix = Matrix<float>.Build.Sparse(matrixSize, matrixSize);
+            var adjacencyMatrix = Matrix<double>.Build.Sparse(matrixSize, matrixSize);
 
             int leftwordsCount = leftwords.Count();
             int rightwordsCount = rightwords.Count();
@@ -131,26 +170,23 @@ namespace MorphologicalLearner
                     if (adjacencyMatrix[i, j] > 0)
                         continue;
 
-                    if (bigramMan.Exists(leftwords[i], rightwords[j - leftwordsCount]))
-                    {
-                        adjacencyMatrix[i, j] = 1;
-                        adjacencyMatrix[j,i] = 1;
-
-                    }
+                    int weight = bigramMan.Count(leftwords[i], rightwords[j - leftwordsCount]);
+                    adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = Math.Sqrt(weight);  
+                    //the weight between two neighbors in the common neighbors matrix (which is the adjacency matrix, squared),
+                    //will be the geometric mean, so pre-calculate the root here and just multiply the adjacency matrix later.
                 }
             }
             return adjacencyMatrix;
         }
 
-        private Matrix<float> CreateCommonNeighborsMatrix(Matrix<float> adjacencyMatrix)
+        private Matrix<double> CreateCommonNeighborsMatrix(Matrix<double> adjacencyMatrix)
         {
-            //the common neightbor matrix is the adjacency matrix squared.
             return adjacencyMatrix.Power(2);
         }
 
         public IGraph ReadLogicalGraph(Learner.LocationInBipartiteGraph loc)
         {
-            Dictionary<string, Dictionary<string, int>> g;
+            CommonNeighborsGraph g;
 
             if (loc == Learner.LocationInBipartiteGraph.LeftWords)
                 g = LeftWordsNeighborhoods;
@@ -164,9 +200,9 @@ namespace MorphologicalLearner
 
                 Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
 
-                foreach (var word1 in g.Keys)
+                foreach (var word1 in g.Graph.Keys)
                 {
-                    foreach (var word2 in g[word1].Keys)
+                    foreach (var word2 in g.Graph[word1].Keys)
                     {
                         if (word1 == word2)
                             continue;
@@ -228,7 +264,7 @@ namespace MorphologicalLearner
         {
             var list = new List<Edge>();
 
-            Dictionary<string, Dictionary<string, int>> g;
+            CommonNeighborsGraph g;
 
             if (loc == Learner.LocationInBipartiteGraph.LeftWords)
                 g = LeftWordsNeighborhoods;
@@ -237,9 +273,9 @@ namespace MorphologicalLearner
 
             Dictionary<string, Dictionary<string, int>> dic = new Dictionary<string, Dictionary<string, int>>();
 
-            foreach (var word1 in g.Keys)
+            foreach (var word1 in g.Graph.Keys)
             {
-                foreach (var word2 in g[word1].Keys)
+                foreach (var word2 in g.Graph[word1].Keys)
                 {
                     if (word1 == word2)
                         continue;
@@ -257,7 +293,7 @@ namespace MorphologicalLearner
                     var edge = new Edge();
                     edge.Vertex1 = word1;
                     edge.Vertex2 = word2;
-                    edge.Weight = g[word1][word2];
+                    edge.Weight = g.Graph[word1][word2];
                     list.Add(edge);
                 }
             }

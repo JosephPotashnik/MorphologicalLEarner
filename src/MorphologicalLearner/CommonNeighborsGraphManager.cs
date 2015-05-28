@@ -59,35 +59,51 @@ namespace MorphologicalLearner
         public CommonNeighborsGraph LeftWordsNeighborhoods { get; private set; }
         public CommonNeighborsGraph RightWordsNeighborhoods { get; private set; }
 
+        public Matrix<double> LeftMatrix { get; set; }
+        public Matrix<double> RightMatrix { get; set; }
+
+
         public static Color[] Colors
         {
             get { return colors; }
             set { colors = value; }
         }
 
-        private static double FilterMinimumNeighbors(double weight)
-        {
-            if (weight < 4)
-                return 0;
-
-            return weight;
-        }
 
         public void ComputeCommonNeighborsGraphFromCoOccurrenceGraph(string[] leftWords, string[] rightWords, int MinCommonNeighbors)
         {
 
             var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
+            neighborMatrix.CoerceZero(MinCommonNeighbors);             //zero the weights if minimal weight is not met.
 
-            //zero the weights if minimal weight is not met.
-            
-            var leftNeighbors = neighborMatrix.SubMatrix(0, leftWords.Count(), 0, leftWords.Count());
-            var rightNeighbors = neighborMatrix.SubMatrix(leftWords.Count(), rightWords.Count(), leftWords.Count(), rightWords.Count());
+            for (int k = 0; k < neighborMatrix.ColumnCount; ++k)        //zero the diagonal, no self-loops.
+                neighborMatrix[k, k] = 0;
 
-            rightNeighbors.MapInplace(FilterMinimumNeighbors);
-            LouvainMethod louvain = new LouvainMethod(rightNeighbors);
+            LeftMatrix = neighborMatrix.SubMatrix(0, leftWords.Count(), 0, leftWords.Count());
+            RightMatrix = neighborMatrix.SubMatrix(leftWords.Count(), rightWords.Count(), leftWords.Count(), rightWords.Count());
 
 
+            //temp
+             var testMat = Matrix<double>.Build.Sparse(7, 7);
+            testMat[1, 2] = 1;  
+            testMat[1, 3] = 1;
+            testMat[2, 3] = 1;
+            testMat[4, 5] = 1;
+            testMat[4, 6] = 1;
+            testMat[5, 6] = 1;
+            testMat[3, 4] = 1;
+
+            testMat[2, 1] = 1;
+            testMat[3, 1] = 1;
+            testMat[3, 2] = 1;
+            testMat[5, 4] = 1;
+            testMat[6, 4] = 1;
+            testMat[6, 5] = 1;
+            testMat[4, 3] = 1;
+            RightMatrix = testMat;
+ 
+          
             LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
                                                                     0,
                                                                     leftWords.Count(),

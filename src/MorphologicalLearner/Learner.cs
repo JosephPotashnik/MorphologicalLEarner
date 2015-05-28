@@ -189,7 +189,7 @@ namespace MorphologicalLearner
             return _commonNeighborsGraphManager.ReadLogicalGraph(loc);
         }
 
-        public ICollection<Community> GetClusters(IGraph graph)
+        public ICollection<Smrf.NodeXL.Algorithms.Community> GetClusters(IGraph graph)
         {
             // Use a ClusterCalculator to partition the graph's vertices into
             // clusters.
@@ -205,12 +205,12 @@ namespace MorphologicalLearner
         public void EvaluateSyntacticCategoryOfCandidates(string[] candidates)
         {
             IGraph graph = ReadLogicalGraph(LocationInBipartiteGraph.RightWords);
-            ICollection<Community> clusters = GetClusters(graph);
+            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = GetClusters(graph);
             string[] allWords = _commonNeighborsGraphManager.RightWordsNeighborhoods.Graph.Keys.ToArray();
 
             string[] feasibleCandidates = allWords.Intersect(candidates).ToArray();
 
-            foreach (Community cluster in clusters)
+            foreach (Smrf.NodeXL.Algorithms.Community cluster in clusters)
             {
                 //Console.WriteLine("---");
 
@@ -257,8 +257,8 @@ namespace MorphologicalLearner
         private string[] GetWordsOfLargestCluster(LocationInBipartiteGraph loc)
         {
             IGraph graph = ReadLogicalGraph(loc);
-            ICollection<Community> clusters = GetClusters(graph);
-            Community largestCommunityRight = GetLargestCluster(clusters);
+            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = GetClusters(graph);
+            Smrf.NodeXL.Algorithms.Community largestCommunityRight = GetLargestCluster(clusters);
 
             if (largestCommunityRight != null)
                 return 
@@ -268,12 +268,12 @@ namespace MorphologicalLearner
             return null;
         }
 
-        private static Community GetLargestCluster(ICollection<Community> clusters)
+        private static Smrf.NodeXL.Algorithms.Community GetLargestCluster(ICollection<Smrf.NodeXL.Algorithms.Community> clusters)
         {
             int maxVertices = 0;
-            Community LargestCommunity = null;
+            Smrf.NodeXL.Algorithms.Community LargestCommunity = null;
 
-            foreach (Community cluster in clusters)
+            foreach (Smrf.NodeXL.Algorithms.Community cluster in clusters)
             {
                 if (cluster.Vertices.Count() > maxVertices)
                 {
@@ -285,7 +285,7 @@ namespace MorphologicalLearner
             return LargestCommunity;
         }
 
-        private void PrintClusters(IEnumerable<Community> list)
+        private void PrintClusters(IEnumerable<Smrf.NodeXL.Algorithms.Community> list)
         {
             foreach (var cluster in list)
             {
@@ -308,32 +308,23 @@ namespace MorphologicalLearner
             string[] secondWords = m_mat.FindSeed();
             var firstwords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
             _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstwords, secondWords, 4);
-
             
+            
+
+            LouvainMethod louvain = new LouvainMethod(_commonNeighborsGraphManager.RightMatrix);
             var congraph = _commonNeighborsGraphManager.LeftWordsNeighborhoods;
-            var WordsByDegree = congraph.GraphDegrees.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
-            List<string> hubWords = new List<string>();
-            double min_hub_threshold = 10;
-            while (WordsByDegree.Any() &&  congraph.GraphDegrees[WordsByDegree[0]] > min_hub_threshold)
-            {
-                var v = WordsByDegree[0];
-                if (GoodCandidate(v))
-                {
-                    List<string> neighbors = congraph.Graph[v].Keys.ToList();
-                    neighbors.Add(v);
-                    WordsByDegree = WordsByDegree.Except(neighbors).ToList();
-                    hubWords.Add(v);
-                }
-            }
-            
+            //var WordsByDegree = congraph.GraphDegrees.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+
+            louvain.FirstStep();
+          
             return null;
         }
 
-        public IEnumerable<Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
+        public IEnumerable<Smrf.NodeXL.Algorithms.Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
         {
-            var list = new List<Community>();
-            ICollection<Community> clusters = GetClusters(wordSetLeft, wordSetRight, loc);
+            var list = new List<Smrf.NodeXL.Algorithms.Community>();
+            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = GetClusters(wordSetLeft, wordSetRight, loc);
 
             if (clusters.Count == 1)
             {
@@ -362,7 +353,7 @@ namespace MorphologicalLearner
             return list;
 
         }
-        public ICollection<Community> GetClusters(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
+        public ICollection<Smrf.NodeXL.Algorithms.Community> GetClusters(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
         {
             int commonNeigh = minCommonNeighbors;
             //commonNeigh = 1;

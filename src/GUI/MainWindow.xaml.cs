@@ -38,12 +38,12 @@ namespace GUI
         private void ClusterAndDrawGraph(Learner.LocationInBipartiteGraph loc, NodeXLControl ctrl)
         {
             IGraph graph = learner.ReadLogicalGraph(loc);
-            ICollection<Community> clusters = learner.GetClusters(graph);
+            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = learner.GetClusters(graph);
 
             // One group will be created for each cluster.
             List<GroupInfo> groups = new List<GroupInfo>();
 
-            foreach (Community cluster in clusters)
+            foreach (Smrf.NodeXL.Algorithms.Community cluster in clusters)
             {
                 // Create a group.
                 GroupInfo group = new GroupInfo();

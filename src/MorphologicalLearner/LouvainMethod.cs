@@ -7,22 +7,59 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace MorphologicalLearner
 {
+
+    public class Community
+    {
+        public List<int> communityMembers { get; set; } //the index of the array is the community number, the list is the indices of the nodes of its members.
+        public double inWeights { get; set; }  //the  weights strictly inside the community
+        public double totalWeights { get; set; } //the weights of all edges leading to nodes in the community
+
+        public void RemoveNodeFromCommunity(int nodeIndex, double weightBetweenNodeAndCommunity, double selfLoopWeight, double nodeDegree)
+        {
+            communityMembers.Remove(nodeIndex);
+            inWeights -= 2*weightBetweenNodeAndCommunity - selfLoopWeight;
+            totalWeights -= nodeDegree;
+        }
+
+        public void InsertNodeToCommunity(int nodeIndex, double weightBetweenNodeAndCommunity, double selfLoopWeight, double nodeDegree)
+        {
+            communityMembers.Add(nodeIndex);
+            inWeights += 2 * weightBetweenNodeAndCommunity + selfLoopWeight;
+            totalWeights += nodeDegree;
+        }
+
+        public double Gain(double weightbetweenNodeAndCommunity, double nodeDegree, double totalWeightOfGraph)
+        {
+            double firstTerm = (inWeights + 2*weightbetweenNodeAndCommunity) / totalWeightOfGraph;
+            double secondTerm = Math.Pow( ((totalWeights + nodeDegree) / totalWeightOfGraph), 2);
+            double thirdTerm = inWeights / totalWeightOfGraph;
+            double fourthTerm = Math.Pow((totalWeights / totalWeightOfGraph), 2);
+            double fifthTerm = Math.Pow((nodeDegree / totalWeightOfGraph), 2);
+
+            double DeltaQ = (firstTerm - secondTerm) - (thirdTerm - fourthTerm - fifthTerm);
+            return DeltaQ; 
+
+        }
+    }
     public class LouvainMethod
     {
         Matrix<double> graph;
-        private int[] communities; //the index of the array is the node index in the graph. the value is the community number
+        
+        private int[] nodeToCommunities; //the index of the array is the node index in the graph. the value is the community number
         private double[] degrees; //the index of the array is the node index in the graph. the value is the degree of the node
-        private List<int>[] communityMembers; //the index of the array is the community number, the list is the indices of the nodes of its members.
         private int[][] nodeNeighbors; //the index of tha array is the node index in the graph, the list is the indices of its neighbors.
-        private double[] communityWeights; //the index of the array is the community number, the value is its weight
-
+        private Community[] communityList;   //change communityMembers to CommunityList.
         private double totalWeightOfGraph;
 
         public LouvainMethod(Matrix<double> _graph)
         {
             graph = _graph;
-            communities = new int[graph.ColumnCount];
-            degrees = new double[graph.ColumnCount];
+            int size = graph.ColumnCount;
+            nodeToCommunities = new int[size];
+            degrees = new double[size];
+            communityList = new Community[size];
+            nodeNeighbors = new int[size][];
+
             var rowsums = graph.RowSums();
             totalWeightOfGraph = 0;
 
@@ -30,16 +67,18 @@ namespace MorphologicalLearner
             for (int i = 0; i < graph.ColumnCount; i++)
             {
                 //at first each node is at a community of its own.
-                communities[i] = i;
-                var l = new List<int>();
-                l.Add(i);
-                communityMembers[i] = l;
+                nodeToCommunities[i] = i;
                 //also keep the weighted degrees of one node, i.e. the row sums
                 degrees[i] = rowsums[i];
 
                 totalWeightOfGraph += rowsums[i]; 
                 //note: total weight of graph is actually twice of its real value because
-                //the matrix is symmetric and I go over A(i,j) and A(j,i) which is the same edge.
+                //the matrix is symmetric and I go over A(i,j) and A(j,i) which is the same edge. (undirected)
+
+                //init communities
+                communityList[i].communityMembers = new List<int> { i };
+                communityList[i].inWeights = graph[i, i];
+                communityList[i].totalWeights = degrees[i];
 
                 var n = new List<int>();
                 for (int j = 0; j < graph.ColumnCount; j++)
@@ -48,115 +87,101 @@ namespace MorphologicalLearner
                         n.Add(j);
                 }
                 nodeNeighbors[i] = n.ToArray();
-
-                communityWeights[i] = 0;
             }
         }
 
         public void FirstStep()
         {
-            Queue<int> nodesToBeConsidered = new Queue<int>();
-            for (int i = 0; i < graph.ColumnCount; i++)
-                nodesToBeConsidered.Enqueue(i);
 
-            while (nodesToBeConsidered.Any())
+            bool improvement = true;
+            while (improvement)
             {
-                int currentNode = nodesToBeConsidered.Dequeue();
-                //(note: we will enqueue the node back to the end of the queue if we find a modularity gain)
-
-                //for each of the neighbors of the current node, look for the maximal modularity gain
-                var neighbors = nodeNeighbors[currentNode];
-
-                double MaxDeltaQFound = 0; //we allow only positive gains.
-                double MaxWeightbetweenNodeAndCommunityFound = 0;
-                int MaxCommunityFound = -1;
-
-                foreach (var neighbor in neighbors)
+                improvement = false;
+                //go over all nodes.
+                for (int i = 0; i < graph.ColumnCount; i++)
                 {
-                    //if the neighbor and the node are in the same community, no modularity change, continue.
-                    if (communities[neighbor] == communities[currentNode])
-                        continue;
-                    double weightbetweenNodeAndCommunity = 0;
+                    int currentNode = i;
 
-                    double deltaQ = ComputeGain(currentNode, neighbor, out weightbetweenNodeAndCommunity);
+                    var neighbors = nodeNeighbors[currentNode];
 
-                    //store the community of the maximal gain
-                    //we also keep the weights between the node and the community, it will be added to the community weight
-                    if (deltaQ > MaxDeltaQFound) 
+                    double MaxDeltaQFound = -1000; //arbitrary minus.
+                    int MaxCommunityFound = -1;
+
+                    int oldCommunity = nodeToCommunities[currentNode];
+
+                    communityList[oldCommunity].RemoveNodeFromCommunity(currentNode,
+                        WeightBetweenNodeAndCommunity(currentNode, oldCommunity), graph[currentNode, currentNode],
+                        degrees[currentNode]);
+                    //remove the node from the old community 
+                    nodeToCommunities[currentNode] = -1;
+
+                    //compute list of communities to go over.
+                    HashSet<int> encounteredCommunities = new HashSet<int>();
+                    encounteredCommunities.Add(oldCommunity);
+
+                    foreach (var neighbor in neighbors)
                     {
-                        MaxWeightbetweenNodeAndCommunityFound = weightbetweenNodeAndCommunity;
-                        MaxDeltaQFound = deltaQ;
-                        MaxCommunityFound = communities[neighbor];
+                        int neighborCommunity = nodeToCommunities[neighbor];
+                        if (!encounteredCommunities.Contains(neighborCommunity))
+                            encounteredCommunities.Add(neighborCommunity);
                     }
+
+                    //go over all communities and find the community with the maximal gain
+                    foreach (var neighborCommunity in encounteredCommunities)
+                    {
+                        double weightbetweenNodeAndCommunity = WeightBetweenNodeAndCommunity(currentNode,
+                            neighborCommunity);
+                        double deltaQ = communityList[neighborCommunity].Gain(weightbetweenNodeAndCommunity,
+                            degrees[currentNode], totalWeightOfGraph);
+
+                        //store the community of the maximal gain
+                        if (deltaQ > MaxDeltaQFound)
+                        {
+                            MaxDeltaQFound = deltaQ;
+                            MaxCommunityFound = neighborCommunity;
+                        }
+
+                    }
+
+                    if (MaxCommunityFound == -1)
+                    {
+                        throw new Exception();
+                    }
+
+                    communityList[MaxCommunityFound].InsertNodeToCommunity(currentNode,
+                        WeightBetweenNodeAndCommunity(currentNode, MaxCommunityFound), graph[currentNode, currentNode],
+                        degrees[currentNode]);
+                    nodeToCommunities[currentNode] = MaxCommunityFound;
+
+                    //if the node was relocated
+                    if (MaxCommunityFound != oldCommunity)
+                        improvement = true;
+
                 }
-
-                //if no relocation of the node leads to modularity gain, continue;
-                if (MaxCommunityFound == -1)
-                    continue;
-
-                //else, move the current node to the community of the neighbor whose modularity gain was maximal:
-                nodesToBeConsidered.Enqueue(currentNode);
-                communities[currentNode] = MaxCommunityFound;
-                communityMembers[MaxCommunityFound].Add(currentNode);
-                communityWeights[MaxCommunityFound] += MaxWeightbetweenNodeAndCommunityFound;
-            }
-                
-           
+            }         
         }
 
-        private double ComputeGain(int currentNode, int neighbor, out double weightbetweenNodeAndCommunity)
+        public void SecondStep()
         {
-            //C = community of neighbor.
-            int c = communities[neighbor];
-            //Weights inside community:
-            double weightsOfCommunity = communityWeights[c];
+            //now build a new Matrix<double> object from the results of the first step
 
-            //the sum of weights between the currentNode and the nodes in the community
-            weightbetweenNodeAndCommunity = WeightBetweenNodeAndCommunity(currentNode, c);
+            //each community is a single node
+            //the weights between the nodes are the sum of all weights of edges going between the two communities.
+            //there are also self-loops (the weights of the community, we already calculated that in communityWeights[])
 
-            //the sum of weights of all edges ending in nodes in the community.
-            double weightsEndinginCommunity = WeightsOfAllEdgesEndingInCommunity(c);
 
-            double firstTerm = (weightsOfCommunity + weightbetweenNodeAndCommunity)/totalWeightOfGraph;
-            double secondTerm = Math.Pow((weightsEndinginCommunity + degrees[currentNode])/totalWeightOfGraph, 2);
-            double thirdTerm = weightsOfCommunity/totalWeightOfGraph;
-            double fourthTerm = Math.Pow(weightsEndinginCommunity/totalWeightOfGraph, 2);
-            double fifthTerm = Math.Pow(degrees[currentNode]/totalWeightOfGraph, 2);
-
-            double DeltaQ = (firstTerm - secondTerm) - (thirdTerm - fourthTerm - fifthTerm);
-            return DeltaQ;
         }
 
-        private double WeightsOfAllEdgesEndingInCommunity(int community)
-        {
-            //we already have the weights insides the community (e.g. communityWeights[community]), 
-            //we need to calculate only the weights of the edges leading from other communities to this one
 
-            double WeightbetweenCommunityAndItsNeighbors = 0;
-            foreach (int member in communityMembers[community]) //for every community member, 
-            {
-                foreach (int currentNeighbor in nodeNeighbors[member])
-                {
-                    //if the neighbor of the member is in the same community, continue.
-                    if (communities[currentNeighbor] == community)
-                        continue;
-
-                    //else, add the weight between the member and the neighbor.
-                    WeightbetweenCommunityAndItsNeighbors += graph[member, currentNeighbor];
-                }
-            }
-
-            return WeightbetweenCommunityAndItsNeighbors + communityWeights[community];
-        }
-
+      
         private double WeightBetweenNodeAndCommunity(int currentNode, int community)
         {
             double weightsbetweenNodeAndCommunity = 0;
             for (int i = 0; i < nodeNeighbors[currentNode].Count(); i++)
             {
                 int currentNeighborOfNode = nodeNeighbors[currentNode][i];
-                //if the neighbor of the node is in the considered community, add to weight:
-                if (communities[currentNeighborOfNode] == community)
+                //if the neighbor of the node is in the considered community (and is not a self loop), add to weight:
+                if (nodeToCommunities[currentNeighborOfNode] == community && currentNeighborOfNode != currentNode)
                     weightsbetweenNodeAndCommunity += graph[currentNode, currentNeighborOfNode];
             }
 

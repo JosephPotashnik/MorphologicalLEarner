@@ -1,13 +1,10 @@
-﻿using System; 
-using System.Windows; 
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Windows;
 using MorphologicalLearner;
-using Smrf.NodeXL.Core; 
-using Smrf.NodeXL.Algorithms; 
+using Smrf.NodeXL.Core;
 using Smrf.NodeXL.Layouts;
 using Smrf.NodeXL.Visualization.Wpf;
-
-
+using Community = Smrf.NodeXL.Algorithms.Community;
 
 namespace GUI
 {
@@ -38,12 +35,12 @@ namespace GUI
         private void ClusterAndDrawGraph(Learner.LocationInBipartiteGraph loc, NodeXLControl ctrl)
         {
             IGraph graph = learner.ReadLogicalGraph(loc);
-            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = learner.GetClusters(graph);
+            ICollection<Community> clusters = learner.GetClusters(graph);
 
             // One group will be created for each cluster.
             List<GroupInfo> groups = new List<GroupInfo>();
 
-            foreach (Smrf.NodeXL.Algorithms.Community cluster in clusters)
+            foreach (Community cluster in clusters)
             {
                 // Create a group.
                 GroupInfo group = new GroupInfo();

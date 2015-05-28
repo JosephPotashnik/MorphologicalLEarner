@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using RDotNet;
-using Smrf.NodeXL.Algorithms;
-using Smrf.NodeXL.Core;
 
 namespace MorphologicalLearner
 {

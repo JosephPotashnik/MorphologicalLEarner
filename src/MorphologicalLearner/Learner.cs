@@ -326,7 +326,7 @@ namespace MorphologicalLearner
                     listOfCommunities.Add(currentList);
             }
 
-            //Sefi - remove from CommonNeighborsGraph obsolete functionality.
+            //Sefi - remove from CommonNeighborsGraph obsolete functionality. (i,e, CommonNeighborsGraph class).
           
             return null;
         }

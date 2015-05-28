@@ -179,9 +179,7 @@ namespace MorphologicalLearner
                         continue;
 
                     int weight = bigramMan.Count(leftwords[i], rightwords[j - leftwordsCount]);
-                    adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = Math.Sqrt(weight);  
-                    //the weight between two neighbors in the common neighbors matrix (which is the adjacency matrix, squared),
-                    //will be the geometric mean, so pre-calculate the root here and just multiply the adjacency matrix later.
+                    adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = weight;  
                 }
             }
             return adjacencyMatrix;

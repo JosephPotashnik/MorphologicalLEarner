@@ -12,12 +12,10 @@ namespace MorphologicalLearner
     public class CommonNeighborsGraph
     {
         public Dictionary<string, Dictionary<string, double>> Graph { get; set; }
-        public Dictionary<string, double> GraphDegrees { get; set; }
 
         public CommonNeighborsGraph()
         {
             Graph = new Dictionary<string, Dictionary<string, double>>();
-            GraphDegrees = new Dictionary<string, double>();
         }
     }
 
@@ -77,7 +75,7 @@ namespace MorphologicalLearner
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
             neighborMatrix.CoerceZero(MinCommonNeighbors);             //zero the weights if minimal weight is not met.
 
-            for (int k = 0; k < neighborMatrix.ColumnCount; ++k)        //zero the diagonal, no self-loops.
+            for (int k = 0; k < neighborMatrix.ColumnCount; ++k)        //zero the diagonal, no self-loops in common neighbors graph
                 neighborMatrix[k, k] = 0;
 
             LeftMatrix = neighborMatrix.SubMatrix(0, leftWords.Count(), 0, leftWords.Count());
@@ -85,36 +83,36 @@ namespace MorphologicalLearner
 
 
             //temp
-             var testMat = Matrix<double>.Build.Sparse(7, 7);
-            testMat[1, 2] = 1;  
-            testMat[1, 3] = 1;
-            testMat[2, 3] = 1;
-            testMat[4, 5] = 1;
-            testMat[4, 6] = 1;
-            testMat[5, 6] = 1;
-            testMat[3, 4] = 1;
+            // var testMat = Matrix<double>.Build.Sparse(7, 7);
+            //testMat[1, 2] = 1;  
+            //testMat[1, 3] = 1;
+            //testMat[2, 3] = 1;
+            //testMat[4, 5] = 1;
+            //testMat[4, 6] = 1;
+            //testMat[5, 6] = 1;
+            //testMat[3, 4] = 1;
 
-            testMat[2, 1] = 1;
-            testMat[3, 1] = 1;
-            testMat[3, 2] = 1;
-            testMat[5, 4] = 1;
-            testMat[6, 4] = 1;
-            testMat[6, 5] = 1;
-            testMat[4, 3] = 1;
-            RightMatrix = testMat;
+            //testMat[2, 1] = 1;
+            //testMat[3, 1] = 1;
+            //testMat[3, 2] = 1;
+            //testMat[5, 4] = 1;
+            //testMat[6, 4] = 1;
+            //testMat[6, 5] = 1;
+            //testMat[4, 3] = 1;
+            //RightMatrix = testMat;
  
           
-            LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
-                                                                    0,
-                                                                    leftWords.Count(),
-                                                                    MinCommonNeighbors,
-                                                                    leftWords);
+            //LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
+            //                                                        0,
+            //                                                        leftWords.Count(),
+            //                                                        MinCommonNeighbors,
+            //                                                        leftWords);
 
-            RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
-                                                                    leftWords.Count(),
-                                                                    leftWords.Count()+rightWords.Count(),
-                                                                    MinCommonNeighbors,
-                                                                    rightWords);
+            //RightWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,
+            //                                                        leftWords.Count(),
+            //                                                        leftWords.Count()+rightWords.Count(),
+            //                                                        MinCommonNeighbors,
+            //                                                        rightWords);
         }
 
         //public void GetEdgesList(Dictionary<string, Dictionary<string, int>> dic )
@@ -150,19 +148,13 @@ namespace MorphologicalLearner
                         if (!commonNeighborsGraph.Graph.ContainsKey(theseWords[i - IndexStart]))
                         {
                             commonNeighborsGraph.Graph[theseWords[i - IndexStart]] = new Dictionary<string, double>();
-                            commonNeighborsGraph.GraphDegrees[theseWords[i - IndexStart]] = 0;
                         }
 
                         commonNeighborsGraph.Graph[theseWords[i - IndexStart]][theseWords[j - IndexStart]] = weightedNeighbors;
-                        commonNeighborsGraph.GraphDegrees[theseWords[i - IndexStart]] += weightedNeighbors;
-                        //hold the sum of all weights of the edges of the neighbors.
+
                     }
                 }
             }
-
-            //modify the degree to be the average of the weights (divide by count of neighbors).
-            foreach (var key in commonNeighborsGraph.Graph.Keys)
-                commonNeighborsGraph.GraphDegrees[key] = commonNeighborsGraph.GraphDegrees[key] / commonNeighborsGraph.Graph[key].Count;
             
             return commonNeighborsGraph;
         }

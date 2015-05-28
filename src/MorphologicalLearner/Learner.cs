@@ -308,15 +308,25 @@ namespace MorphologicalLearner
             string[] secondWords = m_mat.FindSeed();
             var firstwords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
             _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstwords, secondWords, 4);
-            
-            
-
             LouvainMethod louvain = new LouvainMethod(_commonNeighborsGraphManager.RightMatrix);
-            var congraph = _commonNeighborsGraphManager.LeftWordsNeighborhoods;
+            var communityList = louvain.FirstStep();
 
-            //var WordsByDegree = congraph.GraphDegrees.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+            List<List<string>> listOfCommunities = new List<List<string>>();
+            int total = 0;
+            foreach (var community in communityList)
+            {
+                List<string> currentList = new List<string>();
+                for (int i = 0; i < community.communityMembers.Count; i++)
+                {
+                    int nodeIndex = community.communityMembers[i];
+                    currentList.Add(secondWords[nodeIndex]);
+                    total++;
+                }
+                if (currentList.Any())
+                    listOfCommunities.Add(currentList);
+            }
 
-            louvain.FirstStep();
+            //Sefi - remove from CommonNeighborsGraph obsolete functionality.
           
             return null;
         }

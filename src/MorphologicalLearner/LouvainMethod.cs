@@ -76,6 +76,7 @@ namespace MorphologicalLearner
                 //the matrix is symmetric and I go over A(i,j) and A(j,i) which is the same edge. (undirected)
 
                 //init communities
+                communityList[i] = new Community();
                 communityList[i].communityMembers = new List<int> { i };
                 communityList[i].inWeights = graph[i, i];
                 communityList[i].totalWeights = degrees[i];
@@ -90,10 +91,12 @@ namespace MorphologicalLearner
             }
         }
 
-        public void FirstStep()
+        public Community[] FirstStep()
         {
 
             bool improvement = true;
+            HashSet<int> encounteredCommunities = new HashSet<int>();
+
             while (improvement)
             {
                 improvement = false;
@@ -103,6 +106,10 @@ namespace MorphologicalLearner
                     int currentNode = i;
 
                     var neighbors = nodeNeighbors[currentNode];
+
+                    //if node has no neighbors, don't treat it at all (it cannot be moved to any neighboring community).
+                    if (neighbors.Count() == 0)
+                        continue;
 
                     double MaxDeltaQFound = -1000; //arbitrary minus.
                     int MaxCommunityFound = -1;
@@ -116,7 +123,6 @@ namespace MorphologicalLearner
                     nodeToCommunities[currentNode] = -1;
 
                     //compute list of communities to go over.
-                    HashSet<int> encounteredCommunities = new HashSet<int>();
                     encounteredCommunities.Add(oldCommunity);
 
                     foreach (var neighbor in neighbors)
@@ -142,6 +148,7 @@ namespace MorphologicalLearner
                         }
 
                     }
+                    encounteredCommunities.Clear();
 
                     if (MaxCommunityFound == -1)
                     {
@@ -158,7 +165,9 @@ namespace MorphologicalLearner
                         improvement = true;
 
                 }
-            }         
+            }
+
+            return communityList;
         }
 
         public void SecondStep()
@@ -169,11 +178,8 @@ namespace MorphologicalLearner
             //the weights between the nodes are the sum of all weights of edges going between the two communities.
             //there are also self-loops (the weights of the community, we already calculated that in communityWeights[])
 
-
         }
 
-
-      
         private double WeightBetweenNodeAndCommunity(int currentNode, int community)
         {
             double weightsbetweenNodeAndCommunity = 0;

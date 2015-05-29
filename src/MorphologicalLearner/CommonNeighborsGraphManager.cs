@@ -73,7 +73,8 @@ namespace MorphologicalLearner
 
             var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
-            neighborMatrix.CoerceZero(MinCommonNeighbors);             //zero the weights if minimal weight is not met.
+            neighborMatrix.CoerceZero(MinCommonNeighbors*MinCommonNeighbors);    
+            //experiment. remember the edges are weighted - the count of the bigrams.
 
             for (int k = 0; k < neighborMatrix.ColumnCount; ++k)        //zero the diagonal, no self-loops in common neighbors graph
                 neighborMatrix[k, k] = 0;
@@ -99,7 +100,7 @@ namespace MorphologicalLearner
             //testMat[6, 4] = 1;
             //testMat[6, 5] = 1;
             //testMat[4, 3] = 1;
-            //RightMatrix = testMat;
+            //LeftMatrix = testMat;
  
           
             //LeftWordsNeighborhoods = ComputeCommonNeighborsGraphOf(neighborMatrix,

@@ -5,6 +5,7 @@ using System.Linq;
 using RDotNet;
 using Smrf.NodeXL.Algorithms;
 using Smrf.NodeXL.Core;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace MorphologicalLearner
 {
@@ -308,18 +309,43 @@ namespace MorphologicalLearner
             string[] secondWords = m_mat.FindSeed();
             var firstwords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
             _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstwords, secondWords, 4);
-            LouvainMethod louvain = new LouvainMethod(_commonNeighborsGraphManager.RightMatrix);
-            var communityList = louvain.FirstStep();
+
+            Community[] foundCommunities = null;
+
+            MathNet.Numerics.LinearAlgebra.Matrix<double> currentMatrix = _commonNeighborsGraphManager.LeftMatrix;
+            double maxModularity = -1000;
+            bool improvement = true;
+            int numOfSteps = 0;
+            while (improvement)
+            {
+                improvement = false;
+                LouvainMethod louvain = new LouvainMethod(currentMatrix);
+                currentMatrix = louvain.FirstStep(out foundCommunities);
+
+                //sefi perhaps change the check of modularity to check of number of communities,
+                //the modularity can increase infintisemly, we don't care about that.
+                //if the number of communities does not decrease, it's a good enough indication to stop?
+
+                double newModularity = louvain.Modularity();
+                if (newModularity > maxModularity)
+                {
+                    maxModularity = newModularity;
+                    improvement = true;
+                    numOfSteps++;
+                }
+            }
+
+
 
             List<List<string>> listOfCommunities = new List<List<string>>();
             int total = 0;
-            foreach (var community in communityList)
+            foreach (var community in foundCommunities)
             {
                 List<string> currentList = new List<string>();
                 for (int i = 0; i < community.communityMembers.Count; i++)
                 {
                     int nodeIndex = community.communityMembers[i];
-                    currentList.Add(secondWords[nodeIndex]);
+                    currentList.Add(firstwords[nodeIndex]);
                     total++;
                 }
                 if (currentList.Any())

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace MorphologicalLearner
@@ -8,21 +9,29 @@ namespace MorphologicalLearner
 
     public class Community
     {
+        public int communityIndex { get; set; }
         public List<int> communityMembers { get; set; } //the index of the array is the community number, the list is the indices of the nodes of its members.
         public double inWeights { get; set; }  //the  weights strictly inside the community
         public double totalWeights { get; set; } //the weights of all edges leading to nodes in the community
 
+        public Community(int index, List<int> members, double inweights, double totalweights )
+        {
+            communityIndex = index;
+            communityMembers = members;
+            inWeights = inweights;
+            totalWeights = totalweights;
+        }
         public void RemoveNodeFromCommunity(int nodeIndex, double weightBetweenNodeAndCommunity, double selfLoopWeight, double nodeDegree)
         {
             communityMembers.Remove(nodeIndex);
-            inWeights -= 2*weightBetweenNodeAndCommunity - selfLoopWeight;
+            inWeights = inWeights - 2 * weightBetweenNodeAndCommunity - selfLoopWeight;
             totalWeights -= nodeDegree;
         }
 
         public void InsertNodeToCommunity(int nodeIndex, double weightBetweenNodeAndCommunity, double selfLoopWeight, double nodeDegree)
         {
             communityMembers.Add(nodeIndex);
-            inWeights += 2 * weightBetweenNodeAndCommunity + selfLoopWeight;
+            inWeights = inWeights + 2 * weightBetweenNodeAndCommunity + selfLoopWeight;
             totalWeights += nodeDegree;
         }
 
@@ -46,7 +55,7 @@ namespace MorphologicalLearner
         private int[] nodeToCommunities; //the index of the array is the node index in the graph. the value is the community number
         private double[] degrees; //the index of the array is the node index in the graph. the value is the degree of the node
         private int[][] nodeNeighbors; //the index of tha array is the node index in the graph, the list is the indices of its neighbors.
-        private Community[] communityList;   //change communityMembers to CommunityList.
+        private Community[] communities;   
         private double totalWeightOfGraph;
 
         public LouvainMethod(Matrix<double> _graph)
@@ -55,7 +64,7 @@ namespace MorphologicalLearner
             int size = graph.ColumnCount;
             nodeToCommunities = new int[size];
             degrees = new double[size];
-            communityList = new Community[size];
+            communities = new Community[size];
             nodeNeighbors = new int[size][];
 
             var rowsums = graph.RowSums();
@@ -74,10 +83,7 @@ namespace MorphologicalLearner
                 //the matrix is symmetric and I go over A(i,j) and A(j,i) which is the same edge. (undirected)
 
                 //init communities
-                communityList[i] = new Community();
-                communityList[i].communityMembers = new List<int> { i };
-                communityList[i].inWeights = graph[i, i];
-                communityList[i].totalWeights = degrees[i];
+                communities[i] = new Community(i, new List<int> {i}, graph[i, i], degrees[i]);
 
                 var n = new List<int>();
                 for (int j = 0; j < graph.ColumnCount; j++)
@@ -89,7 +95,7 @@ namespace MorphologicalLearner
             }
         }
 
-        public Community[] FirstStep()
+        public Matrix<double> FirstStep(out Community[] foundCommunities)
         {
 
             bool improvement = true;
@@ -114,7 +120,7 @@ namespace MorphologicalLearner
 
                     int oldCommunity = nodeToCommunities[currentNode];
 
-                    communityList[oldCommunity].RemoveNodeFromCommunity(currentNode,
+                    communities[oldCommunity].RemoveNodeFromCommunity(currentNode,
                         WeightBetweenNodeAndCommunity(currentNode, oldCommunity), graph[currentNode, currentNode],
                         degrees[currentNode]);
                     //remove the node from the old community 
@@ -126,7 +132,7 @@ namespace MorphologicalLearner
                     foreach (var neighbor in neighbors)
                     {
                         int neighborCommunity = nodeToCommunities[neighbor];
-                        if (!encounteredCommunities.Contains(neighborCommunity))
+                        if (neighborCommunity!= -1 && !encounteredCommunities.Contains(neighborCommunity))
                             encounteredCommunities.Add(neighborCommunity);
                     }
 
@@ -135,7 +141,7 @@ namespace MorphologicalLearner
                     {
                         double weightbetweenNodeAndCommunity = WeightBetweenNodeAndCommunity(currentNode,
                             neighborCommunity);
-                        double deltaQ = communityList[neighborCommunity].Gain(weightbetweenNodeAndCommunity,
+                        double deltaQ = communities[neighborCommunity].Gain(weightbetweenNodeAndCommunity,
                             degrees[currentNode], totalWeightOfGraph);
 
                         //store the community of the maximal gain
@@ -153,7 +159,7 @@ namespace MorphologicalLearner
                         throw new Exception();
                     }
 
-                    communityList[MaxCommunityFound].InsertNodeToCommunity(currentNode,
+                    communities[MaxCommunityFound].InsertNodeToCommunity(currentNode,
                         WeightBetweenNodeAndCommunity(currentNode, MaxCommunityFound), graph[currentNode, currentNode],
                         degrees[currentNode]);
                     nodeToCommunities[currentNode] = MaxCommunityFound;
@@ -164,8 +170,57 @@ namespace MorphologicalLearner
 
                 }
             }
+            //end of first step.
 
-            return communityList;
+            //preparations for second step.
+            foundCommunities = communities.Where(x => x.communityMembers.Count > 0).ToArray();
+            Dictionary<int, int> mapFromOldToFoundCommunityIndices = new Dictionary<int, int>();
+            int currentIndex = 0;
+            foreach (var community in foundCommunities)
+            {
+                mapFromOldToFoundCommunityIndices[community.communityIndex] = currentIndex++;
+            }
+            int newSize = foundCommunities.Count();
+            var communityMatrix = Matrix<double>.Build.Sparse(newSize, newSize);
+
+            ////for self-loops, the weight is the inweights of the community.
+            //foreach (var community in foundCommunities)
+            //{
+            //    int newIndex = mapFromOldToFoundCommunityIndices[community.communityIndex];
+            //    communityMatrix[newIndex, newIndex] = community.inWeights;
+            //}
+            
+            ////for edges belonging to two different communities, add weights.
+            for (int j = 0; j < graph.ColumnCount; ++j)
+            {
+                for (int k = j; k < graph.ColumnCount; ++k)
+                {
+                    double weight = graph[j, k];
+                    if (weight > 0)
+                    {
+                        int c1 = mapFromOldToFoundCommunityIndices[nodeToCommunities[j]];
+                        int c2 = mapFromOldToFoundCommunityIndices[nodeToCommunities[k]];
+
+                            communityMatrix[c1, c2] += weight;
+                            communityMatrix[c2, c1] += weight;
+                    }
+                }
+            }
+
+
+            return communityMatrix;
+        }
+
+        public double Modularity() 
+        {
+          double q  = 0;
+
+          foreach (var community in communities)
+          {
+                if (community.totalWeights > 0)
+                        q += community.inWeights/totalWeightOfGraph - Math.Pow((community.totalWeights/totalWeightOfGraph), 2);
+          }
+          return q;
         }
 
         public void SecondStep()

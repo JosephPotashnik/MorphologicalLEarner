@@ -73,8 +73,10 @@ namespace MorphologicalLearner
 
             var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
-            neighborMatrix.CoerceZero(MinCommonNeighbors*MinCommonNeighbors);    
-            //experiment. remember the edges are weighted - the count of the bigrams.
+            neighborMatrix.CoerceZero(MinCommonNeighbors);    
+            //experiment. 
+            //1. the edges are unweighted - edge between common neighbors
+            //2. the edge are weighted - what would be the formula to weight two common neighbors that each has a weight X1, X2 with a shared second word?
 
             for (int k = 0; k < neighborMatrix.ColumnCount; ++k)        //zero the diagonal, no self-loops in common neighbors graph
                 neighborMatrix[k, k] = 0;
@@ -83,7 +85,7 @@ namespace MorphologicalLearner
             RightMatrix = neighborMatrix.SubMatrix(leftWords.Count(), rightWords.Count(), leftWords.Count(), rightWords.Count());
 
 
-            //temp
+           // temp
             // var testMat = Matrix<double>.Build.Sparse(7, 7);
             //testMat[1, 2] = 1;  
             //testMat[1, 3] = 1;
@@ -180,7 +182,11 @@ namespace MorphologicalLearner
                         continue;
 
                     int weight = bigramMan.Count(leftwords[i], rightwords[j - leftwordsCount]);
-                    adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = weight;  
+                    adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = weight;
+
+                    if (weight > 0 )
+                        adjacencyMatrix[i, j] = adjacencyMatrix[j, i] = 1;  //if we want to take only the existence of neighbors
+
                 }
             }
             return adjacencyMatrix;

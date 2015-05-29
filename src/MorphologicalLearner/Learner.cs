@@ -312,40 +312,49 @@ namespace MorphologicalLearner
 
             Community[] foundCommunities = null;
 
-            MathNet.Numerics.LinearAlgebra.Matrix<double> currentMatrix = _commonNeighborsGraphManager.LeftMatrix;
+            MathNet.Numerics.LinearAlgebra.Matrix<double> currentMatrix = _commonNeighborsGraphManager.RightMatrix;
             double maxModularity = -1000;
             bool improvement = true;
             int numOfSteps = 0;
+            Stack<Community[]> communityHierarchy = new Stack<Community[]>();
             while (improvement)
             {
                 improvement = false;
                 LouvainMethod louvain = new LouvainMethod(currentMatrix);
-                currentMatrix = louvain.FirstStep(out foundCommunities);
-
-                //sefi perhaps change the check of modularity to check of number of communities,
-                //the modularity can increase infintisemly, we don't care about that.
-                //if the number of communities does not decrease, it's a good enough indication to stop?
+                var newMatrix = louvain.FirstStep(out foundCommunities);
 
                 double newModularity = louvain.Modularity();
-                if (newModularity > maxModularity)
+                //if (newModularity > maxModularity)
+                if (foundCommunities.Count() < currentMatrix.ColumnCount)
                 {
+                    var ttt = foundCommunities.Select(x => x.communityMembers.Count()).ToArray();
+                    communityHierarchy.Push(foundCommunities);
                     maxModularity = newModularity;
+                    currentMatrix = newMatrix;
                     improvement = true;
                     numOfSteps++;
                 }
+            }
+            var dendogram = communityHierarchy.ToArray();
+            var l = new List<List<int>>();
+            foreach (var community in dendogram[0])
+            {
+                var list = GetLeavesOfCommunity(community, 0, dendogram).ToList();
+                l.Add(list);
+
             }
 
 
 
             List<List<string>> listOfCommunities = new List<List<string>>();
             int total = 0;
-            foreach (var community in foundCommunities)
+            foreach (var community in l)
             {
                 List<string> currentList = new List<string>();
-                for (int i = 0; i < community.communityMembers.Count; i++)
+                for (int i = 0; i < community.Count; i++)
                 {
-                    int nodeIndex = community.communityMembers[i];
-                    currentList.Add(firstwords[nodeIndex]);
+                    int nodeIndex = community[i];
+                    currentList.Add(secondWords[nodeIndex]);
                     total++;
                 }
                 if (currentList.Any())
@@ -355,6 +364,24 @@ namespace MorphologicalLearner
             //Sefi - remove from CommonNeighborsGraph obsolete functionality. (i,e, CommonNeighborsGraph class).
           
             return null;
+        }
+
+        IEnumerable<int> GetLeavesOfCommunity(Community c, int hierarchyIndex, Community[][] dendogram)
+        {
+            if (hierarchyIndex == dendogram.Count() - 1)
+                    return c.communityMembers;
+
+            IEnumerable<int> allExpanded = Enumerable.Empty<int>();
+
+            foreach (var communityMember in c.communityMembers)
+            {
+                Community expandedCommunity = dendogram[hierarchyIndex + 1][communityMember];
+                IEnumerable<int> leavesOfCurrentMember = GetLeavesOfCommunity(expandedCommunity, hierarchyIndex + 1, dendogram);
+                allExpanded = allExpanded.Concat(leavesOfCurrentMember);
+
+            }
+
+            return allExpanded;
         }
 
         public IEnumerable<Smrf.NodeXL.Algorithms.Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)

@@ -226,13 +226,15 @@ namespace MorphologicalLearner
            //string suffixSeed = suffixArray[maxRow];
             
             //the entire column:
+            return vectors[3].Words().ToArray();
+
             return vectors[maxCol].Words().ToArray();
 
             //the entire row:
             //return GetAllWordsWithGivenSuffixIndex(maxRow);
 
             //or the specific suffix in the column
-            return vectors[maxCol].WordsOfSuffix(maxRow).ToArray();
+            //return vectors[maxCol].WordsOfSuffix(maxRow).ToArray();
 
         }
 

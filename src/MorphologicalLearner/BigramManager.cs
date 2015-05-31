@@ -14,19 +14,11 @@ namespace MorphologicalLearner
         private readonly Dictionary<string, Dictionary<string, int>> secondWordDictionary;
         //<word2,                     <word1, count>>
 
-        //degree distributions (the edges considered for the degree calculations are by types, not by tokens).
-        // sefi maybe change to tokens!!?
-        private readonly Dictionary<string, int> firstWordDegree;
-        private readonly Dictionary<string, int> secondWordDegree;
-
- 
-
         public BigramManager()
         {
             firstWordDictionary = new Dictionary<string, Dictionary<string, int>>();
             secondWordDictionary = new Dictionary<string, Dictionary<string, int>>();
-            firstWordDegree = new Dictionary<string, int>();
-            secondWordDegree = new Dictionary<string, int>();
+
         }
 
         public void Add(string word1, string word2)
@@ -36,20 +28,17 @@ namespace MorphologicalLearner
                 var val = firstWordDictionary[word1];
                 if (val.ContainsKey(word2))
                     val[word2]++;
-                // sefi maybe change to tokens!!? firstWordDegree[word1]++;
 
-                else
-                {
+                else           
                     val[word2] = 1;
-                    firstWordDegree[word1]++;   //by type only
-                }
+                
             }
             else
             {
                 var newDic = new Dictionary<string, int>();
                 firstWordDictionary[word1] = newDic;
                 newDic[word2] = 1;
-                firstWordDegree[word1] = 1;
+
             }
 
             if (secondWordDictionary.ContainsKey(word2))
@@ -57,19 +46,16 @@ namespace MorphologicalLearner
                 var val = secondWordDictionary[word2];
                 if (val.ContainsKey(word1))
                     val[word1]++;
-                // sefi maybe change to tokens!!?
                 else
-                {
-                    secondWordDegree[word2]++;
+                
                     val[word1] = 1;
-                }
+                
             }
             else
             {
                 var newDic = new Dictionary<string, int>();
                 secondWordDictionary[word2] = newDic;
                 newDic[word1] = 1;
-                secondWordDegree[word2] = 1;
             }
         }
 
@@ -166,36 +152,6 @@ namespace MorphologicalLearner
             var enumerable = given as string[] ?? given.ToArray();
             var l = GetAllWordsBeforeWord(enumerable.First());
             return enumerable.Aggregate(l, (current, str) => current.Union(GetAllWordsBeforeWord(str)));
-        }
-
-        public IEnumerable<string> RemoveSecondOrphanedWords(IEnumerable<string> given)
-        {
-            return given.Select(x => x).Where(x => secondWordDictionary.ContainsKey(x));
-        }
-
-        public IEnumerable<string> MostConnectedWords(Learner.LocationInBipartiteGraph loc, int N)
-        {
-            var dic = firstWordDegree;
-
-            if (loc == Learner.LocationInBipartiteGraph.RightWords)
-                dic = secondWordDegree;
-
-            var orderedDic = dic.OrderByDescending(x => x.Value).ToList();
-            return orderedDic.Select(x => x.Key).Take(N);
-
-        }
-
-
-        public IEnumerable<int> GetFrequencies(Learner.LocationInBipartiteGraph loc)
-        {
-            var dic = firstWordDegree;
-
-            if (loc == Learner.LocationInBipartiteGraph.RightWords)
-                dic = secondWordDegree;
-
-            var orderedDic = dic.OrderByDescending(x => x.Value).ToList();
-            return orderedDic.Select(x => x.Value).Take(1500);
-
         }
 
     }

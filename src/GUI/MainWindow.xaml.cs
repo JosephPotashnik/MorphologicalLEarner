@@ -4,7 +4,6 @@ using MorphologicalLearner;
 using Smrf.NodeXL.Core;
 using Smrf.NodeXL.Layouts;
 using Smrf.NodeXL.Visualization.Wpf;
-using Community = Smrf.NodeXL.Algorithms.Community;
 
 namespace GUI
 {
@@ -18,8 +17,8 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-            learner = new Learner("David Copperfield");
-            //learner = new Learner("CorwinBooks");
+            //learner = new Learner("David Copperfield");
+            learner = new Learner("CorwinBooks");
             CreateAndShowGroups();
         }
 

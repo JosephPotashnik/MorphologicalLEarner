@@ -2,21 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using RDotNet;
-using Smrf.NodeXL.Algorithms;
 using Smrf.NodeXL.Core;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace MorphologicalLearner
 {
-
-    public class Edge
-    {
-        public string Vertex1 { get; set; }
-        public string Vertex2 { get; set; }
-        public double Weight { get; set; }
-    }
-
+  
     public class Learner
     {
         public const string StemSymbol = "###";
@@ -75,7 +65,6 @@ namespace MorphologicalLearner
   
             var SentencesAboveALetter =
                 temp.Where(sentence => sentence.Count() > 1);
-
 
 
             foreach (var sentence in SentencesAboveALetter)
@@ -191,94 +180,12 @@ namespace MorphologicalLearner
         }
 
 
-        public ICollection<Smrf.NodeXL.Algorithms.Community> GetClusters(IGraph graph)
-        {
-            // Use a ClusterCalculator to partition the graph's vertices into
-            // clusters.
-
-            ClusterCalculator clusterCalculator = new ClusterCalculator();
-            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.GirvanNewman;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.Clique;
-
-            return clusterCalculator.CalculateGraphMetrics(graph);
-        }
-
         public void EvaluateSyntacticCategoryOfCandidates(string[] candidates)
         {
          
             
         }
      
-        //public string[] FindMaximualInformationClusterFromLeft(string[] secondWords)
-        //{
-
-        //    var firstWords = m_BigramManager.GetUnionOfBigramsWithSecondWords(secondWords).ToArray();
-        //    _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(firstWords, secondWords, 4);
-
-        //    string[] largestClusterSecondWords = GetWordsOfLargestCluster(LocationInBipartiteGraph.RightWords);
-        //    string[] largestClusterFirstWords = GetWordsOfLargestCluster(LocationInBipartiteGraph.LeftWords);
-
-        //    string[] NeighborsOfLargestClusterFirstWords =
-        //        m_BigramManager.GetUnionOfBigramsWithFirstWords(largestClusterFirstWords).ToArray();
-
-        //    bool contained = !largestClusterSecondWords.Except(NeighborsOfLargestClusterFirstWords).Any();
-
-        //    if (contained)
-        //        return largestClusterFirstWords;
-            
-        //    return FindMaximualInformationClusterFromLeft(largestClusterSecondWords);
-            
-        //}
-
-        //private string[] GetWordsOfLargestCluster(LocationInBipartiteGraph loc)
-        //{
-        //    IGraph graph = ReadLogicalGraph(loc);
-        //    ICollection<Smrf.NodeXL.Algorithms.Community> clusters = GetClusters(graph);
-        //    Smrf.NodeXL.Algorithms.Community largestCommunityRight = GetLargestCluster(clusters);
-
-        //    if (largestCommunityRight != null)
-        //        return 
-        //            largestCommunityRight.Vertices.Select(vertex => vertex.GetValue(ReservedMetadataKeys.PerVertexLabel).ToString())
-        //                .ToArray();
-
-        //    return null;
-        //}
-
-        private static Smrf.NodeXL.Algorithms.Community GetLargestCluster(ICollection<Smrf.NodeXL.Algorithms.Community> clusters)
-        {
-            int maxVertices = 0;
-            Smrf.NodeXL.Algorithms.Community LargestCommunity = null;
-
-            foreach (Smrf.NodeXL.Algorithms.Community cluster in clusters)
-            {
-                if (cluster.Vertices.Count() > maxVertices)
-                {
-                    maxVertices = cluster.Vertices.Count();
-                    LargestCommunity = cluster;
-                }
-            }
-
-            return LargestCommunity;
-        }
-
-        private void PrintClusters(IEnumerable<Smrf.NodeXL.Algorithms.Community> list)
-        {
-            foreach (var cluster in list)
-            {
-                string[] names = cluster.Vertices.Select(vertex => vertex.GetValue(ReservedMetadataKeys.PerVertexLabel).ToString())
-                        .ToArray();
-                string str = string.Join(",", names);
-                Console.WriteLine("{0}", str);
-
-            }
-        }
-
-        private bool GoodCandidate(string v)
-        {
-
-            return true;
-        }
 
         public List<List<int>> ClusterWithLouvainMethod(LocationInBipartiteGraph loc)
         {
@@ -321,6 +228,7 @@ namespace MorphologicalLearner
             }
             return l;
         }
+
         public string[] LookForSyntacticCategoryCandidates()
         {     
             //for now, return just the seed.
@@ -330,11 +238,9 @@ namespace MorphologicalLearner
 
             Vertex[] vertices = null;
             var comm = ClusterWithLouvainMethod(LocationInBipartiteGraph.RightWords);
-
             var g = ReadLogicalGraph(LocationInBipartiteGraph.RightWords, comm, out vertices);
 
             List<List<string>> listOfCommunities = new List<List<string>>();
-            int total = 0;
             //foreach (var community in l)
             //{
             //    List<string> currentList = new List<string>();
@@ -368,58 +274,7 @@ namespace MorphologicalLearner
             }
 
             return allExpanded;
-        }
-
-        public IEnumerable<Smrf.NodeXL.Algorithms.Community> Clusterize(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
-        {
-            var list = new List<Smrf.NodeXL.Algorithms.Community>();
-            ICollection<Smrf.NodeXL.Algorithms.Community> clusters = GetClusters(wordSetLeft, wordSetRight, loc);
-
-            if (clusters.Count == 1)
-            {
-                var cluster = clusters.First();
-                list.Add(cluster);
-                string[] names = cluster.Vertices.Select(vertex => vertex.GetValue(ReservedMetadataKeys.PerVertexLabel).ToString())
-        .ToArray();
-
-                string str = "cluster contains: " + string.Join(",", names);
-                Console.WriteLine("{0}", str);
-                return list;
-            }
-
-            foreach (var cluster in clusters)
-            {
-                string[] wordsInCluster = new string[cluster.Vertices.Count];
-                int i = 0;
-
-                // Populate the group with the cluster's vertices.
-                foreach (IVertex vertex in cluster.Vertices)
-                    wordsInCluster[i++] = vertex.GetValue(ReservedMetadataKeys.PerVertexLabel) as string;
-
-                var sublist = Clusterize(wordSetLeft, wordsInCluster, loc);
-                list = list.Concat(sublist).ToList();
-            }
-            return list;
-
-        }
-        public ICollection<Smrf.NodeXL.Algorithms.Community> GetClusters(string[] wordSetLeft, string[] wordSetRight, LocationInBipartiteGraph loc)
-        {
-            int commonNeigh = minCommonNeighbors;
-            //commonNeigh = 1;
-
-            _commonNeighborsGraphManager.ComputeCommonNeighborsGraphFromCoOccurrenceGraph(wordSetLeft, wordSetRight, commonNeigh);
-            Vertex[] vertices = null;
-            IGraph graph = ReadLogicalGraph(loc, null, out vertices);
-            ClusterCalculator clusterCalculator = new ClusterCalculator();
-            //clusterCalculator.Algorithm = ClusterAlgorithm.WakitaTsurumi;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.GirvanNewman;
-            //clusterCalculator.Algorithm = ClusterAlgorithm.Clique;
-
-            return clusterCalculator.CalculateGraphMetrics(graph);
-
-        }
-
-
+        } 
 
         private IEnumerable<string> GetSuperSet(IEnumerable<string> wordSet, LocationInBipartiteGraph location)
         {
@@ -440,63 +295,5 @@ namespace MorphologicalLearner
 
             return superSetWords;
         }
-
-
-        //public void ComputeCommunitiesInR(List<Edge> list)
-        //{
-
-        //    string[] edgeArray = new string[list.Count];
-        //    int i = 0;
-
-        //    foreach (var edge in list)
-        //    {
-        //        edgeArray[i++] = string.Format("\"{0}\",\"{1}\"", edge.Vertex1, edge.Vertex2);
-        //        //add weights later
-        //    }
-        //    var concatArray = string.Join(",", edgeArray);
-        //    string edgeListR = "e <- matrix( c(" + concatArray + "), nc=2, byrow=TRUE)";
-
-        //    //Console.WriteLine(edgeListR);
-
-        //    var DegreeDistribution = m_BigramManager.GetFrequencies(LocationInBipartiteGraph.LeftWords).ToArray();
-        //    var concatArray2 = string.Join(",", DegreeDistribution);
-        //    string freqeuncies = "x <- c(" + concatArray2 + ")";
-
-        //    //load R
-        //    REngine engine = REngine.GetInstance();
-
-        //    //load iGraph library
-        //    engine.Evaluate("library(igraph)");
-        //    engine.Evaluate(edgeListR);
-        //    engine.Evaluate("g <- graph.edgelist(e)");
-        //    //engine.Evaluate("imc <- infomap.community(g)");
-        //    engine.Evaluate("imc <- edge.betweenness.community(g)");
-        //    //engine.Evaluate("imc <- fastgreedy.community(g)");
-        //    //engine.Evaluate("imc <- leading.eigenvector.community(g)");
-
-        //    engine.Evaluate(freqeuncies);
-        //    engine.Evaluate("y <- c(1:1500)");
-        //    //engine.Evaluate("plot(density(x))");
-        //    engine.Evaluate("plot(x, y, type=\"h\")");
-
-
-        //    var communities = engine.Evaluate("communities <- communities(imc)").AsCharacter().ToArray();
-        //    var graph = engine.Evaluate("V(g)$name").AsCharacter().ToArray();
-
-
-
-        //    engine.Dispose();
-        //}
     }
 }
-
-            //string[] firstwords = m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.LeftWords, 100).ToArray();
-
-            //secondWords =
-            //    secondWords.Intersect(m_BigramManager.MostConnectedWords(LocationInBipartiteGraph.RightWords, 100)).ToArray();
-
-            //var divisiveClusteringResults = Clusterize(firstwords, secondWords, LocationInBipartiteGraph.RightWords);
-
-
-            //var list = commonNeighborsGraph.GetEdges(LocationInBipartiteGraph.LeftWords);
-            //ComputeCommunitiesInR(list);

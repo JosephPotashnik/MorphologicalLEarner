@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
@@ -59,7 +58,7 @@ namespace MorphologicalLearner
 
             var adjMatrix = CreateAdjacencyMatrix(leftWords, rightWords);
             var neighborMatrix = CreateCommonNeighborsMatrix(adjMatrix);
-            neighborMatrix.CoerceZero(4);    
+            neighborMatrix.CoerceZero(MinCommonNeighbors);    
             //experiment. 
             //1. the edges are unweighted - edge between common neighbors
             //2. the edge are weighted - what would be the formula to weight two common neighbors that each has a weight X1, X2 with a shared second word?
@@ -72,27 +71,6 @@ namespace MorphologicalLearner
             RightMatrix = neighborMatrix.SubMatrix(leftWords.Count(), rightWords.Count(), leftWords.Count(), rightWords.Count());
             LeftWords = leftWords;
             RightWords = rightWords;
-
-           // temp
-            //var testMat = Matrix<double>.Build.Sparse(7, 7);
-            //testMat[1, 2] = 1;
-            //testMat[1, 3] = 1;
-            //testMat[2, 3] = 1;
-            //testMat[4, 5] = 1;
-            //testMat[4, 6] = 1;
-            //testMat[5, 6] = 1;
-            //testMat[3, 4] = 1;
-
-            //testMat[2, 1] = 1;
-            //testMat[3, 1] = 1;
-            //testMat[3, 2] = 1;
-            //testMat[5, 4] = 1;
-            //testMat[6, 4] = 1;
-            //testMat[6, 5] = 1;
-            //testMat[4, 3] = 1;
-            //LeftMatrix = testMat;
-            //LeftWords = new string[] { "0", "1", "2", "3", "4", "5", "6" };
-
          }
 
 
@@ -147,13 +125,11 @@ namespace MorphologicalLearner
                 words = RightWords;
             }
 
-
             var nodes = communities.Where(x => x.Count() > 1).SelectMany(x => x).ToArray();
             HashSet<int> nodesInConsideredCommunities = new HashSet<int>(nodes);
 
 
             int size = g.ColumnCount;
-
             IGraph graph = new Graph(GraphDirectedness.Undirected);
             vertices = new Vertex[size];
             var degrees = g.RowSums();
@@ -187,7 +163,6 @@ namespace MorphologicalLearner
                 }
             }
            
-
             return graph;
         }
     }

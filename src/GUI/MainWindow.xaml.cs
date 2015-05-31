@@ -34,21 +34,26 @@ namespace GUI
 
         private void ClusterAndDrawGraph(Learner.LocationInBipartiteGraph loc, NodeXLControl ctrl)
         {
-            IGraph graph = learner.ReadLogicalGraph(loc);
-            ICollection<Community> clusters = learner.GetClusters(graph);
+            Vertex[] vertices = null;
+            List<List<int>> communities = learner.ClusterWithLouvainMethod(loc);
+            IGraph graph = learner.ReadLogicalGraph(loc, communities, out vertices);
 
             // One group will be created for each cluster.
             List<GroupInfo> groups = new List<GroupInfo>();
 
-            foreach (Community cluster in clusters)
+            foreach (List<int> cluster in communities)
             {
-                // Create a group.
-                GroupInfo group = new GroupInfo();
-                groups.Add(@group);
+                if (cluster.Count > 1)
+                {
+                    // Create a group.
+                    GroupInfo group = new GroupInfo();
+                    groups.Add(@group);
 
-                // Populate the group with the cluster's vertices.
-                foreach (IVertex vertex in cluster.Vertices)
-                    @group.Vertices.AddLast(vertex);
+                    //sefi all you need to do is to get the Ivertex from the node indeices.
+                    // Populate the group with the cluster's vertices.
+                    foreach (int nodeIndex in cluster)
+                        @group.Vertices.AddLast(vertices[nodeIndex]);
+                }
             }
 
             // Store the group information as metadata on the graph.
@@ -60,9 +65,10 @@ namespace GUI
             // Tell the layout class to use the groups.
             ctrl.Layout.LayoutStyle = LayoutStyle.UseGroups;
 
+
             // Tell the layout class how to lay out the groups.
             ctrl.Layout.BoxLayoutAlgorithm =
-                BoxLayoutAlgorithm.Treemap;
+                BoxLayoutAlgorithm.ForceDirected;
 
             // Tell the NodeXLControl to lay out and draw the graph.
             ctrl.DrawGraph(true);
